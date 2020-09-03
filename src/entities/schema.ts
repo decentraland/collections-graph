@@ -12,7 +12,7 @@ import {
   BigDecimal
 } from "@graphprotocol/graph-ts";
 
-export class Order extends Entity {
+export class Collection extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
@@ -20,17 +20,17 @@ export class Order extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id !== null, "Cannot save Order entity without an ID");
+    assert(id !== null, "Cannot save Collection entity without an ID");
     assert(
       id.kind == ValueKind.STRING,
-      "Cannot save Order entity with non-string ID. " +
+      "Cannot save Collection entity with non-string ID. " +
         'Considering using .toHex() to convert the "id" to a string.'
     );
-    store.set("Order", id.toString(), this);
+    store.set("Collection", id.toString(), this);
   }
 
-  static load(id: string): Order | null {
-    return store.get("Order", id) as Order | null;
+  static load(id: string): Collection | null {
+    return store.get("Collection", id) as Collection | null;
   }
 
   get id(): string {
@@ -42,6 +42,23 @@ export class Order extends Entity {
     this.set("id", Value.fromString(value));
   }
 
+  get items(): Array<string> | null {
+    let value = this.get("items");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set items(value: Array<string> | null) {
+    if (value === null) {
+      this.unset("items");
+    } else {
+      this.set("items", Value.fromStringArray(value as Array<string>));
+    }
+  }
+
   get owner(): string {
     let value = this.get("owner");
     return value.toString();
@@ -51,43 +68,366 @@ export class Order extends Entity {
     this.set("owner", Value.fromString(value));
   }
 
-  get inputToken(): string {
-    let value = this.get("inputToken");
+  get creator(): string {
+    let value = this.get("creator");
     return value.toString();
   }
 
-  set inputToken(value: string) {
-    this.set("inputToken", Value.fromString(value));
+  set creator(value: string) {
+    this.set("creator", Value.fromString(value));
   }
 
-  get outputToken(): string {
-    let value = this.get("outputToken");
+  get name(): string {
+    let value = this.get("name");
     return value.toString();
   }
 
-  set outputToken(value: string) {
-    this.set("outputToken", Value.fromString(value));
+  set name(value: string) {
+    this.set("name", Value.fromString(value));
   }
 
-  get minReturn(): BigInt | null {
-    let value = this.get("minReturn");
+  get symbol(): string {
+    let value = this.get("symbol");
+    return value.toString();
+  }
+
+  set symbol(value: string) {
+    this.set("symbol", Value.fromString(value));
+  }
+
+  get isCompleted(): boolean {
+    let value = this.get("isCompleted");
+    return value.toBoolean();
+  }
+
+  set isCompleted(value: boolean) {
+    this.set("isCompleted", Value.fromBoolean(value));
+  }
+
+  get isApproved(): boolean {
+    let value = this.get("isApproved");
+    return value.toBoolean();
+  }
+
+  set isApproved(value: boolean) {
+    this.set("isApproved", Value.fromBoolean(value));
+  }
+
+  get isEditable(): boolean {
+    let value = this.get("isEditable");
+    return value.toBoolean();
+  }
+
+  set isEditable(value: boolean) {
+    this.set("isEditable", Value.fromBoolean(value));
+  }
+
+  get minters(): Array<string> | null {
+    let value = this.get("minters");
     if (value === null) {
       return null;
     } else {
-      return value.toBigInt();
+      return value.toStringArray();
     }
   }
 
-  set minReturn(value: BigInt | null) {
+  set minters(value: Array<string> | null) {
     if (value === null) {
-      this.unset("minReturn");
+      this.unset("minters");
     } else {
-      this.set("minReturn", Value.fromBigInt(value as BigInt));
+      this.set("minters", Value.fromStringArray(value as Array<string>));
     }
   }
 
-  get module(): string | null {
-    let value = this.get("module");
+  get managers(): Array<string> | null {
+    let value = this.get("managers");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set managers(value: Array<string> | null) {
+    if (value === null) {
+      this.unset("managers");
+    } else {
+      this.set("managers", Value.fromStringArray(value as Array<string>));
+    }
+  }
+}
+
+export class Item extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save Item entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save Item entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("Item", id.toString(), this);
+  }
+
+  static load(id: string): Item | null {
+    return store.get("Item", id) as Item | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get collection(): string {
+    let value = this.get("collection");
+    return value.toString();
+  }
+
+  set collection(value: string) {
+    this.set("collection", Value.fromString(value));
+  }
+
+  get itemId(): BigInt {
+    let value = this.get("itemId");
+    return value.toBigInt();
+  }
+
+  set itemId(value: BigInt) {
+    this.set("itemId", Value.fromBigInt(value));
+  }
+
+  get totaSupply(): BigInt {
+    let value = this.get("totaSupply");
+    return value.toBigInt();
+  }
+
+  set totaSupply(value: BigInt) {
+    this.set("totaSupply", Value.fromBigInt(value));
+  }
+
+  get rariy(): string {
+    let value = this.get("rariy");
+    return value.toString();
+  }
+
+  set rariy(value: string) {
+    this.set("rariy", Value.fromString(value));
+  }
+
+  get available(): BigInt {
+    let value = this.get("available");
+    return value.toBigInt();
+  }
+
+  set available(value: BigInt) {
+    this.set("available", Value.fromBigInt(value));
+  }
+
+  get price(): BigInt {
+    let value = this.get("price");
+    return value.toBigInt();
+  }
+
+  set price(value: BigInt) {
+    this.set("price", Value.fromBigInt(value));
+  }
+
+  get metadata(): string {
+    let value = this.get("metadata");
+    return value.toString();
+  }
+
+  set metadata(value: string) {
+    this.set("metadata", Value.fromString(value));
+  }
+
+  get beneficiary(): string {
+    let value = this.get("beneficiary");
+    return value.toString();
+  }
+
+  set beneficiary(value: string) {
+    this.set("beneficiary", Value.fromString(value));
+  }
+
+  get contentHash(): Bytes {
+    let value = this.get("contentHash");
+    return value.toBytes();
+  }
+
+  set contentHash(value: Bytes) {
+    this.set("contentHash", Value.fromBytes(value));
+  }
+
+  get URI(): string {
+    let value = this.get("URI");
+    return value.toString();
+  }
+
+  set URI(value: string) {
+    this.set("URI", Value.fromString(value));
+  }
+
+  get minters(): Array<string> | null {
+    let value = this.get("minters");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set minters(value: Array<string> | null) {
+    if (value === null) {
+      this.unset("minters");
+    } else {
+      this.set("minters", Value.fromStringArray(value as Array<string>));
+    }
+  }
+
+  get managers(): Array<string> | null {
+    let value = this.get("managers");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set managers(value: Array<string> | null) {
+    if (value === null) {
+      this.unset("managers");
+    } else {
+      this.set("managers", Value.fromStringArray(value as Array<string>));
+    }
+  }
+}
+
+export class Account extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save Account entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save Account entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("Account", id.toString(), this);
+  }
+
+  static load(id: string): Account | null {
+    return store.get("Account", id) as Account | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get address(): Bytes {
+    let value = this.get("address");
+    return value.toBytes();
+  }
+
+  set address(value: Bytes) {
+    this.set("address", Value.fromBytes(value));
+  }
+
+  get nfts(): Array<string> | null {
+    let value = this.get("nfts");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set nfts(value: Array<string> | null) {
+    if (value === null) {
+      this.unset("nfts");
+    } else {
+      this.set("nfts", Value.fromStringArray(value as Array<string>));
+    }
+  }
+}
+
+export class NFT extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save NFT entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save NFT entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("NFT", id.toString(), this);
+  }
+
+  static load(id: string): NFT | null {
+    return store.get("NFT", id) as NFT | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get tokenId(): BigInt {
+    let value = this.get("tokenId");
+    return value.toBigInt();
+  }
+
+  set tokenId(value: BigInt) {
+    this.set("tokenId", Value.fromBigInt(value));
+  }
+
+  get contractAddress(): Bytes {
+    let value = this.get("contractAddress");
+    return value.toBytes();
+  }
+
+  set contractAddress(value: Bytes) {
+    this.set("contractAddress", Value.fromBytes(value));
+  }
+
+  get owner(): string {
+    let value = this.get("owner");
+    return value.toString();
+  }
+
+  set owner(value: string) {
+    this.set("owner", Value.fromString(value));
+  }
+
+  get tokenURI(): string | null {
+    let value = this.get("tokenURI");
     if (value === null) {
       return null;
     } else {
@@ -95,143 +435,63 @@ export class Order extends Entity {
     }
   }
 
-  set module(value: string | null) {
+  set tokenURI(value: string | null) {
     if (value === null) {
-      this.unset("module");
+      this.unset("tokenURI");
     } else {
-      this.set("module", Value.fromString(value as string));
+      this.set("tokenURI", Value.fromString(value as string));
     }
   }
 
-  get witness(): string {
-    let value = this.get("witness");
-    return value.toString();
-  }
-
-  set witness(value: string) {
-    this.set("witness", Value.fromString(value));
-  }
-
-  get secret(): string {
-    let value = this.get("secret");
-    return value.toString();
-  }
-
-  set secret(value: string) {
-    this.set("secret", Value.fromString(value));
-  }
-
-  get inputAmount(): BigInt {
-    let value = this.get("inputAmount");
-    return value.toBigInt();
-  }
-
-  set inputAmount(value: BigInt) {
-    this.set("inputAmount", Value.fromBigInt(value));
-  }
-
-  get vault(): string {
-    let value = this.get("vault");
-    return value.toString();
-  }
-
-  set vault(value: string) {
-    this.set("vault", Value.fromString(value));
-  }
-
-  get bought(): BigInt | null {
-    let value = this.get("bought");
+  get name(): string | null {
+    let value = this.get("name");
     if (value === null) {
       return null;
     } else {
-      return value.toBigInt();
+      return value.toString();
     }
   }
 
-  set bought(value: BigInt | null) {
+  set name(value: string | null) {
     if (value === null) {
-      this.unset("bought");
+      this.unset("name");
     } else {
-      this.set("bought", Value.fromBigInt(value as BigInt));
+      this.set("name", Value.fromString(value as string));
     }
   }
 
-  get auxData(): Bytes | null {
-    let value = this.get("auxData");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toBytes();
-    }
-  }
-
-  set auxData(value: Bytes | null) {
-    if (value === null) {
-      this.unset("auxData");
-    } else {
-      this.set("auxData", Value.fromBytes(value as Bytes));
-    }
-  }
-
-  get status(): string {
-    let value = this.get("status");
-    return value.toString();
-  }
-
-  set status(value: string) {
-    this.set("status", Value.fromString(value));
-  }
-
-  get createdTxHash(): Bytes {
-    let value = this.get("createdTxHash");
-    return value.toBytes();
-  }
-
-  set createdTxHash(value: Bytes) {
-    this.set("createdTxHash", Value.fromBytes(value));
-  }
-
-  get executedTxHash(): Bytes | null {
-    let value = this.get("executedTxHash");
+  get image(): string | null {
+    let value = this.get("image");
     if (value === null) {
       return null;
     } else {
-      return value.toBytes();
+      return value.toString();
     }
   }
 
-  set executedTxHash(value: Bytes | null) {
+  set image(value: string | null) {
     if (value === null) {
-      this.unset("executedTxHash");
+      this.unset("image");
     } else {
-      this.set("executedTxHash", Value.fromBytes(value as Bytes));
+      this.set("image", Value.fromString(value as string));
     }
   }
 
-  get cancelledTxHash(): Bytes | null {
-    let value = this.get("cancelledTxHash");
+  get item(): string | null {
+    let value = this.get("item");
     if (value === null) {
       return null;
     } else {
-      return value.toBytes();
+      return value.toString();
     }
   }
 
-  set cancelledTxHash(value: Bytes | null) {
+  set item(value: string | null) {
     if (value === null) {
-      this.unset("cancelledTxHash");
+      this.unset("item");
     } else {
-      this.set("cancelledTxHash", Value.fromBytes(value as Bytes));
+      this.set("item", Value.fromString(value as string));
     }
-  }
-
-  get blockNumber(): BigInt {
-    let value = this.get("blockNumber");
-    return value.toBigInt();
-  }
-
-  set blockNumber(value: BigInt) {
-    this.set("blockNumber", Value.fromBigInt(value));
   }
 
   get createdAt(): BigInt {
@@ -252,21 +512,20 @@ export class Order extends Entity {
     this.set("updatedAt", Value.fromBigInt(value));
   }
 
-  get data(): Bytes {
-    let value = this.get("data");
-    return value.toBytes();
+  get searchText(): string | null {
+    let value = this.get("searchText");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
   }
 
-  set data(value: Bytes) {
-    this.set("data", Value.fromBytes(value));
-  }
-
-  get inputData(): Bytes {
-    let value = this.get("inputData");
-    return value.toBytes();
-  }
-
-  set inputData(value: Bytes) {
-    this.set("inputData", Value.fromBytes(value));
+  set searchText(value: string | null) {
+    if (value === null) {
+      this.unset("searchText");
+    } else {
+      this.set("searchText", Value.fromString(value as string));
+    }
   }
 }

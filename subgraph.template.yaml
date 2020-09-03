@@ -16,16 +16,22 @@ dataSources:
       apiVersion: 0.0.3
       language: wasm/assemblyscript
       entities:
-        - Order
+        - Collection
+        - Collection
+        - Item
+        - NFT
+        - Account
       abis:
         - name: CollectionFactory
           file: ./abis/CollectionFactory.json
+        - name: CollectionV2
+          file: ./abis/CollectionV2.json
       eventHandlers:
         - event: ProxyCreated(indexed address,bytes32)
           handler: handleCollectionCreation
       file: ./src/handlers/collection.ts
 templates:
-  - name: Collection
+  - name: CollectionV2
     kind: ethereum/contract
     network: {{network}}
     source:
@@ -36,7 +42,11 @@ templates:
       language: wasm/assemblyscript
       file: ./src/handlers/collection.ts
       entities:
+        - CollectionV2
         - Collection
+        - Item
+        - NFT
+        - Account
       abis:
         - name: CollectionV2
           file: ./abis/CollectionV2.json
@@ -65,3 +75,5 @@ templates:
           handler: handleCompleteCollection
         - event: CreatorshipTransferred(indexed address,indexed address)
           handler: handleTransferCreatorship
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleTransferOwnership

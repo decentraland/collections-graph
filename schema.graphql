@@ -1,38 +1,70 @@
-type Item @entity {
-  id: ID!
-  itemId: String!
-  price: BigInt!
-  beneficiary: String!
-  contentHash: String!
-  URL: String!
-}
-
 type Collection @entity {
   id: ID!
+  items: [Item!] @derivedFrom(field: "collection")
   owner: String!
-  inputToken: String!
-  outputToken: String!
-  minReturn: BigInt
-  module: String
-  witness: String!
-  secret: String!
-  inputAmount: BigInt!
-  vault: String!
-  bought: BigInt
-  auxData: Bytes
-  status: OrderStatus!
-  createdTxHash: Bytes!
-  executedTxHash: Bytes
-  cancelledTxHash: Bytes
-  blockNumber: BigInt!
-  createdAt: BigInt!
-  updatedAt: BigInt!
-  data: Bytes!
-  inputData: Bytes!
+  creator: String!
+  name: String!
+  symbol: String!
+  isCompleted: Boolean!
+  isApproved: Boolean!
+  isEditable: Boolean!
+  minters: [String!]
+  managers: [String!]
 }
 
-enum OrderStatus @entity {
-  open
-  executed
-  cancelled
+type Item @entity {
+  id: ID! # ${Collection address}_${itemId}
+  collection: Collection!
+  itemId: BigInt!
+  totaSupply: BigInt!
+  rariy: String!
+  available: BigInt!
+  price: BigInt!
+  metadata: String!
+  beneficiary: String!
+  contentHash: Bytes!
+  URI: String!
+  minters: [String!]
+  managers: [String!]
+}
+
+type Account @entity {
+  id: ID! # ETH addr
+  address: Bytes!
+  nfts: [NFT!] @derivedFrom(field: "owner")
+  # mana: BigInt # Amount of mana owned
+}
+
+type NFT @entity {
+  id: ID!
+  tokenId: BigInt!
+  contractAddress: Bytes!
+  owner: Account!
+  tokenURI: String
+
+  # orders: [Order!] @derivedFrom(field: "nft") # History of all orders. Should only ever be ONE open order. all others must be cancelled or sold
+  # bids: [Bid!] @derivedFrom(field: "nft") # History of all bids.
+  # activeOrder: Order
+
+  name: String
+  image: String
+
+  item: Item
+
+  createdAt: BigInt!
+  updatedAt: BigInt!
+
+  # search indexes
+  # searchOrderStatus: OrderStatus
+  # searchOrderPrice: BigInt
+  # searchOrderExpiresAt: BigInt
+  # searchOrderCreatedAt: BigInt
+
+  searchText: String
+
+  # searchIsItemHead: Boolean
+  # searchIsItemAccessory: Boolean
+  # searchItemRarity: String # We're using String instead of Item Rarity here so we can later query this field via ()_in
+  # searchItemCategory: ItemCategory
+  # searchItemBodyShapes: [ItemBodyShape!]
 }
