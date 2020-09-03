@@ -1,0 +1,38 @@
+type Item @entity {
+  id: ID!
+  itemId: String!
+  price: BigInt!
+  beneficiary: String!
+  contentHash: String!
+  URL: String!
+}
+
+type Collection @entity {
+  id: ID!
+  owner: String!
+  inputToken: String!
+  outputToken: String!
+  minReturn: BigInt
+  module: String
+  witness: String!
+  secret: String!
+  inputAmount: BigInt!
+  vault: String!
+  bought: BigInt
+  auxData: Bytes
+  status: OrderStatus!
+  createdTxHash: Bytes!
+  executedTxHash: Bytes
+  cancelledTxHash: Bytes
+  blockNumber: BigInt!
+  createdAt: BigInt!
+  updatedAt: BigInt!
+  data: Bytes!
+  inputData: Bytes!
+}
+
+enum OrderStatus @entity {
+  open
+  executed
+  cancelled
+}
