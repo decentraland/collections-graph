@@ -408,13 +408,31 @@ export class NFT extends Entity {
     this.set("tokenId", Value.fromBigInt(value));
   }
 
-  get contractAddress(): Bytes {
+  get contractAddress(): string {
     let value = this.get("contractAddress");
-    return value.toBytes();
+    return value.toString();
   }
 
-  set contractAddress(value: Bytes) {
-    this.set("contractAddress", Value.fromBytes(value));
+  set contractAddress(value: string) {
+    this.set("contractAddress", Value.fromString(value));
+  }
+
+  get itemId(): BigInt {
+    let value = this.get("itemId");
+    return value.toBigInt();
+  }
+
+  set itemId(value: BigInt) {
+    this.set("itemId", Value.fromBigInt(value));
+  }
+
+  get issuedId(): BigInt {
+    let value = this.get("issuedId");
+    return value.toBigInt();
+  }
+
+  set issuedId(value: BigInt) {
+    this.set("issuedId", Value.fromBigInt(value));
   }
 
   get owner(): string {
@@ -474,6 +492,23 @@ export class NFT extends Entity {
       this.unset("image");
     } else {
       this.set("image", Value.fromString(value as string));
+    }
+  }
+
+  get collection(): string | null {
+    let value = this.get("collection");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set collection(value: string | null) {
+    if (value === null) {
+      this.unset("collection");
+    } else {
+      this.set("collection", Value.fromString(value as string));
     }
   }
 

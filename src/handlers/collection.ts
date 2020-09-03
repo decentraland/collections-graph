@@ -1,7 +1,7 @@
 import { log, BigInt, Address, ByteArray, Bytes, dataSource } from '@graphprotocol/graph-ts'
 
 import { createAccount } from '../modules/Account'
-import { Collection, Item } from '../entities/schema'
+import { Collection, Item, NFT } from '../entities/schema'
 import { ProxyCreated, OwnershipTransferred } from '../entities/CollectionFactory/CollectionFactory'
 import {
   SetGlobalMinter,
@@ -46,7 +46,7 @@ export function handleCollectionCreation(event: ProxyCreated): void {
   for (let i = BigInt.fromI32(0); i.lt(itemsCount); i = i.plus(BigInt.fromI32(1))) {
     let contractItem = collectionContract.items(i)
 
-    let item = new Item(collectionAddress + '_' + i.toString())
+    let item = new Item(collectionAddress + '_' + i.toHexString())
     item.itemId = i
     item.collection = collection.id
     item.rariy = collectionContract.getRarityName(contractItem.value0)
@@ -56,7 +56,7 @@ export function handleCollectionCreation(event: ProxyCreated): void {
     item.beneficiary = contractItem.value3.toHexString()
     item.metadata = contractItem.value4
     item.contentHash = contractItem.value5
-    item.URI = collectionContract.baseURI() + collectionAddress + '/' + i.toString()
+    item.URI = collectionContract.baseURI() + collectionAddress + '/' + i.toHexString()
     item.minters = []
     item.managers = []
 
@@ -135,7 +135,7 @@ export function handleAddItem(event: AddItem): void {
   let contractItem = event.params._item
   let itemId = event.params._itemId
 
-  let item = new Item(collectionAddress.toString() + '_' + itemId.toString())
+  let item = new Item(collectionAddress + '_' + itemId.toHexString())
   item.itemId = itemId
   item.collection = collectionAddress
   item.rariy = collectionContract.getRarityName(contractItem.rarity)
@@ -154,7 +154,7 @@ export function handleAddItem(event: AddItem): void {
 
 export function handleRescueItem(event: RescueItem): void {
   let collectionAddress = event.address.toHexString()
-  let itemId = event.params._itemId.toString()
+  let itemId = event.params._itemId.toHexString()
 
   let item = Item.load(collectionAddress + '_' + itemId)
 
@@ -165,8 +165,8 @@ export function handleRescueItem(event: RescueItem): void {
 }
 
 export function handleUpdateItem(event: UpdateItem): void {
-  let collectionAddress = event.address.toString()
-  let itemId = event.params._itemId.toString()
+  let collectionAddress = event.address.toHexString()
+  let itemId = event.params._itemId.toHexString()
 
   let item = Item.load(collectionAddress + '_' + itemId)
 
@@ -177,6 +177,32 @@ export function handleUpdateItem(event: UpdateItem): void {
 }
 
 export function handleIssueItem(event: Issue): void {
+  let collectionAddress = event.address.toHexString()
+  let itemId = event.params._itemId.toHexString()
+
+  let item = Item.load(collectionAddress + '_' + itemId)
+  item.available = item.available.minus(BigInt.fromI32(1))
+  item.save()
+
+  let nft = new NFT(collectionAddress + '_' + event.params._tokenId.toHexString())
+
+  nft.tokenId = event.params._tokenId
+  nft.contractAddress = collectionAddress
+  nft.itemId = event.params._itemId
+  nft.issuedId = event.params._issuedId
+  nft.collection = collectionAddress
+  nft.item = item.id
+  nft.owner = event.params._beneficiary.toHexString()
+  nft.tokenURI = item.URI + '/' + event.params._issuedId.toString()
+  nft.name = 'Token item'
+  nft.image = item.URI + '/' + event.params._issuedId.toString() + '/thumbnail'
+  nft.searchText = item.metadata
+  nft.createdAt = event.block.timestamp
+  nft.updatedAt = event.block.timestamp
+
+  createAccount(event.params._beneficiary)
+
+  nft.save()
 
 }
 
