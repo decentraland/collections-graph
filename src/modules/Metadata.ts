@@ -20,6 +20,7 @@ export const UPPER_BODY = 'upper_body'
 
 // Item types
 export const WEARABLE = 'wearable'
+export const WEARABLE_TYPE_SHORT = 'w'
 
 /**
  * @dev The rawMetadata should be: version:type:name:data
@@ -31,9 +32,9 @@ export function getItemMetadata(rawMetadata: string): Metadata {
   if (data.length >= 1) {
     let type = data[1]
 
-    //if (type == 'w') {
-    return getWearableItemMetadata(rawMetadata)
-    // }
+    if (type == WEARABLE_TYPE_SHORT) {
+      return getWearableItemMetadata(rawMetadata)
+    }
   }
 
   return new Metadata(rawMetadata)
@@ -51,10 +52,10 @@ function getWearableItemMetadata(rawMetadata: string): Metadata {
   let metadata = new Metadata(rawMetadata)
 
   if (data.length >= 3) {
-    metadata.name = data[1]
+    metadata.name = data[2]
     metadata.type = WEARABLE
-    metadata.category = data[2]
-    metadata.bodyShapes = data[3].split(',') // Could be more than one
+    metadata.category = data[3]
+    metadata.bodyShapes = data[4].split(',') // Could be more than one
   }
 
   return metadata
