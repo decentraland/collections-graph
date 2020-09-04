@@ -88,7 +88,36 @@ dataSources:
           handler: handleBidAccepted
         - event: BidCancelled(bytes32,indexed address,indexed uint256,indexed address)
           handler: handleBidCancelled
+  # ---------------------------------------------------------
+  # Initialize Wearables v1 ---------------------------------
+  # We are using the first event for the first collection of v1
+  # https://etherscan.io/tx/0xfb963f45c44329edd32d92ea7e5d74b3282e9c747762fd50af12703d16aac921#eventlog
+  # Only mainnet
+  # ---------------------------------------------------------
+  - kind: ethereum/contract
+    name: ERC721
+    network: {{network}}
+    source:
+      address: '0xc1f4b0eea2bd6690930e6c66efd3e197d620b9c2'
+      abi: ERC721
+      startBlock: 8828687
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      file: ./src/handlers/wearablesV1.ts
+      entities:
+        - ERC721
+      abis:
+        - name: ERC721
+          file: ./abis/ERC721.json
+      eventHandlers:
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleInitializeWearablesV1
 templates:
+  # ---------------------------------------------------------
+  # Items V2 ------------------------------------------------
+  # ---------------------------------------------------------
   - name: CollectionV2
     kind: ethereum/contract
     network: {{network}}
@@ -135,5 +164,30 @@ templates:
           handler: handleTransferCreatorship
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: handleTransferOwnership
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+  # ---------------------------------------------------------
+  # Wearables V1 --------------------------------------------
+  # ---------------------------------------------------------
+  - name: ERC721
+    kind: ethereum/contract
+    network: {{network}}
+    source:
+      abi: ERC721
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      file: ./src/handlers/nft.ts
+      entities:
+        - NFT
+        - Parcel
+        - Estate
+        - Wearable
+        - ENS
+      abis:
+        - name: ERC721
+          file: ./abis/ERC721.json
+      eventHandlers:
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer

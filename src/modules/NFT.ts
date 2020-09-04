@@ -1,8 +1,14 @@
 
-import { BigInt } from '@graphprotocol/graph-ts'
+import { BigInt, log } from '@graphprotocol/graph-ts'
 
 import { NFT, Order, Bid } from '../entities/schema'
 import * as status from './order'
+import { Transfer, ERC721 } from '../entities/templates/ERC721/ERC721'
+
+export function isMint(to: string): boolean {
+  return to == '0x0000000000000000000000000000000000000000'
+}
+
 
 export function getNFTId(contractAddress: string, tokenId: string): string {
   return contractAddress + '-' + tokenId
@@ -62,4 +68,23 @@ export function cancelActiveBids(nft: NFT, now: BigInt): void {
       bid.save()
     }
   }
+}
+
+
+export function getTokenURI(event: Transfer): string {
+  let erc721 = ERC721.bind(event.address)
+  let tokenURICallResult = erc721.try_tokenURI(event.params.tokenId)
+
+  let tokenURI = ''
+
+  if (tokenURICallResult.reverted) {
+    log.warning('tokenURI reverted for tokenID: {} contract: {}', [
+      event.params.tokenId.toString(),
+      event.address.toHexString()
+    ])
+  } else {
+    tokenURI = tokenURICallResult.value
+  }
+
+  return tokenURI
 }

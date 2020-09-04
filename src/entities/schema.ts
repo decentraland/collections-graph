@@ -779,13 +779,21 @@ export class NFT extends Entity {
     this.set("collection", Value.fromString(value));
   }
 
-  get item(): string {
+  get item(): string | null {
     let value = this.get("item");
-    return value.toString();
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
   }
 
-  set item(value: string) {
-    this.set("item", Value.fromString(value));
+  set item(value: string | null) {
+    if (value === null) {
+      this.unset("item");
+    } else {
+      this.set("item", Value.fromString(value as string));
+    }
   }
 
   get createdAt(): BigInt {
@@ -1328,5 +1336,116 @@ export class Count extends Entity {
 
   set started(value: i32) {
     this.set("started", Value.fromI32(value));
+  }
+}
+
+export class Wearable extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save Wearable entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save Wearable entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("Wearable", id.toString(), this);
+  }
+
+  static load(id: string): Wearable | null {
+    return store.get("Wearable", id) as Wearable | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get owner(): string {
+    let value = this.get("owner");
+    return value.toString();
+  }
+
+  set owner(value: string) {
+    this.set("owner", Value.fromString(value));
+  }
+
+  get representationId(): string {
+    let value = this.get("representationId");
+    return value.toString();
+  }
+
+  set representationId(value: string) {
+    this.set("representationId", Value.fromString(value));
+  }
+
+  get collection(): string {
+    let value = this.get("collection");
+    return value.toString();
+  }
+
+  set collection(value: string) {
+    this.set("collection", Value.fromString(value));
+  }
+
+  get name(): string {
+    let value = this.get("name");
+    return value.toString();
+  }
+
+  set name(value: string) {
+    this.set("name", Value.fromString(value));
+  }
+
+  get description(): string {
+    let value = this.get("description");
+    return value.toString();
+  }
+
+  set description(value: string) {
+    this.set("description", Value.fromString(value));
+  }
+
+  get category(): string {
+    let value = this.get("category");
+    return value.toString();
+  }
+
+  set category(value: string) {
+    this.set("category", Value.fromString(value));
+  }
+
+  get rarity(): string {
+    let value = this.get("rarity");
+    return value.toString();
+  }
+
+  set rarity(value: string) {
+    this.set("rarity", Value.fromString(value));
+  }
+
+  get bodyShapes(): Array<string> | null {
+    let value = this.get("bodyShapes");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set bodyShapes(value: Array<string> | null) {
+    if (value === null) {
+      this.unset("bodyShapes");
+    } else {
+      this.set("bodyShapes", Value.fromStringArray(value as Array<string>));
+    }
   }
 }

@@ -20,7 +20,9 @@ export const UPPER_BODY = 'upper_body'
 
 // Item types
 export const WEARABLE = 'wearable'
+export const WEARABLE_OLD_TYPE_SHORT = 'old_w'
 export const WEARABLE_TYPE_SHORT = 'w'
+
 
 /**
  * @dev The rawMetadata should be: version:type:name:data

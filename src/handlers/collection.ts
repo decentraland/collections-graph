@@ -3,6 +3,7 @@ import { BigInt } from '@graphprotocol/graph-ts'
 import { handleCreateNFT, handleNFTTransfer } from './nft'
 import { setItemSearchFields, getItemMetadata } from '../modules/Metadata'
 import { buildCountFromItem, buildCountFromCollection } from '../modules/Count'
+import { isMint } from '../modules/NFT'
 import { Collection, Item } from '../entities/schema'
 import { ProxyCreated, OwnershipTransferred } from '../entities/CollectionFactory/CollectionFactory'
 import {
@@ -212,7 +213,7 @@ export function handleIssueItem(event: Issue): void {
 
 export function handleTransfer(event: Transfer): void {
   // Do not comput mintings
-  if (event.params.from.toHexString() != '0x0000000000000000000000000000000000000000') {
+  if (isMint(event.params.from.toHexString())) {
     handleNFTTransfer(event)
   }
 }

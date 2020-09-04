@@ -59,8 +59,8 @@ type NFT @entity {
   id: ID!
   tokenId: BigInt!
   contractAddress: String!
-  itemId: BigInt!
-  issuedId: BigInt!
+  itemId: BigInt
+  issuedId: BigInt
   itemType: ItemType!
   owner: Account!
   tokenURI: String
@@ -73,7 +73,7 @@ type NFT @entity {
   image: String
 
   collection: Collection!
-  item: Item!
+  item: Item
 
   createdAt: BigInt!
   updatedAt: BigInt!
@@ -157,4 +157,20 @@ type Count @entity {
   itemTotal: Int!
   nftTotal: Int!
   started: Int!
+}
+
+# ---------------------------------------------------------
+# Wearable V1 ---------------------------------------------
+# ---------------------------------------------------------
+
+type Wearable @entity {
+  id: ID!
+  owner: Account!
+  representationId: String!
+  collection: String!
+  name: String!
+  description: String!
+  category: String!
+  rarity: String!
+  bodyShapes: [String!]
 }
