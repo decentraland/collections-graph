@@ -1,5 +1,6 @@
 import { Item, NFT, Metadata } from '../entities/schema'
 
+// Item categories
 export const BODY_SHAPE = 'body_shape'
 export const EARRING = 'earring'
 export const EYEBROWS = 'eyebrows'
@@ -16,6 +17,8 @@ export const MOUTH = 'mouth'
 export const TIARA = 'tiara'
 export const TOP_HEAD = 'top_head'
 export const UPPER_BODY = 'upper_body'
+
+// Item types
 export const WEARABLE = 'wearable'
 
 /**
@@ -59,13 +62,21 @@ function getWearableItemMetadata(rawMetadata: string): Metadata {
 
 export function setItemSearchFields(item: Item): Item {
   if (item.type == WEARABLE) {
-    return setWearableSearchFields(item)
+    return setItemWearableSearchFields(item)
   }
 
   return item
 }
 
-export function setWearableSearchFields(item: Item): Item {
+export function setNFTSearchFields(nft: NFT): NFT {
+  if (nft.itemType == WEARABLE) {
+    return setNFTWearableSearchFields(nft)
+  }
+
+  return nft
+}
+
+export function setItemWearableSearchFields(item: Item): Item {
   let metadata = Metadata.load(item.metadata)
 
   item.searchIsWearableHead = isWearableHead(metadata.category)
@@ -75,6 +86,19 @@ export function setWearableSearchFields(item: Item): Item {
   item.searchWearableRarity = item.rarity
 
   return item
+}
+
+export function setNFTWearableSearchFields(nft: NFT): NFT {
+  let item = Item.load(nft.item)
+  let metadata = Metadata.load(item.metadata)
+
+  nft.searchIsWearableHead = isWearableHead(metadata.category)
+  nft.searchIsWearableAccessory = isWearableAccessory(metadata.category)
+  nft.searchWearableCategory = metadata.category
+  nft.searchWearableBodyShapes = metadata.bodyShapes
+  nft.searchWearableRarity = item.rarity
+
+  return nft
 }
 
 export function isWearableHead(category: string): boolean {

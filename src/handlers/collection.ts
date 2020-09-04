@@ -1,8 +1,9 @@
 import { BigInt } from '@graphprotocol/graph-ts'
 
-import { createAccount } from '../modules/Account'
+import { handleCreateNFT, handleNFTTransfer } from './nft'
 import { setItemSearchFields, getItemMetadata } from '../modules/Metadata'
-import { Collection, Item, NFT } from '../entities/schema'
+import { buildCountFromItem, buildCountFromCollection } from '../modules/Count'
+import { Collection, Item } from '../entities/schema'
 import { ProxyCreated, OwnershipTransferred } from '../entities/CollectionFactory/CollectionFactory'
 import {
   SetGlobalMinter,
@@ -17,7 +18,8 @@ import {
   SetEditable,
   Complete,
   CreatorshipTransferred,
-  CollectionV2 as CollectionContract
+  CollectionV2 as CollectionContract,
+  Transfer
 } from '../entities/templates/CollectionV2/CollectionV2'
 import { CollectionV2 } from '../entities/templates'
 
@@ -47,7 +49,7 @@ export function handleCollectionCreation(event: ProxyCreated): void {
   for (let i = BigInt.fromI32(0); i.lt(itemsCount); i = i.plus(BigInt.fromI32(1))) {
     let contractItem = collectionContract.items(i)
 
-    let item = new Item(collectionAddress + '_' + i.toHexString())
+    let item = new Item(collectionAddress + '-' + i.toHexString())
     item.itemId = i
     item.collection = collection.id
     item.rarity = collectionContract.getRarityName(contractItem.value0)
@@ -71,9 +73,15 @@ export function handleCollectionCreation(event: ProxyCreated): void {
     item = setItemSearchFields(item)
     item.save()
 
+    let metric = buildCountFromItem()
+    metric.save()
+
   }
 
   collection.save()
+
+  let metric = buildCountFromCollection()
+  metric.save()
 }
 
 export function handleSetGlobalMinter(event: SetGlobalMinter): void {
@@ -145,7 +153,7 @@ export function handleAddItem(event: AddItem): void {
   let contractItem = event.params._item
   let itemId = event.params._itemId
 
-  let item = new Item(collectionAddress + '_' + itemId.toHexString())
+  let item = new Item(collectionAddress + '-' + itemId.toHexString())
   item.itemId = itemId
   item.collection = collectionAddress
   item.rarity = collectionContract.getRarityName(contractItem.rarity)
@@ -166,7 +174,7 @@ export function handleRescueItem(event: RescueItem): void {
   let collectionAddress = event.address.toHexString()
   let itemId = event.params._itemId.toHexString()
 
-  let item = Item.load(collectionAddress + '_' + itemId)
+  let item = Item.load(collectionAddress + '-' + itemId)
 
   let metadata = getItemMetadata(event.params._metadata)
   metadata.item = item.id
@@ -183,7 +191,7 @@ export function handleUpdateItem(event: UpdateItem): void {
   let collectionAddress = event.address.toHexString()
   let itemId = event.params._itemId.toHexString()
 
-  let item = Item.load(collectionAddress + '_' + itemId)
+  let item = Item.load(collectionAddress + '-' + itemId)
 
   item.price = event.params._price
   item.beneficiary = event.params._beneficiary.toHexString()
@@ -195,30 +203,18 @@ export function handleIssueItem(event: Issue): void {
   let collectionAddress = event.address.toHexString()
   let itemId = event.params._itemId.toHexString()
 
-  let item = Item.load(collectionAddress + '_' + itemId)
+  let item = Item.load(collectionAddress + '-' + itemId)
   item.available = item.available.minus(BigInt.fromI32(1))
   item.save()
 
-  let nft = new NFT(collectionAddress + '_' + event.params._tokenId.toHexString())
+  handleCreateNFT(event, collectionAddress, item!)
+}
 
-  nft.tokenId = event.params._tokenId
-  nft.contractAddress = collectionAddress
-  nft.itemId = event.params._itemId
-  nft.issuedId = event.params._issuedId
-  nft.collection = collectionAddress
-  nft.item = item.id
-  nft.owner = event.params._beneficiary.toHexString()
-  nft.tokenURI = item.URI + '/' + event.params._issuedId.toString()
-  nft.name = 'Token item'
-  nft.image = item.URI + '/' + event.params._issuedId.toString() + '/thumbnail'
-  nft.searchText = item.rawMetadata
-  nft.createdAt = event.block.timestamp
-  nft.updatedAt = event.block.timestamp
-
-  createAccount(event.params._beneficiary)
-
-  nft.save()
-
+export function handleTransfer(event: Transfer): void {
+  // Do not comput mintings
+  if (event.params.from.toHexString() != '0x0000000000000000000000000000000000000000') {
+    handleNFTTransfer(event)
+  }
 }
 
 export function handleApproveCollection(event: Approve): void {

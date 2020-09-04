@@ -15,7 +15,7 @@ type Collection @entity {
 type Item @entity {
   id: ID! # ${Collection address}_${item Id}
   collection: Collection!
-  type: String
+  type: ItemType!
   itemId: BigInt!
   totaSupply: BigInt!
   rarity: String!
@@ -28,6 +28,7 @@ type Item @entity {
   managers: [String!]
   metadata: Metadata
   rawMetadata: String!
+  nfts: [NFT!] @derivedFrom(field: "item")
 
   # Searcheable fields
   ## Wearables search fields
@@ -41,7 +42,7 @@ type Item @entity {
 type Metadata @entity {
   id: ID!
   item: Item!
-  type: String
+  type: ItemType!
   name: String
   category: String
   bodyShapes: [String!]
@@ -60,12 +61,13 @@ type NFT @entity {
   contractAddress: String!
   itemId: BigInt!
   issuedId: BigInt!
+  itemType: ItemType!
   owner: Account!
   tokenURI: String
 
-  # orders: [Order!] @derivedFrom(field: "nft") # History of all orders. Should only ever be ONE open order. all others must be cancelled or sold
-  # bids: [Bid!] @derivedFrom(field: "nft") # History of all bids.
-  # activeOrder: Order
+  orders: [Order!] @derivedFrom(field: "nft") # History of all orders. Should only ever be ONE open order. all others must be cancelled or sold
+  bids: [Bid!] @derivedFrom(field: "nft") # History of all bids.
+  activeOrder: Order
 
   name: String
   image: String
@@ -76,17 +78,83 @@ type NFT @entity {
   createdAt: BigInt!
   updatedAt: BigInt!
 
-  # search indexes
-  # searchOrderStatus: OrderStatus
-  # searchOrderPrice: BigInt
-  # searchOrderExpiresAt: BigInt
-  # searchOrderCreatedAt: BigInt
-
+  # Searcheable fields
   searchText: String
 
-  # searchIsItemHead: Boolean
-  # searchIsItemAccessory: Boolean
-  # searchItemRarity: String # We're using String instead of Item Rarity here so we can later query this field via ()_in
-  # searchItemCategory: ItemCategory
-  # searchItemBodyShapes: [ItemBodyShape!]
+  ## Wearables search fields
+  searchIsWearableHead: Boolean
+  searchIsWearableAccessory: Boolean
+  searchWearableCategory: String
+  searchWearableRarity: String
+  searchWearableBodyShapes: [String!]
+
+  ## Order search fields
+  searchOrderStatus: OrderStatus
+  searchOrderPrice: BigInt
+  searchOrderExpiresAt: BigInt
+  searchOrderCreatedAt: BigInt
+}
+
+enum ItemType @entity {
+  wearable
+}
+
+enum OrderStatus @entity {
+  open
+  sold
+  cancelled
+}
+
+# ---------------------------------------------------------
+# Orders --------------------------------------------------
+# ---------------------------------------------------------
+
+# thegraph doesn't support nested property searches, so we're doing promoting properties
+# we need from each NFT type to the Order, in order to search for them, prefixing them with search_[nft]_[prop]
+type Order @entity {
+  id: ID!
+  nft: NFT
+  nftAddress: Bytes!
+  txHash: Bytes!
+  owner: Bytes!
+  buyer: Bytes
+  price: BigInt!
+  status: OrderStatus!
+  blockNumber: BigInt!
+  expiresAt: BigInt!
+  createdAt: BigInt!
+  updatedAt: BigInt!
+}
+
+# ---------------------------------------------------------
+# Bids ----------------------------------------------------
+# ---------------------------------------------------------
+
+type Bid @entity {
+  id: ID!
+  nft: NFT
+  nftAddress: Bytes!
+  bidder: Bytes
+  seller: Bytes
+  price: BigInt!
+  status: OrderStatus!
+  blockNumber: BigInt!
+  expiresAt: BigInt!
+  createdAt: BigInt!
+  updatedAt: BigInt!
+}
+
+# ---------------------------------------------------------
+# Counts --------------------------------------------------
+# ---------------------------------------------------------
+
+# thegraph doesn't support count operations, but we need them to paginate results
+# This entity is a workaround to this issue, but it's still not enough, as we'd need counts for more complex queries
+type Count @entity {
+  id: ID!
+  orderTotal: Int!
+  collectionTotal: Int!
+  itemTotal: Int!
+  nftTotal: Int!
+  started: Int!
 }
