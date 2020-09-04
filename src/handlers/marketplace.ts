@@ -23,8 +23,8 @@ export function handleOrderCreated(event: OrderCreated): void {
 
   let nft = NFT.load(nftId)
   if (nft == null) {
-    log.error('Undefined NFT {} for order {}', [nftId, orderId])
-    throw new Error('Undefined NFT')
+    log.info('Undefined NFT {} for order {} and address {}', [nftId, orderId, event.params.nftAddress.toHexString()])
+    return
   }
 
   let order = new Order(orderId)
