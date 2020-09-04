@@ -196,6 +196,23 @@ export class Item extends Entity {
     this.set("collection", Value.fromString(value));
   }
 
+  get type(): string | null {
+    let value = this.get("type");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set type(value: string | null) {
+    if (value === null) {
+      this.unset("type");
+    } else {
+      this.set("type", Value.fromString(value as string));
+    }
+  }
+
   get itemId(): BigInt {
     let value = this.get("itemId");
     return value.toBigInt();
@@ -214,13 +231,13 @@ export class Item extends Entity {
     this.set("totaSupply", Value.fromBigInt(value));
   }
 
-  get rariy(): string {
-    let value = this.get("rariy");
+  get rarity(): string {
+    let value = this.get("rarity");
     return value.toString();
   }
 
-  set rariy(value: string) {
-    this.set("rariy", Value.fromString(value));
+  set rarity(value: string) {
+    this.set("rarity", Value.fromString(value));
   }
 
   get available(): BigInt {
@@ -239,15 +256,6 @@ export class Item extends Entity {
 
   set price(value: BigInt) {
     this.set("price", Value.fromBigInt(value));
-  }
-
-  get metadata(): string {
-    let value = this.get("metadata");
-    return value.toString();
-  }
-
-  set metadata(value: string) {
-    this.set("metadata", Value.fromString(value));
   }
 
   get beneficiary(): string {
@@ -308,6 +316,212 @@ export class Item extends Entity {
       this.unset("managers");
     } else {
       this.set("managers", Value.fromStringArray(value as Array<string>));
+    }
+  }
+
+  get metadata(): string | null {
+    let value = this.get("metadata");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set metadata(value: string | null) {
+    if (value === null) {
+      this.unset("metadata");
+    } else {
+      this.set("metadata", Value.fromString(value as string));
+    }
+  }
+
+  get rawMetadata(): string {
+    let value = this.get("rawMetadata");
+    return value.toString();
+  }
+
+  set rawMetadata(value: string) {
+    this.set("rawMetadata", Value.fromString(value));
+  }
+
+  get searchIsWearableHead(): boolean {
+    let value = this.get("searchIsWearableHead");
+    return value.toBoolean();
+  }
+
+  set searchIsWearableHead(value: boolean) {
+    this.set("searchIsWearableHead", Value.fromBoolean(value));
+  }
+
+  get searchIsWearableAccessory(): boolean {
+    let value = this.get("searchIsWearableAccessory");
+    return value.toBoolean();
+  }
+
+  set searchIsWearableAccessory(value: boolean) {
+    this.set("searchIsWearableAccessory", Value.fromBoolean(value));
+  }
+
+  get searchWearableCategory(): string | null {
+    let value = this.get("searchWearableCategory");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set searchWearableCategory(value: string | null) {
+    if (value === null) {
+      this.unset("searchWearableCategory");
+    } else {
+      this.set("searchWearableCategory", Value.fromString(value as string));
+    }
+  }
+
+  get searchWearableRarity(): string | null {
+    let value = this.get("searchWearableRarity");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set searchWearableRarity(value: string | null) {
+    if (value === null) {
+      this.unset("searchWearableRarity");
+    } else {
+      this.set("searchWearableRarity", Value.fromString(value as string));
+    }
+  }
+
+  get searchWearableBodyShapes(): Array<string> | null {
+    let value = this.get("searchWearableBodyShapes");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set searchWearableBodyShapes(value: Array<string> | null) {
+    if (value === null) {
+      this.unset("searchWearableBodyShapes");
+    } else {
+      this.set(
+        "searchWearableBodyShapes",
+        Value.fromStringArray(value as Array<string>)
+      );
+    }
+  }
+}
+
+export class Metadata extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save Metadata entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save Metadata entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("Metadata", id.toString(), this);
+  }
+
+  static load(id: string): Metadata | null {
+    return store.get("Metadata", id) as Metadata | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get item(): string {
+    let value = this.get("item");
+    return value.toString();
+  }
+
+  set item(value: string) {
+    this.set("item", Value.fromString(value));
+  }
+
+  get type(): string | null {
+    let value = this.get("type");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set type(value: string | null) {
+    if (value === null) {
+      this.unset("type");
+    } else {
+      this.set("type", Value.fromString(value as string));
+    }
+  }
+
+  get name(): string | null {
+    let value = this.get("name");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set name(value: string | null) {
+    if (value === null) {
+      this.unset("name");
+    } else {
+      this.set("name", Value.fromString(value as string));
+    }
+  }
+
+  get category(): string | null {
+    let value = this.get("category");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set category(value: string | null) {
+    if (value === null) {
+      this.unset("category");
+    } else {
+      this.set("category", Value.fromString(value as string));
+    }
+  }
+
+  get bodyShapes(): Array<string> | null {
+    let value = this.get("bodyShapes");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set bodyShapes(value: Array<string> | null) {
+    if (value === null) {
+      this.unset("bodyShapes");
+    } else {
+      this.set("bodyShapes", Value.fromStringArray(value as Array<string>));
     }
   }
 }
@@ -495,38 +709,22 @@ export class NFT extends Entity {
     }
   }
 
-  get collection(): string | null {
+  get collection(): string {
     let value = this.get("collection");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toString();
-    }
+    return value.toString();
   }
 
-  set collection(value: string | null) {
-    if (value === null) {
-      this.unset("collection");
-    } else {
-      this.set("collection", Value.fromString(value as string));
-    }
+  set collection(value: string) {
+    this.set("collection", Value.fromString(value));
   }
 
-  get item(): string | null {
+  get item(): string {
     let value = this.get("item");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toString();
-    }
+    return value.toString();
   }
 
-  set item(value: string | null) {
-    if (value === null) {
-      this.unset("item");
-    } else {
-      this.set("item", Value.fromString(value as string));
-    }
+  set item(value: string) {
+    this.set("item", Value.fromString(value));
   }
 
   get createdAt(): BigInt {

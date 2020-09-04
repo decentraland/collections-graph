@@ -1,6 +1,7 @@
-import { log, BigInt, Address, ByteArray, Bytes, dataSource } from '@graphprotocol/graph-ts'
+import { BigInt } from '@graphprotocol/graph-ts'
 
 import { createAccount } from '../modules/Account'
+import { setItemSearchFields, getItemMetadata } from '../modules/Metadata'
 import { Collection, Item, NFT } from '../entities/schema'
 import { ProxyCreated, OwnershipTransferred } from '../entities/CollectionFactory/CollectionFactory'
 import {
@@ -49,18 +50,27 @@ export function handleCollectionCreation(event: ProxyCreated): void {
     let item = new Item(collectionAddress + '_' + i.toHexString())
     item.itemId = i
     item.collection = collection.id
-    item.rariy = collectionContract.getRarityName(contractItem.value0)
+    item.rarity = collectionContract.getRarityName(contractItem.value0)
     item.available = collectionContract.getRarityValue(contractItem.value0)
     item.totaSupply = contractItem.value1
     item.price = contractItem.value2
     item.beneficiary = contractItem.value3.toHexString()
-    item.metadata = contractItem.value4
     item.contentHash = contractItem.value5
     item.URI = collectionContract.baseURI() + collectionAddress + '/' + i.toHexString()
     item.minters = []
     item.managers = []
+    item.rawMetadata = contractItem.value4
 
+    let metadata = getItemMetadata(contractItem.value4)
+    metadata.item = item.id
+    metadata.save()
+
+    item.metadata = metadata.id
+    item.type = metadata.type
+
+    item = setItemSearchFields(item)
     item.save()
+
   }
 
   collection.save()
@@ -138,7 +148,7 @@ export function handleAddItem(event: AddItem): void {
   let item = new Item(collectionAddress + '_' + itemId.toHexString())
   item.itemId = itemId
   item.collection = collectionAddress
-  item.rariy = collectionContract.getRarityName(contractItem.rarity)
+  item.rarity = collectionContract.getRarityName(contractItem.rarity)
   item.available = collectionContract.getRarityValue(contractItem.rarity)
   item.totaSupply = contractItem.totalSupply
   item.price = contractItem.price
@@ -158,7 +168,12 @@ export function handleRescueItem(event: RescueItem): void {
 
   let item = Item.load(collectionAddress + '_' + itemId)
 
-  item.metadata = event.params._metadata
+  let metadata = getItemMetadata(event.params._metadata)
+  metadata.item = item.id
+  metadata.save()
+
+  item.metadata = metadata.id
+  item.rawMetadata = event.params._metadata
   item.contentHash = event.params._contentHash
 
   item.save()
@@ -196,7 +211,7 @@ export function handleIssueItem(event: Issue): void {
   nft.tokenURI = item.URI + '/' + event.params._issuedId.toString()
   nft.name = 'Token item'
   nft.image = item.URI + '/' + event.params._issuedId.toString() + '/thumbnail'
-  nft.searchText = item.metadata
+  nft.searchText = item.rawMetadata
   nft.createdAt = event.block.timestamp
   nft.updatedAt = event.block.timestamp
 

@@ -13,19 +13,38 @@ type Collection @entity {
 }
 
 type Item @entity {
-  id: ID! # ${Collection address}_${itemId}
+  id: ID! # ${Collection address}_${item Id}
   collection: Collection!
+  type: String
   itemId: BigInt!
   totaSupply: BigInt!
-  rariy: String!
+  rarity: String!
   available: BigInt!
   price: BigInt!
-  metadata: String!
   beneficiary: String!
   contentHash: Bytes!
   URI: String!
   minters: [String!]
   managers: [String!]
+  metadata: Metadata
+  rawMetadata: String!
+
+  # Searcheable fields
+  ## Wearables search fields
+  searchIsWearableHead: Boolean
+  searchIsWearableAccessory: Boolean
+  searchWearableCategory: String
+  searchWearableRarity: String
+  searchWearableBodyShapes: [String!]
+}
+
+type Metadata @entity {
+  id: ID!
+  item: Item!
+  type: String
+  name: String
+  category: String
+  bodyShapes: [String!]
 }
 
 type Account @entity {
@@ -51,8 +70,8 @@ type NFT @entity {
   name: String
   image: String
 
-  collection: Collection
-  item: Item
+  collection: Collection!
+  item: Item!
 
   createdAt: BigInt!
   updatedAt: BigInt!
