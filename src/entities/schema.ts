@@ -68,13 +68,21 @@ export class Collection extends Entity {
     this.set("owner", Value.fromString(value));
   }
 
-  get creator(): string {
+  get creator(): string | null {
     let value = this.get("creator");
-    return value.toString();
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
   }
 
-  set creator(value: string) {
-    this.set("creator", Value.fromString(value));
+  set creator(value: string | null) {
+    if (value === null) {
+      this.unset("creator");
+    } else {
+      this.set("creator", Value.fromString(value as string));
+    }
   }
 
   get name(): string {
@@ -196,15 +204,6 @@ export class Item extends Entity {
     this.set("collection", Value.fromString(value));
   }
 
-  get type(): string {
-    let value = this.get("type");
-    return value.toString();
-  }
-
-  set type(value: string) {
-    this.set("type", Value.fromString(value));
-  }
-
   get itemId(): BigInt {
     let value = this.get("itemId");
     return value.toBigInt();
@@ -212,6 +211,15 @@ export class Item extends Entity {
 
   set itemId(value: BigInt) {
     this.set("itemId", Value.fromBigInt(value));
+  }
+
+  get itemType(): string {
+    let value = this.get("itemType");
+    return value.toString();
+  }
+
+  set itemType(value: string) {
+    this.set("itemType", Value.fromString(value));
   }
 
   get totaSupply(): BigInt {
@@ -427,163 +435,6 @@ export class Item extends Entity {
   }
 }
 
-export class Metadata extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id !== null, "Cannot save Metadata entity without an ID");
-    assert(
-      id.kind == ValueKind.STRING,
-      "Cannot save Metadata entity with non-string ID. " +
-        'Considering using .toHex() to convert the "id" to a string.'
-    );
-    store.set("Metadata", id.toString(), this);
-  }
-
-  static load(id: string): Metadata | null {
-    return store.get("Metadata", id) as Metadata | null;
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get item(): string {
-    let value = this.get("item");
-    return value.toString();
-  }
-
-  set item(value: string) {
-    this.set("item", Value.fromString(value));
-  }
-
-  get type(): string {
-    let value = this.get("type");
-    return value.toString();
-  }
-
-  set type(value: string) {
-    this.set("type", Value.fromString(value));
-  }
-
-  get name(): string | null {
-    let value = this.get("name");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set name(value: string | null) {
-    if (value === null) {
-      this.unset("name");
-    } else {
-      this.set("name", Value.fromString(value as string));
-    }
-  }
-
-  get category(): string | null {
-    let value = this.get("category");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set category(value: string | null) {
-    if (value === null) {
-      this.unset("category");
-    } else {
-      this.set("category", Value.fromString(value as string));
-    }
-  }
-
-  get bodyShapes(): Array<string> | null {
-    let value = this.get("bodyShapes");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toStringArray();
-    }
-  }
-
-  set bodyShapes(value: Array<string> | null) {
-    if (value === null) {
-      this.unset("bodyShapes");
-    } else {
-      this.set("bodyShapes", Value.fromStringArray(value as Array<string>));
-    }
-  }
-}
-
-export class Account extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id !== null, "Cannot save Account entity without an ID");
-    assert(
-      id.kind == ValueKind.STRING,
-      "Cannot save Account entity with non-string ID. " +
-        'Considering using .toHex() to convert the "id" to a string.'
-    );
-    store.set("Account", id.toString(), this);
-  }
-
-  static load(id: string): Account | null {
-    return store.get("Account", id) as Account | null;
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get address(): Bytes {
-    let value = this.get("address");
-    return value.toBytes();
-  }
-
-  set address(value: Bytes) {
-    this.set("address", Value.fromBytes(value));
-  }
-
-  get nfts(): Array<string> | null {
-    let value = this.get("nfts");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toStringArray();
-    }
-  }
-
-  set nfts(value: Array<string> | null) {
-    if (value === null) {
-      this.unset("nfts");
-    } else {
-      this.set("nfts", Value.fromStringArray(value as Array<string>));
-    }
-  }
-}
-
 export class NFT extends Entity {
   constructor(id: string) {
     super();
@@ -632,22 +483,38 @@ export class NFT extends Entity {
     this.set("contractAddress", Value.fromString(value));
   }
 
-  get itemId(): BigInt {
+  get itemId(): BigInt | null {
     let value = this.get("itemId");
-    return value.toBigInt();
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set itemId(value: BigInt) {
-    this.set("itemId", Value.fromBigInt(value));
+  set itemId(value: BigInt | null) {
+    if (value === null) {
+      this.unset("itemId");
+    } else {
+      this.set("itemId", Value.fromBigInt(value as BigInt));
+    }
   }
 
-  get issuedId(): BigInt {
+  get issuedId(): BigInt | null {
     let value = this.get("issuedId");
-    return value.toBigInt();
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set issuedId(value: BigInt) {
-    this.set("issuedId", Value.fromBigInt(value));
+  set issuedId(value: BigInt | null) {
+    if (value === null) {
+      this.unset("issuedId");
+    } else {
+      this.set("issuedId", Value.fromBigInt(value as BigInt));
+    }
   }
 
   get itemType(): string {
@@ -793,6 +660,23 @@ export class NFT extends Entity {
       this.unset("item");
     } else {
       this.set("item", Value.fromString(value as string));
+    }
+  }
+
+  get metadata(): string | null {
+    let value = this.get("metadata");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set metadata(value: string | null) {
+    if (value === null) {
+      this.unset("metadata");
+    } else {
+      this.set("metadata", Value.fromString(value as string));
     }
   }
 
@@ -968,6 +852,221 @@ export class NFT extends Entity {
       this.unset("searchOrderCreatedAt");
     } else {
       this.set("searchOrderCreatedAt", Value.fromBigInt(value as BigInt));
+    }
+  }
+}
+
+export class Metadata extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save Metadata entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save Metadata entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("Metadata", id.toString(), this);
+  }
+
+  static load(id: string): Metadata | null {
+    return store.get("Metadata", id) as Metadata | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get itemType(): string {
+    let value = this.get("itemType");
+    return value.toString();
+  }
+
+  set itemType(value: string) {
+    this.set("itemType", Value.fromString(value));
+  }
+
+  get wearable(): string | null {
+    let value = this.get("wearable");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set wearable(value: string | null) {
+    if (value === null) {
+      this.unset("wearable");
+    } else {
+      this.set("wearable", Value.fromString(value as string));
+    }
+  }
+}
+
+export class Wearable extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save Wearable entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save Wearable entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("Wearable", id.toString(), this);
+  }
+
+  static load(id: string): Wearable | null {
+    return store.get("Wearable", id) as Wearable | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get representationId(): string {
+    let value = this.get("representationId");
+    return value.toString();
+  }
+
+  set representationId(value: string) {
+    this.set("representationId", Value.fromString(value));
+  }
+
+  get collection(): string {
+    let value = this.get("collection");
+    return value.toString();
+  }
+
+  set collection(value: string) {
+    this.set("collection", Value.fromString(value));
+  }
+
+  get category(): string {
+    let value = this.get("category");
+    return value.toString();
+  }
+
+  set category(value: string) {
+    this.set("category", Value.fromString(value));
+  }
+
+  get rarity(): string {
+    let value = this.get("rarity");
+    return value.toString();
+  }
+
+  set rarity(value: string) {
+    this.set("rarity", Value.fromString(value));
+  }
+
+  get bodyShapes(): Array<string> | null {
+    let value = this.get("bodyShapes");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set bodyShapes(value: Array<string> | null) {
+    if (value === null) {
+      this.unset("bodyShapes");
+    } else {
+      this.set("bodyShapes", Value.fromStringArray(value as Array<string>));
+    }
+  }
+
+  get item(): string | null {
+    let value = this.get("item");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set item(value: string | null) {
+    if (value === null) {
+      this.unset("item");
+    } else {
+      this.set("item", Value.fromString(value as string));
+    }
+  }
+}
+
+export class Account extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save Account entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save Account entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("Account", id.toString(), this);
+  }
+
+  static load(id: string): Account | null {
+    return store.get("Account", id) as Account | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get address(): Bytes {
+    let value = this.get("address");
+    return value.toBytes();
+  }
+
+  set address(value: Bytes) {
+    this.set("address", Value.fromBytes(value));
+  }
+
+  get nfts(): Array<string> | null {
+    let value = this.get("nfts");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set nfts(value: Array<string> | null) {
+    if (value === null) {
+      this.unset("nfts");
+    } else {
+      this.set("nfts", Value.fromStringArray(value as Array<string>));
     }
   }
 }
@@ -1336,116 +1435,5 @@ export class Count extends Entity {
 
   set started(value: i32) {
     this.set("started", Value.fromI32(value));
-  }
-}
-
-export class Wearable extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id !== null, "Cannot save Wearable entity without an ID");
-    assert(
-      id.kind == ValueKind.STRING,
-      "Cannot save Wearable entity with non-string ID. " +
-        'Considering using .toHex() to convert the "id" to a string.'
-    );
-    store.set("Wearable", id.toString(), this);
-  }
-
-  static load(id: string): Wearable | null {
-    return store.get("Wearable", id) as Wearable | null;
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get owner(): string {
-    let value = this.get("owner");
-    return value.toString();
-  }
-
-  set owner(value: string) {
-    this.set("owner", Value.fromString(value));
-  }
-
-  get representationId(): string {
-    let value = this.get("representationId");
-    return value.toString();
-  }
-
-  set representationId(value: string) {
-    this.set("representationId", Value.fromString(value));
-  }
-
-  get collection(): string {
-    let value = this.get("collection");
-    return value.toString();
-  }
-
-  set collection(value: string) {
-    this.set("collection", Value.fromString(value));
-  }
-
-  get name(): string {
-    let value = this.get("name");
-    return value.toString();
-  }
-
-  set name(value: string) {
-    this.set("name", Value.fromString(value));
-  }
-
-  get description(): string {
-    let value = this.get("description");
-    return value.toString();
-  }
-
-  set description(value: string) {
-    this.set("description", Value.fromString(value));
-  }
-
-  get category(): string {
-    let value = this.get("category");
-    return value.toString();
-  }
-
-  set category(value: string) {
-    this.set("category", Value.fromString(value));
-  }
-
-  get rarity(): string {
-    let value = this.get("rarity");
-    return value.toString();
-  }
-
-  set rarity(value: string) {
-    this.set("rarity", Value.fromString(value));
-  }
-
-  get bodyShapes(): Array<string> | null {
-    let value = this.get("bodyShapes");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toStringArray();
-    }
-  }
-
-  set bodyShapes(value: Array<string> | null) {
-    if (value === null) {
-      this.unset("bodyShapes");
-    } else {
-      this.set("bodyShapes", Value.fromStringArray(value as Array<string>));
-    }
   }
 }

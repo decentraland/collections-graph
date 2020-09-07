@@ -1,8 +1,12 @@
-import { BigInt } from '@graphprotocol/graph-ts'
+import { BigInt, Address } from '@graphprotocol/graph-ts'
 
-import { handleCreateNFT, handleNFTTransfer } from './nft'
-import { setItemSearchFields, getItemMetadata } from '../modules/Metadata'
-import { buildCountFromItem, buildCountFromCollection } from '../modules/Count'
+import { handleCreateNFT, handleTransferNFT } from './nft'
+import { setItemSearchFields, buildItemMetadata } from '../modules/Metadata'
+import { buildCount, buildCountFromItem, buildCountFromCollection } from '../modules/Count'
+import { getItemId } from '../modules/Item'
+import {
+  getCollectionsV1
+} from '../wearablesV1/addresses'
 import { isMint } from '../modules/NFT'
 import { Collection, Item } from '../entities/schema'
 import { ProxyCreated, OwnershipTransferred } from '../entities/CollectionFactory/CollectionFactory'
@@ -22,7 +26,46 @@ import {
   CollectionV2 as CollectionContract,
   Transfer
 } from '../entities/templates/CollectionV2/CollectionV2'
+import { ERC721 } from '../entities/templates'
 import { CollectionV2 } from '../entities/templates'
+
+
+export function handleInitializeWearablesV1(_: OwnershipTransferred): void {
+  let count = buildCount()
+
+  let collectionsV1 = getCollectionsV1()
+  if (count.started == 0) {
+    for (let i = 0; i < collectionsV1.length; i++) {
+      let collectionAddress = collectionsV1[i]
+
+      // Create template bindings
+      ERC721.create(Address.fromString(collectionAddress))
+
+      // Create Collections
+
+      // Bind contract
+      let collectionContract = CollectionContract.bind(Address.fromString(collectionAddress))
+
+      let collection = new Collection(collectionAddress)
+
+      // Set base collection data
+      collection.name = collectionContract.name()
+      collection.symbol = collectionContract.symbol()
+      collection.owner = collectionContract.owner().toHexString()
+      collection.isCompleted = true
+      collection.minters = []
+      collection.managers = []
+
+      collection.save()
+
+      let metric = buildCountFromCollection()
+      metric.save()
+    }
+
+    count.started = 1
+    count.save()
+  }
+}
 
 export function handleCollectionCreation(event: ProxyCreated): void {
   // Initialize template
@@ -45,44 +88,132 @@ export function handleCollectionCreation(event: ProxyCreated): void {
   collection.minters = []
   collection.managers = []
 
-  // Set Items
-  let itemsCount = collectionContract.itemsCount()
-  for (let i = BigInt.fromI32(0); i.lt(itemsCount); i = i.plus(BigInt.fromI32(1))) {
-    let contractItem = collectionContract.items(i)
+  // // Set Items
+  // let itemsCount = collectionContract.itemsCount()
+  // for (let i = BigInt.fromI32(0); i.lt(itemsCount); i = i.plus(BigInt.fromI32(1))) {
+  //   let contractItem = collectionContract.items(i)
 
-    let item = new Item(collectionAddress + '-' + i.toHexString())
-    item.itemId = i
-    item.collection = collection.id
-    item.rarity = collectionContract.getRarityName(contractItem.value0)
-    item.available = collectionContract.getRarityValue(contractItem.value0)
-    item.totaSupply = contractItem.value1
-    item.price = contractItem.value2
-    item.beneficiary = contractItem.value3.toHexString()
-    item.contentHash = contractItem.value5
-    item.URI = collectionContract.baseURI() + collectionAddress + '/' + i.toHexString()
-    item.minters = []
-    item.managers = []
-    item.rawMetadata = contractItem.value4
+  //   let graphItemId = getItemId(collectionAddress, i.toHexString())
 
-    let metadata = getItemMetadata(contractItem.value4)
-    metadata.item = item.id
-    metadata.save()
+  //   let item = new Item(graphItemId)
+  //   item.itemId = i
+  //   item.collection = collection.id
+  //   item.rarity = collectionContract.getRarityName(contractItem.value0)
+  //   item.available = collectionContract.getRarityValue(contractItem.value0)
+  //   item.totaSupply = contractItem.value1
+  //   item.price = contractItem.value2
+  //   item.beneficiary = contractItem.value3.toHexString()
+  //   item.contentHash = contractItem.value5
+  //   item.URI = collectionContract.baseURI() + collectionAddress + '/' + i.toHexString()
+  //   item.minters = []
+  //   item.managers = []
+  //   item.rawMetadata = contractItem.value4
 
-    item.metadata = metadata.id
-    item.type = metadata.type
+  //   let metadata = buildItemMetadata(item)
 
-    item = setItemSearchFields(item)
-    item.save()
+  //   item.metadata = metadata.id
+  //   item.itemType = metadata.itemType
 
-    let metric = buildCountFromItem()
-    metric.save()
+  //   item = setItemSearchFields(item)
+  //   item.save()
 
-  }
+  //   let metric = buildCountFromItem()
+  //   metric.save()
+  // }
 
   collection.save()
 
   let metric = buildCountFromCollection()
   metric.save()
+}
+
+
+export function handleAddItem(event: AddItem): void {
+  let collectionAddress = event.address.toHexString()
+
+  // Bind contract
+  let collectionContract = CollectionContract.bind(event.address)
+
+  let contractItem = event.params._item
+  let itemId = event.params._itemId
+
+  let graphItemId = getItemId(collectionAddress, itemId.toHexString())
+
+  let item = new Item(graphItemId)
+  item.itemId = itemId
+  item.collection = collectionAddress
+  item.rarity = collectionContract.getRarityName(contractItem.rarity)
+  item.available = collectionContract.getRarityValue(contractItem.rarity)
+  item.totaSupply = contractItem.totalSupply
+  item.price = contractItem.price
+  item.beneficiary = contractItem.beneficiary.toHexString()
+  item.contentHash = contractItem.contentHash
+  item.rawMetadata = contractItem.metadata
+  item.minters = []
+  item.managers = []
+  item.URI = collectionContract.baseURI() + collectionAddress + '/' + itemId.toString()
+
+  let metadata = buildItemMetadata(item)
+
+  item.metadata = metadata.id
+  item.itemType = metadata.itemType
+
+  item = setItemSearchFields(item)
+  item.save()
+
+  let metric = buildCountFromItem()
+  metric.save()
+}
+
+export function handleRescueItem(event: RescueItem): void {
+  let collectionAddress = event.address.toHexString()
+  let itemId = event.params._itemId.toHexString()
+
+  let graphItemId = getItemId(collectionAddress, itemId)
+
+  let item = Item.load(graphItemId)
+
+  item.rawMetadata = event.params._metadata
+  item.contentHash = event.params._contentHash
+
+  let metadata = buildItemMetadata(item!)
+
+  item.metadata = metadata.id
+  item.itemType = metadata.itemType
+
+  item = setItemSearchFields(item!)
+
+  item.save()
+}
+
+export function handleUpdateItem(event: UpdateItem): void {
+  let collectionAddress = event.address.toHexString()
+  let itemId = event.params._itemId.toHexString()
+
+  let item = Item.load(collectionAddress + '-' + itemId)
+
+  item.price = event.params._price
+  item.beneficiary = event.params._beneficiary.toHexString()
+
+  item.save()
+}
+
+export function handleIssue(event: Issue): void {
+  let collectionAddress = event.address.toHexString()
+  let itemId = event.params._itemId.toHexString()
+
+  let item = Item.load(collectionAddress + '-' + itemId)
+  item.available = item.available.minus(BigInt.fromI32(1))
+  item.save()
+
+  handleCreateNFT(event, collectionAddress, item!)
+}
+
+export function handleTransfer(event: Transfer): void {
+  // Do not comput mintings
+  if (!isMint(event.params.from.toHexString())) {
+    handleTransferNFT(event)
+  }
 }
 
 export function handleSetGlobalMinter(event: SetGlobalMinter): void {
@@ -143,79 +274,6 @@ export function handleSetItemManager(event: SetItemManager): void {
   item.managers = managers
 
   item.save()
-}
-
-export function handleAddItem(event: AddItem): void {
-  let collectionAddress = event.address.toHexString()
-
-  // Bind contract
-  let collectionContract = CollectionContract.bind(event.address)
-
-  let contractItem = event.params._item
-  let itemId = event.params._itemId
-
-  let item = new Item(collectionAddress + '-' + itemId.toHexString())
-  item.itemId = itemId
-  item.collection = collectionAddress
-  item.rarity = collectionContract.getRarityName(contractItem.rarity)
-  item.available = collectionContract.getRarityValue(contractItem.rarity)
-  item.totaSupply = contractItem.totalSupply
-  item.price = contractItem.price
-  item.beneficiary = contractItem.beneficiary.toHexString()
-  item.metadata = contractItem.metadata
-  item.contentHash = contractItem.contentHash
-  item.URI = collectionContract.baseURI() + collectionAddress + '/' + itemId.toString()
-  item.minters = []
-  item.managers = []
-
-  item.save()
-}
-
-export function handleRescueItem(event: RescueItem): void {
-  let collectionAddress = event.address.toHexString()
-  let itemId = event.params._itemId.toHexString()
-
-  let item = Item.load(collectionAddress + '-' + itemId)
-
-  let metadata = getItemMetadata(event.params._metadata)
-  metadata.item = item.id
-  metadata.save()
-
-  item.metadata = metadata.id
-  item.rawMetadata = event.params._metadata
-  item.contentHash = event.params._contentHash
-
-  item.save()
-}
-
-export function handleUpdateItem(event: UpdateItem): void {
-  let collectionAddress = event.address.toHexString()
-  let itemId = event.params._itemId.toHexString()
-
-  let item = Item.load(collectionAddress + '-' + itemId)
-
-  item.price = event.params._price
-  item.beneficiary = event.params._beneficiary.toHexString()
-
-  item.save()
-}
-
-export function handleIssueItem(event: Issue): void {
-  let collectionAddress = event.address.toHexString()
-  let itemId = event.params._itemId.toHexString()
-
-  let item = Item.load(collectionAddress + '-' + itemId)
-  item.available = item.available.minus(BigInt.fromI32(1))
-  item.save()
-
-  handleCreateNFT(event, collectionAddress, item!)
-}
-
-export function handleTransfer(event: Transfer): void {
-  // Do not comput mintings
-  if (isMint(event.params.from.toHexString())) {
-    handleNFTTransfer(event)
-  }
 }
 
 export function handleApproveCollection(event: Approve): void {

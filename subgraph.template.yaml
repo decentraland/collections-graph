@@ -105,7 +105,7 @@ dataSources:
       kind: ethereum/events
       apiVersion: 0.0.3
       language: wasm/assemblyscript
-      file: ./src/handlers/wearablesV1.ts
+      file: ./src/handlers/collection.ts
       entities:
         - ERC721
       abis:
@@ -153,7 +153,7 @@ templates:
         - event: UpdateItem(indexed uint256,uint256,address)
           handler: handleUpdateItem
         - event: Issue(indexed address,indexed uint256,indexed uint256,uint256)
-          handler: handleIssueItem
+          handler: handleIssue
         - event: Approve()
           handler: handleApproveCollection
         - event: SetEditable(bool,bool)
@@ -190,4 +190,4 @@ templates:
           file: ./abis/ERC721.json
       eventHandlers:
         - event: Transfer(indexed address,indexed address,indexed uint256)
-          handler: handleTransfer
+          handler: handleTransferWearableV1
