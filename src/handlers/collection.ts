@@ -88,39 +88,6 @@ export function handleCollectionCreation(event: ProxyCreated): void {
   collection.minters = []
   collection.managers = []
 
-  // // Set Items
-  // let itemsCount = collectionContract.itemsCount()
-  // for (let i = BigInt.fromI32(0); i.lt(itemsCount); i = i.plus(BigInt.fromI32(1))) {
-  //   let contractItem = collectionContract.items(i)
-
-  //   let graphItemId = getItemId(collectionAddress, i.toHexString())
-
-  //   let item = new Item(graphItemId)
-  //   item.itemId = i
-  //   item.collection = collection.id
-  //   item.rarity = collectionContract.getRarityName(contractItem.value0)
-  //   item.available = collectionContract.getRarityValue(contractItem.value0)
-  //   item.totaSupply = contractItem.value1
-  //   item.price = contractItem.value2
-  //   item.beneficiary = contractItem.value3.toHexString()
-  //   item.contentHash = contractItem.value5
-  //   item.URI = collectionContract.baseURI() + collectionAddress + '/' + i.toHexString()
-  //   item.minters = []
-  //   item.managers = []
-  //   item.rawMetadata = contractItem.value4
-
-  //   let metadata = buildItemMetadata(item)
-
-  //   item.metadata = metadata.id
-  //   item.itemType = metadata.itemType
-
-  //   item = setItemSearchFields(item)
-  //   item.save()
-
-  //   let metric = buildCountFromItem()
-  //   metric.save()
-  // }
-
   collection.save()
 
   let metric = buildCountFromCollection()
