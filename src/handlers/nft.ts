@@ -1,3 +1,5 @@
+import { Address, log } from '@graphprotocol/graph-ts'
+
 import { createAccount } from '../modules/Account'
 import { getItemMetadata, setNFTSearchFields, buildWearableV1Metadata, WEARABLE } from '../modules/metadata'
 import { getWearableV1Image } from '../modules/metadata/wearable'
@@ -6,8 +8,10 @@ import {
   clearNFTOrderProperties
 } from '../modules/NFT'
 import { NFT, Item, Collection, Wearable } from '../entities/schema'
-import { buildCountFromNFT } from '../modules/Count'
-import { Issue, Transfer } from '../entities/templates/CollectionV2/CollectionV2'
+import { buildCountFromCollection, buildCountFromNFT } from '../modules/Count'
+import { Issue, Transfer, CollectionV2 as CollectionContract } from '../entities/templates/CollectionV2/CollectionV2'
+import { Transfer as ERC721Transfer } from '../entities/templates/ERC721/ERC721'
+
 
 /**
  * @notice create an NFT by a collection v2 issue event
@@ -72,12 +76,37 @@ export function handleTransferNFT(event: Transfer): void {
 }
 
 
-export function handleTransferWearableV1(event: Transfer): void {
+export function handleTransferWearableV1(event: ERC721Transfer): void {
   if (event.params.tokenId.toString() == '') {
     return
   }
 
   let collectionAddress = event.address.toHexString()
+  let collection = Collection.load(collectionAddress)
+
+  // Create Collection
+  if (collection == null) {
+    // Bind contract
+    let collectionContract = CollectionContract.bind(Address.fromString(collectionAddress))
+
+    collection = new Collection(collectionAddress)
+
+    log.debug('Creating collection {}', [collectionAddress])
+
+    // Set base collection data
+    collection.name = collectionContract.name()
+    collection.symbol = collectionContract.symbol()
+    collection.owner = collectionContract.owner().toHexString()
+    collection.isCompleted = true
+    collection.minters = []
+    collection.managers = []
+
+    collection.save()
+
+    let collectionMetric = buildCountFromCollection()
+    collectionMetric.save()
+  }
+
   let id = getNFTId(
     event.address.toHexString(),
     event.params.tokenId.toString()
@@ -85,7 +114,6 @@ export function handleTransferWearableV1(event: Transfer): void {
 
   let nft = new NFT(id)
 
-  let collection = Collection.load(collectionAddress)
   nft.collection = collection.id
   nft.tokenId = event.params.tokenId
   nft.owner = event.params.to.toHex()
@@ -94,7 +122,7 @@ export function handleTransferWearableV1(event: Transfer): void {
   nft.itemType = WEARABLE
   nft.tokenURI = getTokenURI(event.address, event.params.tokenId)
 
-  if (isMint(event.params.to.toHexString())) {
+  if (isMint(event.params.from.toHexString())) {
     nft.createdAt = event.block.timestamp
     nft.searchText = ''
 
@@ -102,15 +130,15 @@ export function handleTransferWearableV1(event: Transfer): void {
     nft.metadata = metadata.id
     nft.itemType = metadata.itemType
 
-    let wearable = Wearable.load(metadata.id)
+    let wearable = Wearable.load(metadata.wearable)
+
     nft.image = getWearableV1Image(wearable!)
+
 
     nft = setNFTSearchFields(nft)
 
-    // nft.searchText = toLowerCase(wearable.name)
-
-    let metric = buildCountFromNFT()
-    metric.save()
+    let nftMetric = buildCountFromNFT()
+    nftMetric.save()
   } else {
     let oldNFT = NFT.load(id)
     if (cancelActiveOrder(oldNFT!, event.block.timestamp)) {

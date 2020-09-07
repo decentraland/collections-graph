@@ -73,23 +73,17 @@ export function buildWearableItem(item: Item): Wearable {
  * @param nft
  */
 export function buildWearableV1(nft: NFT, representation: WearableRepresentation): Wearable {
-  let wearable = Wearable.load(representation.id)
+  let wearable = new Wearable(representation.id)
 
-  if (wearable == null) {
-    wearable = new Wearable(representation.id)
-  }
-
-  if (representation != null) {
-    wearable.collection = nft.collection
-    wearable.representationId = representation.id
-    wearable.rarity = representation.rarity
-    wearable.category = representation.category
-    wearable.bodyShapes = representation.bodyShapes
-  }
+  wearable.collection = nft.collection
+  wearable.representationId = representation.id
+  wearable.rarity = representation.rarity
+  wearable.category = representation.category
+  wearable.bodyShapes = representation.bodyShapes
 
   wearable.save()
 
-  return wearable!
+  return wearable
 }
 
 export function setItemWearableSearchFields(item: Item): Item {
@@ -106,8 +100,7 @@ export function setItemWearableSearchFields(item: Item): Item {
 }
 
 export function setNFTWearableSearchFields(nft: NFT): NFT {
-  let item = Item.load(nft.item)
-  let metadata = Metadata.load(item.metadata)
+  let metadata = Metadata.load(nft.metadata)
   let wearable = Wearable.load(metadata.wearable)
 
   nft.searchIsWearableHead = isWearableHead(wearable.category)
@@ -156,6 +149,7 @@ export function getWearableV1Image(wearable: Wearable): string {
 export function getWearableV1Representation(nft: NFT): WearableRepresentation {
   // https://wearable-api.decentraland.org/v2/standards/erc721-metadata/collections/halloween_2019/wearables/funny_skull_mask/1
   let wearableId = getWearableIdFromTokenURI(nft.tokenURI)
+
   if (wearableId == '') {
     log.error('Coud not get a wearable id from tokenURI {} and nft {}', [
       nft.tokenURI,
@@ -184,7 +178,6 @@ export function getWearableV1Representation(nft: NFT): WearableRepresentation {
   for (let i = 0; i < allCollections.length; i++) {
     let wearable = findWearable(wearableId, allCollections[i])
     if (wearable.id == wearableId) {
-      wearable.id = nft.id
       return wearable
     }
   }

@@ -33,37 +33,18 @@ import { CollectionV2 } from '../entities/templates'
 export function handleInitializeWearablesV1(_: OwnershipTransferred): void {
   let count = buildCount()
 
-  let collectionsV1 = getCollectionsV1()
-  if (count.started == 0) {
-    for (let i = 0; i < collectionsV1.length; i++) {
-      let collectionAddress = collectionsV1[i]
+  let started = count.started
 
+  count.started = 1
+  count.save()
+
+  let collectionsV1 = getCollectionsV1()
+
+  if (started == 0) {
+    collectionsV1.forEach(collectionAddress => {
       // Create template bindings
       ERC721.create(Address.fromString(collectionAddress))
-
-      // Create Collections
-
-      // Bind contract
-      let collectionContract = CollectionContract.bind(Address.fromString(collectionAddress))
-
-      let collection = new Collection(collectionAddress)
-
-      // Set base collection data
-      collection.name = collectionContract.name()
-      collection.symbol = collectionContract.symbol()
-      collection.owner = collectionContract.owner().toHexString()
-      collection.isCompleted = true
-      collection.minters = []
-      collection.managers = []
-
-      collection.save()
-
-      let metric = buildCountFromCollection()
-      metric.save()
-    }
-
-    count.started = 1
-    count.save()
+    })
   }
 }
 
@@ -76,6 +57,7 @@ export function handleCollectionCreation(event: ProxyCreated): void {
 
   let collectionAddress = event.params._address.toHexString()
   let collection = new Collection(collectionAddress)
+
 
   // Set base collection data
   collection.name = collectionContract.name()

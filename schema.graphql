@@ -5,7 +5,7 @@ type Collection @entity {
   creator: String
   name: String!
   symbol: String!
-  isCompleted: Boolean!
+  isCompleted: Boolean
   isApproved: Boolean
   isEditable: Boolean
   minters: [String!]
@@ -97,7 +97,6 @@ type Wearable @entity {
   category: String!
   rarity: String!
   bodyShapes: [String!]
-  item: Item # Wearables V1 has this field empty
 }
 
 type Account @entity {

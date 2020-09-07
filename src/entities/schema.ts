@@ -995,23 +995,6 @@ export class Wearable extends Entity {
       this.set("bodyShapes", Value.fromStringArray(value as Array<string>));
     }
   }
-
-  get item(): string | null {
-    let value = this.get("item");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set item(value: string | null) {
-    if (value === null) {
-      this.unset("item");
-    } else {
-      this.set("item", Value.fromString(value as string));
-    }
-  }
 }
 
 export class Account extends Entity {

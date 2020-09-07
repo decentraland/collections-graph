@@ -1,3 +1,5 @@
+import { log } from '@graphprotocol/graph-ts'
+
 import { Item, NFT, Metadata } from '../../entities/schema'
 import { setNFTWearableSearchFields, setItemWearableSearchFields, buildWearableItem, buildWearableV1, getWearableV1Representation } from './wearable'
 
@@ -60,13 +62,10 @@ export function buildItemMetadata(item: Item): Metadata {
 export function buildWearableV1Metadata(nft: NFT): Metadata {
   let representation = getWearableV1Representation(nft)
 
-  let metadata = Metadata.load(representation.id)
-
-  if (metadata == null) {
-    metadata = new Metadata(representation.id)
-  }
+  let metadata = new Metadata(representation.id)
 
   let wearable = buildWearableV1(nft, representation)
+
   metadata.itemType = WEARABLE
   metadata.wearable = wearable.id
 
