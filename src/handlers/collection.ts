@@ -6,7 +6,7 @@ import { buildCount, buildCountFromItem, buildCountFromCollection } from '../mod
 import { getItemId } from '../modules/Item'
 import {
   getCollectionsV1
-} from '../wearablesV1/addresses'
+} from '../data/wearablesV1/addresses'
 import { isMint } from '../modules/NFT'
 import { Collection, Item } from '../entities/schema'
 import { ProxyCreated, OwnershipTransferred } from '../entities/CollectionFactory/CollectionFactory'

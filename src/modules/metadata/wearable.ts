@@ -16,7 +16,7 @@ import {
   stay_safe,
   wonderzone_meteorchaser,
   xmas_2019
-} from '../../wearablesV1'
+} from '../../data/wearablesV1'
 
 // Item categories
 export const BODY_SHAPE = 'body_shape'

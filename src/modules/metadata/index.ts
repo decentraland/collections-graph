@@ -1,5 +1,3 @@
-import { log } from '@graphprotocol/graph-ts'
-
 import { Item, NFT, Metadata } from '../../entities/schema'
 import { setNFTWearableSearchFields, setItemWearableSearchFields, buildWearableItem, buildWearableV1, getWearableV1Representation } from './wearable'
 
