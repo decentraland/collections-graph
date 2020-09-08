@@ -58,14 +58,14 @@ export function handleCollectionCreation(event: ProxyCreated): void {
   let collectionAddress = event.params._address.toHexString()
   let collection = new Collection(collectionAddress)
 
-
+  let isApproved = collectionContract.isApproved()
   // Set base collection data
   collection.name = collectionContract.name()
   collection.symbol = collectionContract.symbol()
   collection.owner = collectionContract.owner().toHexString()
   collection.creator = collectionContract.creator().toHexString()
   collection.isCompleted = collectionContract.isCompleted()
-  collection.isApproved = collectionContract.isApproved()
+  collection.isApproved = isApproved
   collection.isEditable = collectionContract.isEditable()
   collection.minters = []
   collection.managers = []
@@ -79,6 +79,13 @@ export function handleCollectionCreation(event: ProxyCreated): void {
 
 export function handleAddItem(event: AddItem): void {
   let collectionAddress = event.address.toHexString()
+  let collection = Collection.load(collectionAddress)
+
+  if (collection == null) {
+    // Skip it, collection will be set up once the proxy event is created
+    // The ProxyCreated event is emitted right after the collection's event
+    return
+  }
 
   // Bind contract
   let collectionContract = CollectionContract.bind(event.address)
@@ -98,6 +105,7 @@ export function handleAddItem(event: AddItem): void {
   item.beneficiary = contractItem.beneficiary.toHexString()
   item.contentHash = contractItem.contentHash
   item.rawMetadata = contractItem.metadata
+  item.searchIsCollectionApproved = collectionContract.isApproved()
   item.minters = []
   item.managers = []
   item.URI = collectionContract.baseURI() + collectionAddress + '/' + itemId.toString()
@@ -226,9 +234,23 @@ export function handleSetItemManager(event: SetItemManager): void {
 }
 
 export function handleApproveCollection(event: Approve): void {
-  let collection = Collection.load(event.address.toHexString())
+  let collectionAddress = event.address.toHexString()
+  let collection = Collection.load(collectionAddress)
 
   collection.isApproved = true
+
+  // Bind contract
+  let collectionContract = CollectionContract.bind(event.address)
+  let itemsCount = collectionContract.itemsCount()
+
+  for (let i = BigInt.fromI32(0); i.lt(itemsCount); i = i.plus(BigInt.fromI32(1))) {
+    let graphItemId = getItemId(collectionAddress, i.toHexString())
+    let item = Item.load(graphItemId)
+
+    item.searchIsCollectionApproved = true
+
+    item.save()
+  }
 
   collection.save()
 }

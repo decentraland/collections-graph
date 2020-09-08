@@ -362,6 +362,15 @@ export class Item extends Entity {
     }
   }
 
+  get searchIsCollectionApproved(): boolean {
+    let value = this.get("searchIsCollectionApproved");
+    return value.toBoolean();
+  }
+
+  set searchIsCollectionApproved(value: boolean) {
+    this.set("searchIsCollectionApproved", Value.fromBoolean(value));
+  }
+
   get searchIsWearableHead(): boolean {
     let value = this.get("searchIsWearableHead");
     return value.toBoolean();

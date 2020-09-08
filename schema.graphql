@@ -31,6 +31,9 @@ type Item @entity {
   nfts: [NFT!] @derivedFrom(field: "item")
 
   # Searcheable fields
+  ## Collection fields
+  searchIsCollectionApproved: Boolean
+
   ## Wearables search fields
   searchIsWearableHead: Boolean
   searchIsWearableAccessory: Boolean
