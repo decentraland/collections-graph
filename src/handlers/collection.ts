@@ -91,12 +91,12 @@ export function handleAddItem(event: AddItem): void {
   let collectionContract = CollectionContract.bind(event.address)
 
   let contractItem = event.params._item
-  let itemId = event.params._itemId
+  let itemId = event.params._itemId.toString()
 
-  let graphItemId = getItemId(collectionAddress, itemId.toHexString())
+  let graphItemId = getItemId(collectionAddress, itemId.toString())
 
   let item = new Item(graphItemId)
-  item.itemId = itemId
+  item.itemId = event.params._itemId
   item.collection = collectionAddress
   item.rarity = collectionContract.getRarityName(contractItem.rarity)
   item.available = collectionContract.getRarityValue(contractItem.rarity)
@@ -108,7 +108,7 @@ export function handleAddItem(event: AddItem): void {
   item.searchIsCollectionApproved = collectionContract.isApproved()
   item.minters = []
   item.managers = []
-  item.URI = collectionContract.baseURI() + collectionAddress + '/' + itemId.toString()
+  item.URI = collectionContract.baseURI() + collectionAddress + '/' + itemId
 
   let metadata = buildItemMetadata(item)
 
@@ -124,7 +124,7 @@ export function handleAddItem(event: AddItem): void {
 
 export function handleRescueItem(event: RescueItem): void {
   let collectionAddress = event.address.toHexString()
-  let itemId = event.params._itemId.toHexString()
+  let itemId = event.params._itemId.toString()
 
   let graphItemId = getItemId(collectionAddress, itemId)
 
@@ -145,7 +145,7 @@ export function handleRescueItem(event: RescueItem): void {
 
 export function handleUpdateItem(event: UpdateItem): void {
   let collectionAddress = event.address.toHexString()
-  let itemId = event.params._itemId.toHexString()
+  let itemId = event.params._itemId.toString()
 
   let item = Item.load(collectionAddress + '-' + itemId)
 
@@ -157,7 +157,7 @@ export function handleUpdateItem(event: UpdateItem): void {
 
 export function handleIssue(event: Issue): void {
   let collectionAddress = event.address.toHexString()
-  let itemId = event.params._itemId.toHexString()
+  let itemId = event.params._itemId.toString()
 
   let item = Item.load(collectionAddress + '-' + itemId)
   item.available = item.available.minus(BigInt.fromI32(1))
@@ -204,7 +204,7 @@ export function handleSetGlobalManager(event: SetGlobalManager): void {
 }
 
 export function handleSetItemMinter(event: SetItemMinter): void {
-  let item = Item.load(event.params._itemId.toHexString())
+  let item = Item.load(event.params._itemId.toString())
 
   let minters = item.minters
   if (event.params._value == true) {
@@ -219,7 +219,7 @@ export function handleSetItemMinter(event: SetItemMinter): void {
 }
 
 export function handleSetItemManager(event: SetItemManager): void {
-  let item = Item.load(event.params._itemId.toHexString())
+  let item = Item.load(event.params._itemId.toString())
 
   let managers = item.managers
   if (event.params._value == true) {
@@ -244,7 +244,7 @@ export function handleApproveCollection(event: Approve): void {
   let itemsCount = collectionContract.itemsCount()
 
   for (let i = BigInt.fromI32(0); i.lt(itemsCount); i = i.plus(BigInt.fromI32(1))) {
-    let graphItemId = getItemId(collectionAddress, i.toHexString())
+    let graphItemId = getItemId(collectionAddress, i.toString())
     let item = Item.load(graphItemId)
 
     item.searchIsCollectionApproved = true
