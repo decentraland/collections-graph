@@ -1,7 +1,8 @@
 import { Address, log } from '@graphprotocol/graph-ts'
 
 import { createAccount } from '../modules/Account'
-import { getItemMetadata, setNFTSearchFields, buildWearableV1Metadata, WEARABLE } from '../modules/metadata'
+import { setNFTSearchFields, buildWearableV1Metadata } from '../modules/metadata'
+import * as itemTypes from '../modules/metadata/itemTypes'
 import { getWearableV1Image } from '../modules/metadata/wearable'
 import {
   getNFTId, getTokenURI, isMint, cancelActiveOrder,
@@ -14,12 +15,12 @@ import { Transfer as ERC721Transfer } from '../entities/templates/ERC721/ERC721'
 
 
 /**
- * @notice create an NFT by a collection v2 issue event
+ * @notice mint an NFT by a collection v2 issue event
  * @param event
  * @param collectionAddress
  * @param item
  */
-export function handleCreateNFT(event: Issue, collectionAddress: string, item: Item): void {
+export function handleMintNFT(event: Issue, collectionAddress: string, item: Item): void {
   let nft = new NFT(getNFTId(collectionAddress, event.params._tokenId.toHexString()))
 
   let collection = Collection.load(collectionAddress)
@@ -36,9 +37,7 @@ export function handleCreateNFT(event: Issue, collectionAddress: string, item: I
   nft.name = 'Token item'
   nft.image = item.URI + '/' + event.params._issuedId.toString() + '/thumbnail'
   nft.searchText = item.rawMetadata
-
-  let metadata = getItemMetadata(item)
-  nft.metadata = metadata.id
+  nft.metadata = item.metadata
 
   nft.createdAt = event.block.timestamp
   nft.updatedAt = event.block.timestamp
@@ -119,7 +118,7 @@ export function handleTransferWearableV1(event: ERC721Transfer): void {
   nft.owner = event.params.to.toHex()
   nft.contractAddress = collectionAddress
   nft.updatedAt = event.block.timestamp
-  nft.itemType = WEARABLE
+  nft.itemType = itemTypes.WEARABLE
   nft.tokenURI = getTokenURI(event.address, event.params.tokenId)
 
   if (isMint(event.params.from.toHexString())) {

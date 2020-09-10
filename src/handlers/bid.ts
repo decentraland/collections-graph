@@ -44,6 +44,9 @@ export function handleBidAccepted(event: BidAccepted): void {
   let id = event.params._id.toHex()
 
   let bid = Bid.load(id)
+
+  // Omit events of a bid accepted/cancelled from a bid that was not indexed. Orders and bids are being indexed from the beginning of collections.
+  // Not from the Bid contract creation.
   if (bid == null) {
     return
   }
@@ -60,6 +63,9 @@ export function handleBidCancelled(event: BidCancelled): void {
   let id = event.params._id.toHex()
 
   let bid = Bid.load(id)
+
+  // Omit events of a bid accepted/cancelled from a bid that was not indexed. Orders and bids are being indexed from the beginning of collections.
+  // Not from the Bid contract creation.
   if (bid == null) {
     return
   }

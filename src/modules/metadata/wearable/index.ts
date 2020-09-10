@@ -1,6 +1,7 @@
 import { log } from '@graphprotocol/graph-ts'
 
-import { Item, NFT, Metadata, Wearable } from '../../entities/schema'
+import * as categories from './categories'
+import { Item, NFT, Metadata, Wearable } from '../../../entities/schema'
 import {
   Wearable as WearableRepresentation, community_contest,
   dappcraft_moonminer,
@@ -16,35 +17,11 @@ import {
   stay_safe,
   wonderzone_meteorchaser,
   xmas_2019
-} from '../../data/wearablesV1'
-
-// Item categories
-export const BODY_SHAPE = 'body_shape'
-export const EARRING = 'earring'
-export const EYEBROWS = 'eyebrows'
-export const EYES = 'eyes'
-export const EYEWEAR = 'eyewear'
-export const FACIAL_HAIR = 'facial_hair'
-export const FEET = 'feet'
-export const HAIR = 'hair'
-export const HAT = 'hat'
-export const HELMET = 'helmet'
-export const LOWER_BODY = 'lower_body'
-export const MASK = 'mask'
-export const MOUTH = 'mouth'
-export const TIARA = 'tiara'
-export const TOP_HEAD = 'top_head'
-export const UPPER_BODY = 'upper_body'
-
-// Item types
-export const WEARABLE = 'wearable'
-export const WEARABLE_OLD_TYPE_SHORT = 'old_w'
-export const WEARABLE_TYPE_SHORT = 'w'
+} from '../../../data/wearablesV1'
 
 /**
- * @dev The rawMetadata for wearables should follow: version:type:name:category:bodyshapes
- *
- * @param rawMetadata
+ * @dev The item's rawMetadata for wearables should follow: version:item_type:representation_id:category:bodyshapes
+ * @param item
  */
 export function buildWearableItem(item: Item): Wearable {
   let id = item.id
@@ -69,9 +46,6 @@ export function buildWearableItem(item: Item): Wearable {
   return wearable!
 }
 
-/**
- * @param nft
- */
 export function buildWearableV1(nft: NFT, representation: WearableRepresentation): Wearable {
   let wearable = new Wearable(representation.id)
 
@@ -114,23 +88,23 @@ export function setNFTWearableSearchFields(nft: NFT): NFT {
 
 export function isWearableHead(category: string): boolean {
   return (
-    category == EYEBROWS ||
-    category == EYES ||
-    category == FACIAL_HAIR ||
-    category == HAIR ||
-    category == MOUTH
+    category == categories.EYEBROWS ||
+    category == categories.EYES ||
+    category == categories.FACIAL_HAIR ||
+    category == categories.HAIR ||
+    category == categories.MOUTH
   )
 }
 
 export function isWearableAccessory(category: string): boolean {
   return (
-    category == EARRING ||
-    category == EYEWEAR ||
-    category == HAT ||
-    category == HELMET ||
-    category == MASK ||
-    category == TIARA ||
-    category == TOP_HEAD
+    category == categories.EARRING ||
+    category == categories.EYEWEAR ||
+    category == categories.HAT ||
+    category == categories.HELMET ||
+    category == categories.MASK ||
+    category == categories.TIARA ||
+    category == categories.TOP_HEAD
   )
 }
 
@@ -144,7 +118,6 @@ export function getWearableV1Image(wearable: Wearable): string {
     '/thumbnail'
   )
 }
-
 
 export function getWearableV1Representation(nft: NFT): WearableRepresentation {
   // https://wearable-api.decentraland.org/v2/standards/erc721-metadata/collections/halloween_2019/wearables/funny_skull_mask/1
