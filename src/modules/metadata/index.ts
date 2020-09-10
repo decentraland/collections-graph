@@ -14,16 +14,21 @@ export function buildItemMetadata(item: Item): Metadata {
   }
 
   let data = item.rawMetadata.split(':')
-  if (data.length >= 1) {
+  if (data.length >= 2) {
     let type = data[1]
 
     if (type == itemTypes.WEARABLE_TYPE_SHORT) {
       let wearable = buildWearableItem(item)
       metadata.itemType = itemTypes.WEARABLE
       metadata.wearable = wearable.id
-      metadata.save()
+    } else {
+      metadata.itemType = itemTypes.UNDEFINED
     }
+  } else {
+    metadata.itemType = itemTypes.UNDEFINED
   }
+
+  metadata.save()
 
   return metadata!
 }

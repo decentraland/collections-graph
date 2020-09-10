@@ -90,6 +90,7 @@ type Metadata @entity {
 }
 
 enum ItemType @entity {
+  undefined
   wearable
 }
 
