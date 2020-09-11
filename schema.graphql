@@ -2,12 +2,12 @@ type Collection @entity {
   id: ID!
   items: [Item!] @derivedFrom(field: "collection")
   owner: String!
-  creator: String!
+  creator: String
   name: String!
   symbol: String!
-  isCompleted: Boolean!
-  isApproved: Boolean!
-  isEditable: Boolean!
+  isCompleted: Boolean
+  isApproved: Boolean
+  isEditable: Boolean
   minters: [String!]
   managers: [String!]
 }
@@ -15,9 +15,10 @@ type Collection @entity {
 type Item @entity {
   id: ID! # ${Collection address}_${item Id}
   collection: Collection!
-  type: ItemType!
   itemId: BigInt!
+  itemType: ItemType!
   totaSupply: BigInt!
+  maxSupply: BigInt!
   rarity: String!
   available: BigInt!
   price: BigInt!
@@ -31,6 +32,9 @@ type Item @entity {
   nfts: [NFT!] @derivedFrom(field: "item")
 
   # Searcheable fields
+  ## Collection fields
+  searchIsCollectionApproved: Boolean
+
   ## Wearables search fields
   searchIsWearableHead: Boolean
   searchIsWearableAccessory: Boolean
@@ -39,28 +43,12 @@ type Item @entity {
   searchWearableBodyShapes: [String!]
 }
 
-type Metadata @entity {
-  id: ID!
-  item: Item!
-  type: ItemType!
-  name: String
-  category: String
-  bodyShapes: [String!]
-}
-
-type Account @entity {
-  id: ID! # ETH addr
-  address: Bytes!
-  nfts: [NFT!] @derivedFrom(field: "owner")
-  # mana: BigInt # Amount of mana owned
-}
-
 type NFT @entity {
   id: ID!
   tokenId: BigInt!
   contractAddress: String!
-  itemId: BigInt!
-  issuedId: BigInt!
+  itemId: BigInt
+  issuedId: BigInt
   itemType: ItemType!
   owner: Account!
   tokenURI: String
@@ -73,7 +61,8 @@ type NFT @entity {
   image: String
 
   collection: Collection!
-  item: Item!
+  item: Item
+  metadata: Metadata
 
   createdAt: BigInt!
   updatedAt: BigInt!
@@ -95,19 +84,41 @@ type NFT @entity {
   searchOrderCreatedAt: BigInt
 }
 
+type Metadata @entity {
+  id: ID!
+  itemType: ItemType!
+  wearable: Wearable
+}
+
 enum ItemType @entity {
+  undefined
   wearable
 }
 
-enum OrderStatus @entity {
-  open
-  sold
-  cancelled
+type Wearable @entity {
+  id: ID!
+  representationId: String!
+  collection: String!
+  category: String!
+  rarity: String!
+  bodyShapes: [String!]
+}
+
+type Account @entity {
+  id: ID! # ETH addr
+  address: Bytes!
+  nfts: [NFT!] @derivedFrom(field: "owner")
+  # mana: BigInt # Amount of mana owned
 }
 
 # ---------------------------------------------------------
 # Orders --------------------------------------------------
 # ---------------------------------------------------------
+enum OrderStatus @entity {
+  open
+  sold
+  cancelled
+}
 
 # thegraph doesn't support nested property searches, so we're doing promoting properties
 # we need from each NFT type to the Order, in order to search for them, prefixing them with search_[nft]_[prop]

@@ -1,4 +1,4 @@
-import { Count } from '../entities/schema'
+import { Count } from '../../entities/schema'
 
 export const DEFAULT_ID = 'all'
 

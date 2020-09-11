@@ -51,13 +51,14 @@ export function handleOrderCreated(event: OrderCreated): void {
 }
 
 export function handleOrderSuccessful(event: OrderSuccessful): void {
-  let nftId = getNFTId(
-    event.params.nftAddress.toHexString(),
-    event.params.assetId.toString()
-  )
   let orderId = event.params.id.toHex()
 
-  let order = new Order(orderId)
+  let order = Order.load(orderId)
+
+  if (order == null) {
+    return
+  }
+
   order.status = status.SOLD
   order.buyer = event.params.buyer
   order.price = event.params.totalPrice
@@ -65,26 +66,36 @@ export function handleOrderSuccessful(event: OrderSuccessful): void {
   order.updatedAt = event.block.timestamp
   order.save()
 
-  let nft = new NFT(nftId)
-  nft.owner = event.params.buyer.toHex()
-  nft = updateNFTOrderProperties(nft!, order)
-  nft.save()
-}
-
-export function handleOrderCancelled(event: OrderCancelled): void {
   let nftId = getNFTId(
     event.params.nftAddress.toHexString(),
     event.params.assetId.toString()
   )
+
+  let nft = new NFT(nftId)
+  nft.owner = event.params.buyer.toHex()
+  nft = updateNFTOrderProperties(nft!, order!)
+  nft.save()
+}
+
+export function handleOrderCancelled(event: OrderCancelled): void {
   let orderId = event.params.id.toHex()
 
-  let order = new Order(orderId)
+  let order = Order.load(orderId)
+  if (order == null) {
+    return
+  }
+
   order.status = status.CANCELLED
   order.blockNumber = event.block.number
   order.updatedAt = event.block.timestamp
   order.save()
 
+  let nftId = getNFTId(
+    event.params.nftAddress.toHexString(),
+    event.params.assetId.toString()
+  )
+
   let nft = new NFT(nftId)
-  nft = updateNFTOrderProperties(nft!, order)
+  nft = updateNFTOrderProperties(nft!, order!)
   nft.save()
 }

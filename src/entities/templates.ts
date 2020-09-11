@@ -19,3 +19,13 @@ export class CollectionV2 extends DataSourceTemplate {
     );
   }
 }
+
+export class ERC721 extends DataSourceTemplate {
+  static create(address: Address): void {
+    DataSourceTemplate.create("ERC721", [address.toHex()]);
+  }
+
+  static createWithContext(address: Address, context: DataSourceContext): void {
+    DataSourceTemplate.createWithContext("ERC721", [address.toHex()], context);
+  }
+}

@@ -1,8 +1,13 @@
-import { BigInt } from '@graphprotocol/graph-ts'
+import { BigInt, Address } from '@graphprotocol/graph-ts'
 
-import { handleCreateNFT, handleNFTTransfer } from './nft'
-import { setItemSearchFields, getItemMetadata } from '../modules/Metadata'
-import { buildCountFromItem, buildCountFromCollection } from '../modules/Count'
+import { handleMintNFT, handleTransferNFT } from './nft'
+import { setItemSearchFields, buildItemMetadata } from '../modules/Metadata'
+import { buildCount, buildCountFromItem, buildCountFromCollection } from '../modules/Count'
+import { getItemId } from '../modules/Item'
+import {
+  getCollectionsV1
+} from '../data/wearablesV1/addresses'
+import { isMint } from '../modules/NFT'
 import { Collection, Item } from '../entities/schema'
 import { ProxyCreated, OwnershipTransferred } from '../entities/CollectionFactory/CollectionFactory'
 import {
@@ -21,7 +26,27 @@ import {
   CollectionV2 as CollectionContract,
   Transfer
 } from '../entities/templates/CollectionV2/CollectionV2'
+import { ERC721 } from '../entities/templates'
 import { CollectionV2 } from '../entities/templates'
+
+
+export function handleInitializeWearablesV1(_: OwnershipTransferred): void {
+  let count = buildCount()
+
+  let collectionsV1 = getCollectionsV1()
+
+  if (count.started == 0) {
+    collectionsV1.forEach(collectionAddress => {
+      // Create template bindings
+      ERC721.create(Address.fromString(collectionAddress))
+    })
+
+    count.collectionTotal += collectionsV1.length
+  }
+
+  count.started = 1
+  count.save()
+}
 
 export function handleCollectionCreation(event: ProxyCreated): void {
   // Initialize template
@@ -33,55 +58,124 @@ export function handleCollectionCreation(event: ProxyCreated): void {
   let collectionAddress = event.params._address.toHexString()
   let collection = new Collection(collectionAddress)
 
+  let isApproved = collectionContract.isApproved()
   // Set base collection data
   collection.name = collectionContract.name()
   collection.symbol = collectionContract.symbol()
   collection.owner = collectionContract.owner().toHexString()
   collection.creator = collectionContract.creator().toHexString()
   collection.isCompleted = collectionContract.isCompleted()
-  collection.isApproved = collectionContract.isApproved()
+  collection.isApproved = isApproved
   collection.isEditable = collectionContract.isEditable()
   collection.minters = []
   collection.managers = []
-
-  // Set Items
-  let itemsCount = collectionContract.itemsCount()
-  for (let i = BigInt.fromI32(0); i.lt(itemsCount); i = i.plus(BigInt.fromI32(1))) {
-    let contractItem = collectionContract.items(i)
-
-    let item = new Item(collectionAddress + '-' + i.toHexString())
-    item.itemId = i
-    item.collection = collection.id
-    item.rarity = collectionContract.getRarityName(contractItem.value0)
-    item.available = collectionContract.getRarityValue(contractItem.value0)
-    item.totaSupply = contractItem.value1
-    item.price = contractItem.value2
-    item.beneficiary = contractItem.value3.toHexString()
-    item.contentHash = contractItem.value5
-    item.URI = collectionContract.baseURI() + collectionAddress + '/' + i.toHexString()
-    item.minters = []
-    item.managers = []
-    item.rawMetadata = contractItem.value4
-
-    let metadata = getItemMetadata(contractItem.value4)
-    metadata.item = item.id
-    metadata.save()
-
-    item.metadata = metadata.id
-    item.type = metadata.type
-
-    item = setItemSearchFields(item)
-    item.save()
-
-    let metric = buildCountFromItem()
-    metric.save()
-
-  }
 
   collection.save()
 
   let metric = buildCountFromCollection()
   metric.save()
+}
+
+
+export function handleAddItem(event: AddItem): void {
+  let collectionAddress = event.address.toHexString()
+  let collection = Collection.load(collectionAddress)
+
+  if (collection == null) {
+    // Skip it, collection will be set up once the proxy event is created
+    // The ProxyCreated event is emitted right after the collection's event
+    return
+  }
+
+  // Bind contract
+  let collectionContract = CollectionContract.bind(event.address)
+
+  let contractItem = event.params._item
+  let itemId = event.params._itemId.toString()
+
+  let id = getItemId(collectionAddress, itemId.toString())
+
+  let item = new Item(id)
+  item.itemId = event.params._itemId
+  item.collection = collectionAddress
+  item.rarity = collectionContract.getRarityName(contractItem.rarity)
+  item.available = collectionContract.getRarityValue(contractItem.rarity)
+  item.totaSupply = contractItem.totalSupply
+  item.maxSupply = item.available
+  item.price = contractItem.price
+  item.beneficiary = contractItem.beneficiary.toHexString()
+  item.contentHash = contractItem.contentHash
+  item.rawMetadata = contractItem.metadata
+  item.searchIsCollectionApproved = collectionContract.isApproved()
+  item.minters = []
+  item.managers = []
+  item.URI = collectionContract.baseURI() + collectionAddress + '/' + itemId
+
+  let metadata = buildItemMetadata(item)
+
+  item.metadata = metadata.id
+  item.itemType = metadata.itemType
+
+  item = setItemSearchFields(item)
+  item.save()
+
+  let metric = buildCountFromItem()
+  metric.save()
+}
+
+export function handleRescueItem(event: RescueItem): void {
+  let collectionAddress = event.address.toHexString()
+  let itemId = event.params._itemId.toString()
+
+  let id = getItemId(collectionAddress, itemId)
+
+  let item = Item.load(id)
+
+  item.rawMetadata = event.params._metadata
+  item.contentHash = event.params._contentHash
+
+  let metadata = buildItemMetadata(item!)
+
+  item.metadata = metadata.id
+  item.itemType = metadata.itemType
+
+  item = setItemSearchFields(item!)
+
+  item.save()
+}
+
+export function handleUpdateItem(event: UpdateItem): void {
+  let collectionAddress = event.address.toHexString()
+  let itemId = event.params._itemId.toString()
+  let id = getItemId(collectionAddress, itemId)
+
+  let item = Item.load(id)
+
+  item.price = event.params._price
+  item.beneficiary = event.params._beneficiary.toHexString()
+
+  item.save()
+}
+
+export function handleIssue(event: Issue): void {
+  let collectionAddress = event.address.toHexString()
+  let itemId = event.params._itemId.toString()
+  let id = getItemId(collectionAddress, itemId)
+
+  let item = Item.load(id)
+
+  item.available = item.available.minus(BigInt.fromI32(1))
+  item.totaSupply = item.totaSupply.plus(BigInt.fromI32(1))
+  item.save()
+
+  handleMintNFT(event, collectionAddress, item!)
+}
+
+export function handleTransfer(event: Transfer): void {
+  // Do not compute mints
+  if (!isMint(event.params.from.toHexString())) {
+    handleTransferNFT(event)
+  }
 }
 
 export function handleSetGlobalMinter(event: SetGlobalMinter): void {
@@ -115,7 +209,7 @@ export function handleSetGlobalManager(event: SetGlobalManager): void {
 }
 
 export function handleSetItemMinter(event: SetItemMinter): void {
-  let item = Item.load(event.params._itemId.toHexString())
+  let item = Item.load(event.params._itemId.toString())
 
   let minters = item.minters
   if (event.params._value == true) {
@@ -130,7 +224,7 @@ export function handleSetItemMinter(event: SetItemMinter): void {
 }
 
 export function handleSetItemManager(event: SetItemManager): void {
-  let item = Item.load(event.params._itemId.toHexString())
+  let item = Item.load(event.params._itemId.toString())
 
   let managers = item.managers
   if (event.params._value == true) {
@@ -144,83 +238,24 @@ export function handleSetItemManager(event: SetItemManager): void {
   item.save()
 }
 
-export function handleAddItem(event: AddItem): void {
+export function handleApproveCollection(event: Approve): void {
   let collectionAddress = event.address.toHexString()
+  let collection = Collection.load(collectionAddress)
+
+  collection.isApproved = true
 
   // Bind contract
   let collectionContract = CollectionContract.bind(event.address)
+  let itemsCount = collectionContract.itemsCount()
 
-  let contractItem = event.params._item
-  let itemId = event.params._itemId
+  for (let i = BigInt.fromI32(0); i.lt(itemsCount); i = i.plus(BigInt.fromI32(1))) {
+    let id = getItemId(collectionAddress, i.toString())
+    let item = Item.load(id)
 
-  let item = new Item(collectionAddress + '-' + itemId.toHexString())
-  item.itemId = itemId
-  item.collection = collectionAddress
-  item.rarity = collectionContract.getRarityName(contractItem.rarity)
-  item.available = collectionContract.getRarityValue(contractItem.rarity)
-  item.totaSupply = contractItem.totalSupply
-  item.price = contractItem.price
-  item.beneficiary = contractItem.beneficiary.toHexString()
-  item.metadata = contractItem.metadata
-  item.contentHash = contractItem.contentHash
-  item.URI = collectionContract.baseURI() + collectionAddress + '/' + itemId.toString()
-  item.minters = []
-  item.managers = []
+    item.searchIsCollectionApproved = true
 
-  item.save()
-}
-
-export function handleRescueItem(event: RescueItem): void {
-  let collectionAddress = event.address.toHexString()
-  let itemId = event.params._itemId.toHexString()
-
-  let item = Item.load(collectionAddress + '-' + itemId)
-
-  let metadata = getItemMetadata(event.params._metadata)
-  metadata.item = item.id
-  metadata.save()
-
-  item.metadata = metadata.id
-  item.rawMetadata = event.params._metadata
-  item.contentHash = event.params._contentHash
-
-  item.save()
-}
-
-export function handleUpdateItem(event: UpdateItem): void {
-  let collectionAddress = event.address.toHexString()
-  let itemId = event.params._itemId.toHexString()
-
-  let item = Item.load(collectionAddress + '-' + itemId)
-
-  item.price = event.params._price
-  item.beneficiary = event.params._beneficiary.toHexString()
-
-  item.save()
-}
-
-export function handleIssueItem(event: Issue): void {
-  let collectionAddress = event.address.toHexString()
-  let itemId = event.params._itemId.toHexString()
-
-  let item = Item.load(collectionAddress + '-' + itemId)
-  item.available = item.available.minus(BigInt.fromI32(1))
-  item.save()
-
-  handleCreateNFT(event, collectionAddress, item!)
-}
-
-export function handleTransfer(event: Transfer): void {
-  // Do not comput mintings
-  if (event.params.from.toHexString() != '0x0000000000000000000000000000000000000000') {
-    handleNFTTransfer(event)
+    item.save()
   }
-}
-
-export function handleApproveCollection(event: Approve): void {
-  let collection = Collection.load(event.address.toHexString())
-
-  collection.isApproved = true
 
   collection.save()
 }
