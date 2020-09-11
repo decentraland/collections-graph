@@ -18,6 +18,7 @@ type Item @entity {
   itemId: BigInt!
   itemType: ItemType!
   totaSupply: BigInt!
+  maxSupply: BigInt!
   rarity: String!
   available: BigInt!
   price: BigInt!

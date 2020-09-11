@@ -231,6 +231,15 @@ export class Item extends Entity {
     this.set("totaSupply", Value.fromBigInt(value));
   }
 
+  get maxSupply(): BigInt {
+    let value = this.get("maxSupply");
+    return value.toBigInt();
+  }
+
+  set maxSupply(value: BigInt) {
+    this.set("maxSupply", Value.fromBigInt(value));
+  }
+
   get rarity(): string {
     let value = this.get("rarity");
     return value.toString();

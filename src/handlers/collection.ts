@@ -33,22 +33,19 @@ import { CollectionV2 } from '../entities/templates'
 export function handleInitializeWearablesV1(_: OwnershipTransferred): void {
   let count = buildCount()
 
-  let started = count.started
-
-  count.started = 1
-  count.save()
-
   let collectionsV1 = getCollectionsV1()
 
-  if (started == 0) {
+  if (count.started == 0) {
     collectionsV1.forEach(collectionAddress => {
       // Create template bindings
       ERC721.create(Address.fromString(collectionAddress))
-
-      let metric = buildCountFromCollection()
-      metric.save()
     })
+
+    count.collectionTotal += collectionsV1.length
   }
+
+  count.started = 1
+  count.save()
 }
 
 export function handleCollectionCreation(event: ProxyCreated): void {
@@ -104,6 +101,7 @@ export function handleAddItem(event: AddItem): void {
   item.rarity = collectionContract.getRarityName(contractItem.rarity)
   item.available = collectionContract.getRarityValue(contractItem.rarity)
   item.totaSupply = contractItem.totalSupply
+  item.maxSupply = item.available
   item.price = contractItem.price
   item.beneficiary = contractItem.beneficiary.toHexString()
   item.contentHash = contractItem.contentHash
@@ -167,6 +165,7 @@ export function handleIssue(event: Issue): void {
   let item = Item.load(id)
 
   item.available = item.available.minus(BigInt.fromI32(1))
+  item.totaSupply = item.totaSupply.plus(BigInt.fromI32(1))
   item.save()
 
   handleMintNFT(event, collectionAddress, item!)
