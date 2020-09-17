@@ -151,8 +151,10 @@ templates:
           handler: handleAddItem
         - event: RescueItem(indexed uint256,bytes32,string)
           handler: handleRescueItem
-        - event: UpdateItem(indexed uint256,uint256,address)
-          handler: handleUpdateItem
+        - event: UpdateItemSalesData(indexed uint256,uint256,address)
+          handler: handleUpdateItemSalesData
+        - event: UpdateItemMetadata(indexed uint256,string)
+          handler: handleUpdateItemMetadata
         - event: Issue(indexed address,indexed uint256,indexed uint256,uint256)
           handler: handleIssue
         - event: Approve()

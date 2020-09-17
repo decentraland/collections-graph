@@ -404,16 +404,38 @@ export class Transfer__Params {
   }
 }
 
-export class UpdateItem extends ethereum.Event {
-  get params(): UpdateItem__Params {
-    return new UpdateItem__Params(this);
+export class UpdateItemMetadata extends ethereum.Event {
+  get params(): UpdateItemMetadata__Params {
+    return new UpdateItemMetadata__Params(this);
   }
 }
 
-export class UpdateItem__Params {
-  _event: UpdateItem;
+export class UpdateItemMetadata__Params {
+  _event: UpdateItemMetadata;
 
-  constructor(event: UpdateItem) {
+  constructor(event: UpdateItemMetadata) {
+    this._event = event;
+  }
+
+  get _itemId(): BigInt {
+    return this._event.parameters[0].value.toBigInt();
+  }
+
+  get _metadata(): string {
+    return this._event.parameters[1].value.toString();
+  }
+}
+
+export class UpdateItemSalesData extends ethereum.Event {
+  get params(): UpdateItemSalesData__Params {
+    return new UpdateItemSalesData__Params(this);
+  }
+}
+
+export class UpdateItemSalesData__Params {
+  _event: UpdateItemSalesData;
+
+  constructor(event: UpdateItemSalesData) {
     this._event = event;
   }
 
@@ -1369,20 +1391,54 @@ export class CompleteCollectionCall__Outputs {
   }
 }
 
-export class EditItemsCall extends ethereum.Call {
-  get inputs(): EditItemsCall__Inputs {
-    return new EditItemsCall__Inputs(this);
+export class EditItemsMetadataCall extends ethereum.Call {
+  get inputs(): EditItemsMetadataCall__Inputs {
+    return new EditItemsMetadataCall__Inputs(this);
   }
 
-  get outputs(): EditItemsCall__Outputs {
-    return new EditItemsCall__Outputs(this);
+  get outputs(): EditItemsMetadataCall__Outputs {
+    return new EditItemsMetadataCall__Outputs(this);
   }
 }
 
-export class EditItemsCall__Inputs {
-  _call: EditItemsCall;
+export class EditItemsMetadataCall__Inputs {
+  _call: EditItemsMetadataCall;
 
-  constructor(call: EditItemsCall) {
+  constructor(call: EditItemsMetadataCall) {
+    this._call = call;
+  }
+
+  get _itemIds(): Array<BigInt> {
+    return this._call.inputValues[0].value.toBigIntArray();
+  }
+
+  get _metadatas(): Array<string> {
+    return this._call.inputValues[1].value.toStringArray();
+  }
+}
+
+export class EditItemsMetadataCall__Outputs {
+  _call: EditItemsMetadataCall;
+
+  constructor(call: EditItemsMetadataCall) {
+    this._call = call;
+  }
+}
+
+export class EditItemsSalesDataCall extends ethereum.Call {
+  get inputs(): EditItemsSalesDataCall__Inputs {
+    return new EditItemsSalesDataCall__Inputs(this);
+  }
+
+  get outputs(): EditItemsSalesDataCall__Outputs {
+    return new EditItemsSalesDataCall__Outputs(this);
+  }
+}
+
+export class EditItemsSalesDataCall__Inputs {
+  _call: EditItemsSalesDataCall;
+
+  constructor(call: EditItemsSalesDataCall) {
     this._call = call;
   }
 
@@ -1399,10 +1455,10 @@ export class EditItemsCall__Inputs {
   }
 }
 
-export class EditItemsCall__Outputs {
-  _call: EditItemsCall;
+export class EditItemsSalesDataCall__Outputs {
+  _call: EditItemsSalesDataCall;
 
-  constructor(call: EditItemsCall) {
+  constructor(call: EditItemsSalesDataCall) {
     this._call = call;
   }
 }

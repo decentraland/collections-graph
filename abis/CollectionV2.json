@@ -373,6 +373,25 @@
       },
       {
         "indexed": false,
+        "internalType": "string",
+        "name": "_metadata",
+        "type": "string"
+      }
+    ],
+    "name": "UpdateItemMetadata",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "_itemId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
         "internalType": "uint256",
         "name": "_price",
         "type": "uint256"
@@ -384,7 +403,7 @@
         "type": "address"
       }
     ],
-    "name": "UpdateItem",
+    "name": "UpdateItemSalesData",
     "type": "event"
   },
   {
@@ -616,6 +635,24 @@
         "type": "uint256[]"
       },
       {
+        "internalType": "string[]",
+        "name": "_metadatas",
+        "type": "string[]"
+      }
+    ],
+    "name": "editItemsMetadata",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "_itemIds",
+        "type": "uint256[]"
+      },
+      {
         "internalType": "uint256[]",
         "name": "_prices",
         "type": "uint256[]"
@@ -626,7 +663,7 @@
         "type": "address[]"
       }
     ],
-    "name": "editItems",
+    "name": "editItemsSalesData",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

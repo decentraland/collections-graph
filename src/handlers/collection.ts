@@ -17,7 +17,8 @@ import {
   SetItemManager,
   AddItem,
   RescueItem,
-  UpdateItem,
+  UpdateItemSalesData,
+  UpdateItemMetadata,
   Issue,
   Approve,
   SetEditable,
@@ -144,7 +145,7 @@ export function handleRescueItem(event: RescueItem): void {
   item.save()
 }
 
-export function handleUpdateItem(event: UpdateItem): void {
+export function handleUpdateItemSalesData(event: UpdateItemSalesData): void {
   let collectionAddress = event.address.toHexString()
   let itemId = event.params._itemId.toString()
   let id = getItemId(collectionAddress, itemId)
@@ -153,6 +154,23 @@ export function handleUpdateItem(event: UpdateItem): void {
 
   item.price = event.params._price
   item.beneficiary = event.params._beneficiary.toHexString()
+
+  item.save()
+}
+
+export function handleUpdateItemMetadata(event: UpdateItemMetadata): void {
+  let collectionAddress = event.address.toHexString()
+  let itemId = event.params._itemId.toString()
+  let id = getItemId(collectionAddress, itemId)
+
+  let item = Item.load(id)
+
+  item.rawMetadata = event.params._metadata
+
+  let metadata = buildItemMetadata(item!)
+
+  item.metadata = metadata.id
+  item.itemType = metadata.itemType
 
   item.save()
 }
