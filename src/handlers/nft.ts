@@ -27,7 +27,7 @@ export function handleMintNFT(event: Issue, collectionAddress: string, item: Ite
   nft.collection = collection.id
   nft.tokenId = event.params._tokenId
   nft.contractAddress = collectionAddress
-  nft.itemId = event.params._itemId
+  nft.blockchainItemId = event.params._itemId
   nft.itemType = item.itemType
   nft.issuedId = event.params._issuedId
   nft.collection = collectionAddress

@@ -97,7 +97,7 @@ export function handleAddItem(event: AddItem): void {
   let id = getItemId(collectionAddress, itemId.toString())
 
   let item = new Item(id)
-  item.itemId = event.params._itemId
+  item.blockchainItemId = event.params._itemId
   item.collection = collectionAddress
   item.rarity = collectionContract.getRarityName(contractItem.rarity)
   item.available = collectionContract.getRarityValue(contractItem.rarity)

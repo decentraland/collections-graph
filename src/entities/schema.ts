@@ -204,13 +204,13 @@ export class Item extends Entity {
     this.set("collection", Value.fromString(value));
   }
 
-  get itemId(): BigInt {
-    let value = this.get("itemId");
+  get blockchainItemId(): BigInt {
+    let value = this.get("blockchainItemId");
     return value.toBigInt();
   }
 
-  set itemId(value: BigInt) {
-    this.set("itemId", Value.fromBigInt(value));
+  set blockchainItemId(value: BigInt) {
+    this.set("blockchainItemId", Value.fromBigInt(value));
   }
 
   get itemType(): string {
@@ -501,8 +501,8 @@ export class NFT extends Entity {
     this.set("contractAddress", Value.fromString(value));
   }
 
-  get itemId(): BigInt | null {
-    let value = this.get("itemId");
+  get blockchainItemId(): BigInt | null {
+    let value = this.get("blockchainItemId");
     if (value === null) {
       return null;
     } else {
@@ -510,11 +510,11 @@ export class NFT extends Entity {
     }
   }
 
-  set itemId(value: BigInt | null) {
+  set blockchainItemId(value: BigInt | null) {
     if (value === null) {
-      this.unset("itemId");
+      this.unset("blockchainItemId");
     } else {
-      this.set("itemId", Value.fromBigInt(value as BigInt));
+      this.set("blockchainItemId", Value.fromBigInt(value as BigInt));
     }
   }
 
