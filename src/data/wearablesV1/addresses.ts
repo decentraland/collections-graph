@@ -12,6 +12,8 @@ export let DGSummer2020Collection = '0xbf53c33235cbfc22cef5a61a83484b86342679c5'
 export let PMOuttathisworldCollection = '0x75a3752579dc2d63ca229eebbe3537fbabf85a12'
 export let DgtbleHeadspaceCollection = '0x574f64ac2e7215cba9752b85fc73030f35166bc0'
 export let WonderzoneMeteorchaserCollection = '0x34ed0aa248f60f54dd32fbc9883d6137a491f4f3'
+export let BinanceUsCollection = '0xa8ee490e4c4da48cc1653502c1a77479d4d818de'
+
 
 export function getCollectionsV1(): string[] {
   return [
@@ -28,6 +30,7 @@ export function getCollectionsV1(): string[] {
     DGSummer2020Collection,
     PMOuttathisworldCollection,
     DgtbleHeadspaceCollection,
-    WonderzoneMeteorchaserCollection
+    WonderzoneMeteorchaserCollection,
+    BinanceUsCollection
   ]
 }

@@ -3,7 +3,8 @@ import { log } from '@graphprotocol/graph-ts'
 import * as categories from './categories'
 import { Item, NFT, Metadata, Wearable } from '../../../entities/schema'
 import {
-  Wearable as WearableRepresentation, community_contest,
+  Wearable as WearableRepresentation,
+  community_contest,
   dappcraft_moonminer,
   dcg_collection,
   dcl_launch,
@@ -16,7 +17,8 @@ import {
   pm_outtathisworld,
   stay_safe,
   wonderzone_meteorchaser,
-  xmas_2019
+  xmas_2019,
+  binance_us_collection
 } from '../../../data/wearablesV1'
 
 /**
@@ -145,7 +147,8 @@ export function getWearableV1Representation(nft: NFT): WearableRepresentation {
     pm_outtathisworld,
     stay_safe,
     wonderzone_meteorchaser,
-    xmas_2019
+    xmas_2019,
+    binance_us_collection
   ]
 
   for (let i = 0; i < allCollections.length; i++) {

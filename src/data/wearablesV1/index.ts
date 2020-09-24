@@ -14,3 +14,5 @@ export * from './pm_outtathisworld'
 export * from './stay_safe'
 export * from './wonderzone_meteorchaser'
 export * from './xmas_2019'
+export * from './binance_us_collection'
+
