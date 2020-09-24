@@ -15,7 +15,7 @@ type Collection @entity {
 type Item @entity {
   id: ID! # ${Collection address}_${item Id}
   collection: Collection!
-  blockchainItemId: BigInt!
+  blockchainId: BigInt!
   itemType: ItemType!
   totaSupply: BigInt!
   maxSupply: BigInt!
@@ -47,7 +47,7 @@ type NFT @entity {
   id: ID!
   tokenId: BigInt!
   contractAddress: String!
-  blockchainItemId: BigInt
+  itemBlockchainId: BigInt
   issuedId: BigInt
   itemType: ItemType!
   owner: Account!
