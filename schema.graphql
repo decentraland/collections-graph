@@ -17,7 +17,7 @@ type Item @entity {
   collection: Collection!
   blockchainId: BigInt!
   itemType: ItemType!
-  totaSupply: BigInt!
+  totalSupply: BigInt!
   maxSupply: BigInt!
   rarity: String!
   available: BigInt!

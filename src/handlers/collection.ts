@@ -101,7 +101,7 @@ export function handleAddItem(event: AddItem): void {
   item.collection = collectionAddress
   item.rarity = collectionContract.getRarityName(contractItem.rarity)
   item.available = collectionContract.getRarityValue(contractItem.rarity)
-  item.totaSupply = contractItem.totalSupply
+  item.totalSupply = contractItem.totalSupply
   item.maxSupply = item.available
   item.price = contractItem.price
   item.beneficiary = contractItem.beneficiary.toHexString()
@@ -183,7 +183,7 @@ export function handleIssue(event: Issue): void {
   let item = Item.load(id)
 
   item.available = item.available.minus(BigInt.fromI32(1))
-  item.totaSupply = item.totaSupply.plus(BigInt.fromI32(1))
+  item.totalSupply = item.totalSupply.plus(BigInt.fromI32(1))
   item.save()
 
   handleMintNFT(event, collectionAddress, item!)

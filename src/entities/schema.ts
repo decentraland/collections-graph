@@ -222,13 +222,13 @@ export class Item extends Entity {
     this.set("itemType", Value.fromString(value));
   }
 
-  get totaSupply(): BigInt {
-    let value = this.get("totaSupply");
+  get totalSupply(): BigInt {
+    let value = this.get("totalSupply");
     return value.toBigInt();
   }
 
-  set totaSupply(value: BigInt) {
-    this.set("totaSupply", Value.fromBigInt(value));
+  set totalSupply(value: BigInt) {
+    this.set("totalSupply", Value.fromBigInt(value));
   }
 
   get maxSupply(): BigInt {
