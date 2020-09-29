@@ -1,4 +1,4 @@
-import { BigInt, Address } from '@graphprotocol/graph-ts'
+import { BigInt, Address, log } from '@graphprotocol/graph-ts'
 
 import { handleMintNFT, handleTransferNFT } from './nft'
 import { setItemSearchFields, buildItemMetadata } from '../modules/Metadata'
@@ -200,13 +200,21 @@ export function handleSetGlobalMinter(event: SetGlobalMinter): void {
   let collection = Collection.load(event.address.toHexString())
 
   let minters = collection.minters
+
   if (event.params._value == true) {
     minters.push(event.params._minter.toHexString())
+    collection.minters = minters
   } else {
-    minters = minters.filter(minter => minter != event.params._minter.toHexString())
-  }
+    let newMinters = new Array<string>(0)
 
-  collection.minters = minters
+    for (let i = 0; i < minters.length; i++) {
+      if (minters![i] != event.params._minter.toHexString()) {
+        newMinters.push(minters![i])
+      }
+    }
+
+    collection.minters = newMinters
+  }
 
   collection.save()
 }
@@ -215,13 +223,21 @@ export function handleSetGlobalManager(event: SetGlobalManager): void {
   let collection = Collection.load(event.address.toHexString())
 
   let managers = collection.managers
+
   if (event.params._value == true) {
     managers.push(event.params._manager.toHexString())
+    collection.managers = managers
   } else {
-    managers = managers.filter(manager => manager != event.params._manager.toHexString())
-  }
+    let newManagers = new Array<string>(0)
 
-  collection.managers = managers
+    for (let i = 0; i < managers.length; i++) {
+      if (managers![i] != event.params._manager.toHexString()) {
+        newManagers.push(managers![i])
+      }
+    }
+
+    collection.managers = newManagers
+  }
 
   collection.save()
 }
@@ -230,13 +246,21 @@ export function handleSetItemMinter(event: SetItemMinter): void {
   let item = Item.load(event.params._itemId.toString())
 
   let minters = item.minters
+
   if (event.params._value == true) {
     minters.push(event.params._minter.toHexString())
+    item.minters = minters
   } else {
-    minters = minters.filter(minter => minter != event.params._minter.toHexString())
-  }
+    let newMinters = new Array<string>(0)
 
-  item.minters = minters
+    for (let i = 0; i < minters.length; i++) {
+      if (minters![i] != event.params._minter.toHexString()) {
+        newMinters.push(minters![i])
+      }
+    }
+
+    item.minters = newMinters
+  }
 
   item.save()
 }
@@ -245,13 +269,21 @@ export function handleSetItemManager(event: SetItemManager): void {
   let item = Item.load(event.params._itemId.toString())
 
   let managers = item.managers
+
   if (event.params._value == true) {
     managers.push(event.params._manager.toHexString())
+    item.managers = managers
   } else {
-    managers = managers.filter(manager => manager != event.params._manager.toHexString())
-  }
+    let newManagers = new Array<string>(0)
 
-  item.managers = managers
+    for (let i = 0; i < managers.length; i++) {
+      if (managers![i] != event.params._manager.toHexString()) {
+        newManagers.push(managers![i])
+      }
+    }
+
+    item.managers = newManagers
+  }
 
   item.save()
 }
