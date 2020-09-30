@@ -110,20 +110,6 @@ export class ApprovalForAll__Params {
   }
 }
 
-export class Approve extends ethereum.Event {
-  get params(): Approve__Params {
-    return new Approve__Params(this);
-  }
-}
-
-export class Approve__Params {
-  _event: Approve;
-
-  constructor(event: Approve) {
-    this._event = event;
-  }
-}
-
 export class BaseURI extends ethereum.Event {
   get params(): BaseURI__Params {
     return new BaseURI__Params(this);
@@ -257,6 +243,28 @@ export class RescueItem__Params {
 
   get _metadata(): string {
     return this._event.parameters[2].value.toString();
+  }
+}
+
+export class SetApproved extends ethereum.Event {
+  get params(): SetApproved__Params {
+    return new SetApproved__Params(this);
+  }
+}
+
+export class SetApproved__Params {
+  _event: SetApproved;
+
+  constructor(event: SetApproved) {
+    this._event = event;
+  }
+
+  get _previousValue(): boolean {
+    return this._event.parameters[0].value.toBoolean();
+  }
+
+  get _newValue(): boolean {
+    return this._event.parameters[1].value.toBoolean();
   }
 }
 
@@ -513,6 +521,21 @@ export class CollectionV2 extends ethereum.SmartContract {
     return new CollectionV2("CollectionV2", address);
   }
 
+  GRACE_PERIOD(): BigInt {
+    let result = super.call("GRACE_PERIOD", "GRACE_PERIOD():(uint256)", []);
+
+    return result[0].toBigInt();
+  }
+
+  try_GRACE_PERIOD(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall("GRACE_PERIOD", "GRACE_PERIOD():(uint256)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
   ISSUED_ID_BITS(): i32 {
     let result = super.call("ISSUED_ID_BITS", "ISSUED_ID_BITS():(uint8)", []);
 
@@ -613,6 +636,21 @@ export class CollectionV2 extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toString());
+  }
+
+  createdAt(): BigInt {
+    let result = super.call("createdAt", "createdAt():(uint256)", []);
+
+    return result[0].toBigInt();
+  }
+
+  try_createdAt(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall("createdAt", "createdAt():(uint256)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
   creator(): Address {
@@ -883,6 +921,29 @@ export class CollectionV2 extends ethereum.SmartContract {
 
   try_isInitialized(): ethereum.CallResult<boolean> {
     let result = super.tryCall("isInitialized", "isInitialized():(bool)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBoolean());
+  }
+
+  isMintingAllowed(): boolean {
+    let result = super.call(
+      "isMintingAllowed",
+      "isMintingAllowed():(bool)",
+      []
+    );
+
+    return result[0].toBoolean();
+  }
+
+  try_isMintingAllowed(): ethereum.CallResult<boolean> {
+    let result = super.tryCall(
+      "isMintingAllowed",
+      "isMintingAllowed():(bool)",
+      []
+    );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
@@ -1297,32 +1358,6 @@ export class ApproveCall__Outputs {
   _call: ApproveCall;
 
   constructor(call: ApproveCall) {
-    this._call = call;
-  }
-}
-
-export class ApproveCollectionCall extends ethereum.Call {
-  get inputs(): ApproveCollectionCall__Inputs {
-    return new ApproveCollectionCall__Inputs(this);
-  }
-
-  get outputs(): ApproveCollectionCall__Outputs {
-    return new ApproveCollectionCall__Outputs(this);
-  }
-}
-
-export class ApproveCollectionCall__Inputs {
-  _call: ApproveCollectionCall;
-
-  constructor(call: ApproveCollectionCall) {
-    this._call = call;
-  }
-}
-
-export class ApproveCollectionCall__Outputs {
-  _call: ApproveCollectionCall;
-
-  constructor(call: ApproveCollectionCall) {
     this._call = call;
   }
 }
@@ -1863,6 +1898,36 @@ export class SetApprovalForAllCall__Outputs {
   _call: SetApprovalForAllCall;
 
   constructor(call: SetApprovalForAllCall) {
+    this._call = call;
+  }
+}
+
+export class SetApprovedCall extends ethereum.Call {
+  get inputs(): SetApprovedCall__Inputs {
+    return new SetApprovedCall__Inputs(this);
+  }
+
+  get outputs(): SetApprovedCall__Outputs {
+    return new SetApprovedCall__Outputs(this);
+  }
+}
+
+export class SetApprovedCall__Inputs {
+  _call: SetApprovedCall;
+
+  constructor(call: SetApprovedCall) {
+    this._call = call;
+  }
+
+  get _value(): boolean {
+    return this._call.inputValues[0].value.toBoolean();
+  }
+}
+
+export class SetApprovedCall__Outputs {
+  _call: SetApprovedCall;
+
+  constructor(call: SetApprovedCall) {
     this._call = call;
   }
 }

@@ -1,7 +1,7 @@
 {
   "network": "ropsten",
   "address_factory": "0x16d8bac5b67a6b782a9081377bec413bc5bb56a6",
-  "startBlock_factory": 8619930,
+  "startBlock_factory": 8787011,
   "address_bid": "0x250fa138c0a994799c7a49df3097dc71e37b3d6f",
   "startBlock_bid": 8619936,
   "address_marketplace": "0x5424912699dabaa5f2998750c1c66e73d67ad219",

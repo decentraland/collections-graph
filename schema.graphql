@@ -10,6 +10,7 @@ type Collection @entity {
   isEditable: Boolean
   minters: [String!]
   managers: [String!]
+  createdAt: BigInt!
 }
 
 type Item @entity {

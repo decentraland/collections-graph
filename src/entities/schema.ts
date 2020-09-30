@@ -163,6 +163,15 @@ export class Collection extends Entity {
       this.set("managers", Value.fromStringArray(value as Array<string>));
     }
   }
+
+  get createdAt(): BigInt {
+    let value = this.get("createdAt");
+    return value.toBigInt();
+  }
+
+  set createdAt(value: BigInt) {
+    this.set("createdAt", Value.fromBigInt(value));
+  }
 }
 
 export class Item extends Entity {

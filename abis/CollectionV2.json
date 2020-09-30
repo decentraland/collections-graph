@@ -107,12 +107,6 @@
   },
   {
     "anonymous": false,
-    "inputs": [],
-    "name": "Approve",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
     "inputs": [
       {
         "indexed": false,
@@ -228,6 +222,25 @@
       }
     ],
     "name": "RescueItem",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "_previousValue",
+        "type": "bool"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "_newValue",
+        "type": "bool"
+      }
+    ],
+    "name": "SetApproved",
     "type": "event"
   },
   {
@@ -408,6 +421,19 @@
   },
   {
     "inputs": [],
+    "name": "GRACE_PERIOD",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "ISSUED_ID_BITS",
     "outputs": [
       {
@@ -522,13 +548,6 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "approveCollection",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "address",
@@ -588,6 +607,19 @@
     "name": "completeCollection",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "createdAt",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -934,6 +966,19 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "isMintingAllowed",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -1265,6 +1310,19 @@
       }
     ],
     "name": "setApprovalForAll",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bool",
+        "name": "_value",
+        "type": "bool"
+      }
+    ],
+    "name": "setApproved",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

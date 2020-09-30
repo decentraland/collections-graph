@@ -20,7 +20,7 @@ import {
   UpdateItemSalesData,
   UpdateItemMetadata,
   Issue,
-  Approve,
+  SetApproved,
   SetEditable,
   Complete,
   CreatorshipTransferred,
@@ -70,7 +70,7 @@ export function handleCollectionCreation(event: ProxyCreated): void {
   collection.isEditable = collectionContract.isEditable()
   collection.minters = []
   collection.managers = []
-
+  collection.createdAt = event.block.timestamp // to support old collections
   collection.save()
 
   let metric = buildCountFromCollection()
@@ -288,11 +288,11 @@ export function handleSetItemManager(event: SetItemManager): void {
   item.save()
 }
 
-export function handleApproveCollection(event: Approve): void {
+export function handleSetApproved(event: SetApproved): void {
   let collectionAddress = event.address.toHexString()
   let collection = Collection.load(collectionAddress)
 
-  collection.isApproved = true
+  collection.isApproved = event.params._newValue
 
   // Bind contract
   let collectionContract = CollectionContract.bind(event.address)
@@ -302,7 +302,7 @@ export function handleApproveCollection(event: Approve): void {
     let id = getItemId(collectionAddress, i.toString())
     let item = Item.load(id)
 
-    item.searchIsCollectionApproved = true
+    item.searchIsCollectionApproved = event.params._newValue
 
     item.save()
   }

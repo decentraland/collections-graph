@@ -97,6 +97,7 @@ export function handleTransferWearableV1(event: ERC721Transfer): void {
     collection.symbol = collectionContract.symbol()
     collection.owner = collectionContract.owner().toHexString()
     collection.isCompleted = true
+    collection.createdAt = event.block.timestamp // Not going to be used
     collection.minters = []
     collection.managers = []
 
