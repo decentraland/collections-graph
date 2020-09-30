@@ -3,7 +3,7 @@ import { Address, log } from '@graphprotocol/graph-ts'
 import { createAccount } from '../modules/Account'
 import { setNFTSearchFields, buildWearableV1Metadata } from '../modules/metadata'
 import * as itemTypes from '../modules/metadata/itemTypes'
-import { getWearableV1Image } from '../modules/metadata/wearable'
+import { getWearableV1Image, getWearableIdFromTokenURI } from '../modules/metadata/wearable'
 import {
   getNFTId, getTokenURI, isMint, cancelActiveOrder,
   clearNFTOrderProperties
@@ -21,7 +21,7 @@ import { Transfer as ERC721Transfer } from '../entities/templates/ERC721/ERC721'
  * @param item
  */
 export function handleMintNFT(event: Issue, collectionAddress: string, item: Item): void {
-  let nft = new NFT(getNFTId(collectionAddress, event.params._tokenId.toHexString()))
+  let nft = new NFT(getNFTId(collectionAddress, event.params._tokenId.toString()))
 
   let collection = Collection.load(collectionAddress)
   nft.collection = collection.id
@@ -34,10 +34,10 @@ export function handleMintNFT(event: Issue, collectionAddress: string, item: Ite
   nft.item = item.id
   nft.owner = event.params._beneficiary.toHexString()
   nft.tokenURI = item.URI + '/' + event.params._issuedId.toString()
-  nft.name = 'Token item'
   nft.image = item.URI + '/' + event.params._issuedId.toString() + '/thumbnail'
   nft.searchText = item.rawMetadata
   nft.metadata = item.metadata
+  nft.catalystEntityId = event.address.toHexString() + '-' + event.params._itemId.toString()
 
   nft.createdAt = event.block.timestamp
   nft.updatedAt = event.block.timestamp
@@ -58,7 +58,7 @@ export function handleTransferNFT(event: Transfer): void {
   }
 
   let collectionAddress = event.address.toHexString()
-  let id = getNFTId(collectionAddress, event.params.tokenId.toHexString())
+  let id = getNFTId(collectionAddress, event.params.tokenId.toString())
 
   let nft = NFT.load(id)
 
@@ -107,6 +107,9 @@ export function handleTransferWearableV1(event: ERC721Transfer): void {
     collectionMetric.save()
   }
 
+  let tokenURI = getTokenURI(event.address, event.params.tokenId)
+  let representationId = getWearableIdFromTokenURI(tokenURI)
+
   let id = getNFTId(
     event.address.toHexString(),
     event.params.tokenId.toString()
@@ -120,7 +123,8 @@ export function handleTransferWearableV1(event: ERC721Transfer): void {
   nft.contractAddress = collectionAddress
   nft.updatedAt = event.block.timestamp
   nft.itemType = itemTypes.WEARABLE
-  nft.tokenURI = getTokenURI(event.address, event.params.tokenId)
+  nft.tokenURI = tokenURI
+  nft.catalystEntityId = event.address.toHexString() + '-' + representationId
 
   if (isMint(event.params.from.toHexString())) {
     nft.createdAt = event.block.timestamp

@@ -579,6 +579,15 @@ export class NFT extends Entity {
     }
   }
 
+  get catalystEntityId(): string {
+    let value = this.get("catalystEntityId");
+    return value.toString();
+  }
+
+  set catalystEntityId(value: string) {
+    this.set("catalystEntityId", Value.fromString(value));
+  }
+
   get orders(): Array<string> | null {
     let value = this.get("orders");
     if (value === null) {

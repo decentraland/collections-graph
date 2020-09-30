@@ -243,7 +243,11 @@ export function handleSetGlobalManager(event: SetGlobalManager): void {
 }
 
 export function handleSetItemMinter(event: SetItemMinter): void {
-  let item = Item.load(event.params._itemId.toString())
+  let collectionAddress = event.address.toHexString()
+  let itemId = event.params._itemId.toString()
+  let id = getItemId(collectionAddress, itemId)
+
+  let item = Item.load(id)
 
   let minters = item.minters
 
@@ -266,7 +270,11 @@ export function handleSetItemMinter(event: SetItemMinter): void {
 }
 
 export function handleSetItemManager(event: SetItemManager): void {
-  let item = Item.load(event.params._itemId.toString())
+  let collectionAddress = event.address.toHexString()
+  let itemId = event.params._itemId.toString()
+  let id = getItemId(collectionAddress, itemId)
+
+  let item = Item.load(id)
 
   let managers = item.managers
 

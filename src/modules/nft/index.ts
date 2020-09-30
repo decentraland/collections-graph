@@ -9,8 +9,8 @@ export function isMint(to: string): boolean {
   return to == '0x0000000000000000000000000000000000000000'
 }
 
-export function getNFTId(contractAddress: string, tokenId: string): string {
-  return contractAddress + '-' + tokenId
+export function getNFTId(contractAddress: string, id: string): string {
+  return contractAddress + '-' + id
 }
 
 export function updateNFTOrderProperties(nft: NFT, order: Order): NFT {
