@@ -1,17 +1,18 @@
-import { Address, log } from '@graphprotocol/graph-ts'
+import { BigInt, Address, log } from '@graphprotocol/graph-ts'
 
-import { createAccount } from '../modules/Account'
+import { getItemId } from '../modules/Item'
+import { createAccount, ZERO_ADDRESS } from '../modules/Account'
 import { setNFTSearchFields, buildWearableV1Metadata } from '../modules/metadata'
 import * as itemTypes from '../modules/metadata/itemTypes'
-import { getWearableV1Image, getWearableIdFromTokenURI } from '../modules/metadata/wearable'
+import { getWearableV1Image, getWearableIdFromTokenURI, getWearableV1Representation } from '../modules/metadata/wearable'
 import {
   getNFTId, getTokenURI, isMint, cancelActiveOrder,
   clearNFTOrderProperties
 } from '../modules/NFT'
 import { NFT, Item, Collection, Wearable } from '../entities/schema'
-import { buildCountFromCollection, buildCountFromNFT } from '../modules/Count'
+import { buildCountFromCollection, buildCountFromNFT, buildCountFromItem } from '../modules/Count'
 import { Issue, Transfer, CollectionV2 as CollectionContract } from '../entities/templates/CollectionV2/CollectionV2'
-import { Transfer as ERC721Transfer } from '../entities/templates/ERC721/ERC721'
+import { Transfer as ERC721Transfer, AddWearable } from '../entities/templates/ERC721/ERC721'
 
 
 /**
@@ -74,20 +75,14 @@ export function handleTransferNFT(event: Transfer): void {
   nft.save()
 }
 
-
-export function handleTransferWearableV1(event: ERC721Transfer): void {
-  if (event.params.tokenId.toString() == '') {
-    return
-  }
-
+export function handleAddItemV1(event: AddWearable): void {
   let collectionAddress = event.address.toHexString()
   let collection = Collection.load(collectionAddress)
+  let collectionContract = CollectionContract.bind(Address.fromString(collectionAddress))
 
   // Create Collection
   if (collection == null) {
     // Bind contract
-    let collectionContract = CollectionContract.bind(Address.fromString(collectionAddress))
-
     collection = new Collection(collectionAddress)
 
     log.debug('Creating collection {}', [collectionAddress])
@@ -107,8 +102,53 @@ export function handleTransferWearableV1(event: ERC721Transfer): void {
     collectionMetric.save()
   }
 
+  let items = collection.items
+
+  let id = getItemId(collectionAddress, event.params._wearableId)
+  let representation = getWearableV1Representation(event.params._wearableId)
+
+  let item = new Item(id)
+  item.blockchainId = BigInt.fromI32(items == null ? 0 : items.length)
+  item.collection = collectionAddress
+  item.rarity = representation.rarity
+  item.available = event.params._maxIssuance
+  item.totalSupply = BigInt.fromI32(0)
+  item.maxSupply = item.available
+  item.price = BigInt.fromI32(0) // Not used for collections v1
+  item.beneficiary = ZERO_ADDRESS // Not used for collections v1
+  item.rawMetadata = '' // Not used for collections v1
+  item.searchIsCollectionApproved = true // Not used for collections v1
+  item.minters = [] // Not used for collections v1
+  item.managers = [] // Not used for collections v1
+  item.URI = collectionContract.baseURI() + event.params._wearableId
+
+  // Metadata and search fields are not used for collections v1
+  item.itemType = itemTypes.WEARABLE_V1
+  item.searchWearableBodyShapes = []
+  item.save()
+
+  let metric = buildCountFromItem()
+  metric.save()
+}
+
+export function handleTransferWearableV1(event: ERC721Transfer): void {
+  if (event.params.tokenId.toString() == '') {
+    return
+  }
+
+  let collectionAddress = event.address.toHexString()
+  let collection = Collection.load(collectionAddress)
+
   let tokenURI = getTokenURI(event.address, event.params.tokenId)
   let representationId = getWearableIdFromTokenURI(tokenURI)
+
+  let itemId = getItemId(event.address.toHexString(), representationId)
+  let item = Item.load(itemId)
+
+  if (item == null) {
+    log.error('No item associated for NFT {}', [representationId])
+    return
+  }
 
   let id = getNFTId(
     event.address.toHexString(),
@@ -122,9 +162,10 @@ export function handleTransferWearableV1(event: ERC721Transfer): void {
   nft.owner = event.params.to.toHex()
   nft.contractAddress = collectionAddress
   nft.updatedAt = event.block.timestamp
-  nft.itemType = itemTypes.WEARABLE
+  nft.itemType = itemTypes.WEARABLE_V2
   nft.tokenURI = tokenURI
   nft.catalystEntityId = event.address.toHexString() + '-' + representationId
+  nft.item = item.id
 
   if (isMint(event.params.from.toHexString())) {
     nft.createdAt = event.block.timestamp
@@ -143,6 +184,11 @@ export function handleTransferWearableV1(event: ERC721Transfer): void {
 
     let nftMetric = buildCountFromNFT()
     nftMetric.save()
+
+    item.available = item.available.minus(BigInt.fromI32(1))
+    item.totalSupply = item.totalSupply.plus(BigInt.fromI32(1))
+
+    item.save()
   } else {
     let oldNFT = NFT.load(id)
     if (cancelActiveOrder(oldNFT!, event.block.timestamp)) {

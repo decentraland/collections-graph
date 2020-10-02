@@ -1,12 +1,13 @@
 
 import { BigInt, log, Address } from '@graphprotocol/graph-ts'
 
-import { NFT, Order, Bid } from '../../entities/schema'
 import * as status from '../order'
+import { ZERO_ADDRESS } from '../Account'
+import { NFT, Order, Bid } from '../../entities/schema'
 import { ERC721 } from '../../entities/templates/ERC721/ERC721'
 
 export function isMint(to: string): boolean {
-  return to == '0x0000000000000000000000000000000000000000'
+  return to == ZERO_ADDRESS
 }
 
 export function getNFTId(contractAddress: string, id: string): string {

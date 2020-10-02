@@ -1,5 +1,7 @@
-import { BigInt, Address } from '@graphprotocol/graph-ts'
+import { Address } from '@graphprotocol/graph-ts'
 import { Account } from '../../entities/schema'
+
+export let ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
 export function createAccount(id: Address): void {
   let account = Account.load(id.toHex())

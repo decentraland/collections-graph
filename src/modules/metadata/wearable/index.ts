@@ -121,15 +121,9 @@ export function getWearableV1Image(wearable: Wearable): string {
   )
 }
 
-export function getWearableV1Representation(nft: NFT): WearableRepresentation {
-  // https://wearable-api.decentraland.org/v2/standards/erc721-metadata/collections/halloween_2019/wearables/funny_skull_mask/1
-  let wearableId = getWearableIdFromTokenURI(nft.tokenURI)
-
+export function getWearableV1Representation(wearableId: string): WearableRepresentation {
   if (wearableId == '') {
-    log.error('Coud not get a wearable id from tokenURI {} and nft {}', [
-      nft.tokenURI,
-      nft.id
-    ])
+    log.error('Coud not get a wearable id', [])
     return null
   }
 
@@ -159,8 +153,8 @@ export function getWearableV1Representation(nft: NFT): WearableRepresentation {
   }
 
   log.error(
-    'Coud not find a wearable for the id {} found on the tokenURI {} and nft {}',
-    [wearableId, nft.tokenURI, nft.id]
+    'Coud not find a wearable for the id {}',
+    [wearableId]
   )
   return null
 }

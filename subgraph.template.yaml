@@ -197,3 +197,5 @@ templates:
       eventHandlers:
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransferWearableV1
+        - event: AddWearable(indexed bytes32,string,uint256)
+          handler: handleAddItemV1

@@ -285,13 +285,21 @@ export class Item extends Entity {
     this.set("beneficiary", Value.fromString(value));
   }
 
-  get contentHash(): Bytes {
+  get contentHash(): Bytes | null {
     let value = this.get("contentHash");
-    return value.toBytes();
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
   }
 
-  set contentHash(value: Bytes) {
-    this.set("contentHash", Value.fromBytes(value));
+  set contentHash(value: Bytes | null) {
+    if (value === null) {
+      this.unset("contentHash");
+    } else {
+      this.set("contentHash", Value.fromBytes(value as Bytes));
+    }
   }
 
   get URI(): string {

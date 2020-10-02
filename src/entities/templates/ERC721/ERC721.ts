@@ -156,6 +156,32 @@ export class OwnershipTransferred__Params {
   }
 }
 
+export class AddWearable extends ethereum.Event {
+  get params(): AddWearable__Params {
+    return new AddWearable__Params(this);
+  }
+}
+
+export class AddWearable__Params {
+  _event: AddWearable;
+
+  constructor(event: AddWearable) {
+    this._event = event;
+  }
+
+  get _wearableIdKey(): Bytes {
+    return this._event.parameters[0].value.toBytes();
+  }
+
+  get _wearableId(): string {
+    return this._event.parameters[1].value.toString();
+  }
+
+  get _maxIssuance(): BigInt {
+    return this._event.parameters[2].value.toBigInt();
+  }
+}
+
 export class ERC721 extends ethereum.SmartContract {
   static bind(address: Address): ERC721 {
     return new ERC721("ERC721", address);
