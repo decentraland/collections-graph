@@ -108,7 +108,7 @@ export function handleAddItemV1(event: AddWearable): void {
   let representation = getWearableV1Representation(event.params._wearableId)
 
   let item = new Item(id)
-  item.blockchainId = BigInt.fromI32(items == null ? 0 : items.length)
+  item.blockchainId = BigInt.fromI32(items.length)
   item.collection = collectionAddress
   item.rarity = representation.rarity
   item.available = event.params._maxIssuance
@@ -168,17 +168,18 @@ export function handleTransferWearableV1(event: ERC721Transfer): void {
   nft.item = item.id
 
   if (isMint(event.params.from.toHexString())) {
+    nft.itemBlockchainId = item.blockchainId
     nft.createdAt = event.block.timestamp
     nft.searchText = ''
 
     let metadata = buildWearableV1Metadata(nft)
+
     nft.metadata = metadata.id
     nft.itemType = metadata.itemType
 
     let wearable = Wearable.load(metadata.wearable)
 
     nft.image = getWearableV1Image(wearable!)
-
 
     nft = setNFTSearchFields(nft)
 

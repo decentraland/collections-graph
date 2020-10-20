@@ -97,9 +97,9 @@ dataSources:
     name: CollectionV1
     network: {{network}}
     source:
-      address: '0xc1f4b0eea2bd6690930e6c66efd3e197d620b9c2'
+      address: '{{address_fist_collection_v1}}'
       abi: CollectionV2
-      startBlock: 8828687
+      startBlock: {{startBock_first_collections_v1}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3

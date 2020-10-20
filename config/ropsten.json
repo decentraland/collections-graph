@@ -5,5 +5,7 @@
   "address_bid": "0x250fa138c0a994799c7a49df3097dc71e37b3d6f",
   "startBlock_bid": 8619936,
   "address_marketplace": "0x5424912699dabaa5f2998750c1c66e73d67ad219",
-  "startBlock_marketplace": 8619936
+  "startBlock_marketplace": 8619936,
+  "address_fist_collection_v1": "0x30ae57840b0e9b8ea55334083d53d80b2cfe80e0",
+  "startBock_first_collections_v1": 7041624
 }

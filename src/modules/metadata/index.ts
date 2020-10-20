@@ -67,7 +67,7 @@ export function setItemSearchFields(item: Item): Item {
 }
 
 export function setNFTSearchFields(nft: NFT): NFT {
-  if (nft.itemType == itemTypes.WEARABLE_V2) {
+  if (nft.itemType == itemTypes.WEARABLE_V2 || nft.itemType == itemTypes.WEARABLE_V1) {
     return setNFTWearableSearchFields(nft)
   }
 
