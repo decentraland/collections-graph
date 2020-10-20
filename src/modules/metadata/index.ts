@@ -49,7 +49,7 @@ export function buildWearableV1Metadata(nft: NFT): Metadata {
 
   let wearable = buildWearableV1(nft, representation)
 
-  metadata.itemType = itemTypes.WEARABLE_V2
+  metadata.itemType = itemTypes.WEARABLE_V1
   metadata.wearable = wearable.id
 
   metadata.save()
