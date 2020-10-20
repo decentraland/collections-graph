@@ -200,6 +200,14 @@ export let moonshot_2020: Wearable[] = [
     'upper_body',
     'legendary',
     ['BaseMale', 'BaseFemale']
+  ),
+  new Wearable(
+    'moonshot_2020_golden_boots_feet',
+    'Golden Boots of Moonshot 2020',
+    'Golden Boots of Moonshot 2020 - This boots were given to the best scorer during the first Crypto World Cup Soccer Tournament in Decentraland',
+    'feet',
+    'unique',
+    ['BaseMale', 'BaseFemale']
   )
 ]
 

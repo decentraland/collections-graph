@@ -38,7 +38,7 @@ export function handleMintNFT(event: Issue, collectionAddress: string, item: Ite
   nft.image = item.URI + '/' + event.params._issuedId.toString() + '/thumbnail'
   nft.searchText = item.rawMetadata
   nft.metadata = item.metadata
-  nft.catalystEntityId = event.address.toHexString() + '-' + event.params._itemId.toString()
+  nft.catalystPointer = event.address.toHexString() + '-' + event.params._itemId.toString()
 
   nft.createdAt = event.block.timestamp
   nft.updatedAt = event.block.timestamp
@@ -164,7 +164,7 @@ export function handleTransferWearableV1(event: ERC721Transfer): void {
   nft.updatedAt = event.block.timestamp
   nft.itemType = itemTypes.WEARABLE_V2
   nft.tokenURI = tokenURI
-  nft.catalystEntityId = event.address.toHexString() + '-' + representationId
+  nft.catalystPointer = event.address.toHexString() + '-' + representationId
   nft.item = item.id
 
   if (isMint(event.params.from.toHexString())) {

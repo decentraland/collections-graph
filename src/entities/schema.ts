@@ -587,13 +587,13 @@ export class NFT extends Entity {
     }
   }
 
-  get catalystEntityId(): string {
-    let value = this.get("catalystEntityId");
+  get catalystPointer(): string {
+    let value = this.get("catalystPointer");
     return value.toString();
   }
 
-  set catalystEntityId(value: string) {
-    this.set("catalystEntityId", Value.fromString(value));
+  set catalystPointer(value: string) {
+    this.set("catalystPointer", Value.fromString(value));
   }
 
   get orders(): Array<string> | null {

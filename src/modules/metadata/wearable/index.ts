@@ -4,21 +4,36 @@ import * as categories from './categories'
 import { Item, NFT, Metadata, Wearable } from '../../../entities/schema'
 import {
   Wearable as WearableRepresentation,
+  binance_us_collection,
+  china_flying,
   community_contest,
+  cybermike_cybersoldier_set,
+  cz_mercenary_mtz,
   dappcraft_moonminer,
+  dc_meta,
+  dc_niftyblocksmith,
   dcg_collection,
   dcl_launch,
+  dg_fall_2020,
   dg_summer_2020,
   dgtble_headspace,
+  digital_alchemy,
+  ethermon_wearables,
   exclusive_masks,
   halloween_2019,
   mch_collection,
+  mf_sammichgamer,
+  ml_pekingopera,
   moonshot_2020,
+  pm_dreamverse_eminence,
   pm_outtathisworld,
   stay_safe,
+  sugarclub_yumi,
+  tech_tribal_marc0matic,
   wonderzone_meteorchaser,
-  xmas_2019,
-  binance_us_collection
+  wonderzone_steampunk,
+  wz_wonderbot,
+  xmas_2019
 } from '../../../data/wearablesV1'
 
 /**
@@ -128,21 +143,36 @@ export function getWearableV1Representation(wearableId: string): WearableReprese
   }
 
   let allCollections: WearableRepresentation[][] = [
+    binance_us_collection,
+    china_flying,
     community_contest,
+    cybermike_cybersoldier_set,
+    cz_mercenary_mtz,
     dappcraft_moonminer,
+    dc_meta,
+    dc_niftyblocksmith,
     dcg_collection,
     dcl_launch,
+    dg_fall_2020,
     dg_summer_2020,
     dgtble_headspace,
+    digital_alchemy,
+    ethermon_wearables,
     exclusive_masks,
     halloween_2019,
     mch_collection,
+    mf_sammichgamer,
+    ml_pekingopera,
     moonshot_2020,
+    pm_dreamverse_eminence,
     pm_outtathisworld,
     stay_safe,
+    sugarclub_yumi,
+    tech_tribal_marc0matic,
     wonderzone_meteorchaser,
-    xmas_2019,
-    binance_us_collection
+    wonderzone_steampunk,
+    wz_wonderbot,
+    xmas_2019
   ]
 
   for (let i = 0; i < allCollections.length; i++) {
