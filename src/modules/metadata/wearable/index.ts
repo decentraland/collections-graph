@@ -33,7 +33,8 @@ import {
   wonderzone_meteorchaser,
   wonderzone_steampunk,
   wz_wonderbot,
-  xmas_2019
+  xmas_2019,
+  wearable_test
 } from '../../../data/wearablesV1'
 
 /**
@@ -73,6 +74,8 @@ export function buildWearableV1(nft: NFT, representation: WearableRepresentation
   wearable.bodyShapes = representation.bodyShapes
 
   wearable.save()
+  // @TODO move it to another place maybe
+  nft.name = representation.name
 
   return wearable
 }
@@ -172,7 +175,8 @@ export function getWearableV1Representation(wearableId: string): WearableReprese
     wonderzone_meteorchaser,
     wonderzone_steampunk,
     wz_wonderbot,
-    xmas_2019
+    xmas_2019,
+    wearable_test
   ]
 
   for (let i = 0; i < allCollections.length; i++) {
