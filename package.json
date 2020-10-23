@@ -6,7 +6,7 @@
     "prepare:mainnet": "mustache config/mainnet.json subgraph.template.yaml > subgraph.yaml && npm run codegen",
     "prepare:ropsten": "mustache config/ropsten.json subgraph.template.yaml > subgraph.yaml && npm run codegen",
     "deploy:mainnet": "npm run prepare:mainnet && npx graph deploy --debug  --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/  decentraland/collections",
-    "deploy:ropsten": "npm run prepare:ropsten && npx graph deploy --debug  --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/  decentraland/collections_ropsten"
+    "deploy:ropsten": "npm run prepare:ropsten && npx graph deploy --debug  --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/  decentraland/collections-ropsten"
   },
   "devDependencies": {
     "@graphprotocol/graph-cli": "^0.18.0",

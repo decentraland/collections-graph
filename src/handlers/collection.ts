@@ -70,6 +70,7 @@ export function handleCollectionCreation(event: ProxyCreated): void {
   collection.isEditable = collectionContract.isEditable()
   collection.minters = []
   collection.managers = []
+  collection.itemsCount = 0
   collection.createdAt = event.block.timestamp // to support old collections
   collection.save()
 
@@ -87,6 +88,9 @@ export function handleAddItem(event: AddItem): void {
     // The ProxyCreated event is emitted right after the collection's event
     return
   }
+
+  // Count item
+  collection.itemsCount += 1
 
   // Bind contract
   let collectionContract = CollectionContract.bind(event.address)

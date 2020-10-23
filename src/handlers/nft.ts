@@ -92,9 +92,10 @@ export function handleAddItemV1(event: AddWearable): void {
     collection.symbol = collectionContract.symbol()
     collection.owner = collectionContract.owner().toHexString()
     collection.isCompleted = true
-    collection.createdAt = event.block.timestamp // Not going to be used
     collection.minters = []
     collection.managers = []
+    collection.itemsCount = 0
+    collection.createdAt = event.block.timestamp // Not going to be used
 
     collection.save()
 
@@ -102,13 +103,15 @@ export function handleAddItemV1(event: AddWearable): void {
     collectionMetric.save()
   }
 
-  let items = collection.items
+  // Count item
+  collection.itemsCount += 1
+  collection.save()
 
   let id = getItemId(collectionAddress, event.params._wearableId)
   let representation = getWearableV1Representation(event.params._wearableId)
 
   let item = new Item(id)
-  item.blockchainId = BigInt.fromI32(items.length)
+  item.blockchainId = BigInt.fromI32(collection.itemsCount)
   item.collection = collectionAddress
   item.rarity = representation.rarity
   item.available = event.params._maxIssuance

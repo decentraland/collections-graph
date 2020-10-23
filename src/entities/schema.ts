@@ -164,6 +164,15 @@ export class Collection extends Entity {
     }
   }
 
+  get itemsCount(): i32 {
+    let value = this.get("itemsCount");
+    return value.toI32();
+  }
+
+  set itemsCount(value: i32) {
+    this.set("itemsCount", Value.fromI32(value));
+  }
+
   get createdAt(): BigInt {
     let value = this.get("createdAt");
     return value.toBigInt();
