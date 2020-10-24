@@ -320,6 +320,23 @@ export class Item extends Entity {
     this.set("URI", Value.fromString(value));
   }
 
+  get image(): string | null {
+    let value = this.get("image");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set image(value: string | null) {
+    if (value === null) {
+      this.unset("image");
+    } else {
+      this.set("image", Value.fromString(value as string));
+    }
+  }
+
   get minters(): Array<string> | null {
     let value = this.get("minters");
     if (value === null) {
@@ -394,6 +411,23 @@ export class Item extends Entity {
       this.unset("nfts");
     } else {
       this.set("nfts", Value.fromStringArray(value as Array<string>));
+    }
+  }
+
+  get searchText(): string | null {
+    let value = this.get("searchText");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set searchText(value: string | null) {
+    if (value === null) {
+      this.unset("searchText");
+    } else {
+      this.set("searchText", Value.fromString(value as string));
     }
   }
 
@@ -596,6 +630,23 @@ export class NFT extends Entity {
     }
   }
 
+  get image(): string | null {
+    let value = this.get("image");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set image(value: string | null) {
+    if (value === null) {
+      this.unset("image");
+    } else {
+      this.set("image", Value.fromString(value as string));
+    }
+  }
+
   get catalystPointer(): string {
     let value = this.get("catalystPointer");
     return value.toString();
@@ -653,40 +704,6 @@ export class NFT extends Entity {
       this.unset("activeOrder");
     } else {
       this.set("activeOrder", Value.fromString(value as string));
-    }
-  }
-
-  get name(): string | null {
-    let value = this.get("name");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set name(value: string | null) {
-    if (value === null) {
-      this.unset("name");
-    } else {
-      this.set("name", Value.fromString(value as string));
-    }
-  }
-
-  get image(): string | null {
-    let value = this.get("image");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set image(value: string | null) {
-    if (value === null) {
-      this.unset("image");
-    } else {
-      this.set("image", Value.fromString(value as string));
     }
   }
 
@@ -996,13 +1013,22 @@ export class Wearable extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get representationId(): string {
-    let value = this.get("representationId");
+  get name(): string {
+    let value = this.get("name");
     return value.toString();
   }
 
-  set representationId(value: string) {
-    this.set("representationId", Value.fromString(value));
+  set name(value: string) {
+    this.set("name", Value.fromString(value));
+  }
+
+  get description(): string {
+    let value = this.get("description");
+    return value.toString();
+  }
+
+  set description(value: string) {
+    this.set("description", Value.fromString(value));
   }
 
   get collection(): string {

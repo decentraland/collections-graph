@@ -3,7 +3,7 @@ import { BigInt, Address, log } from '@graphprotocol/graph-ts'
 import { handleMintNFT, handleTransferNFT } from './nft'
 import { setItemSearchFields, buildItemMetadata } from '../modules/Metadata'
 import { buildCount, buildCountFromItem, buildCountFromCollection } from '../modules/Count'
-import { getItemId } from '../modules/Item'
+import { getItemId, getItemImage } from '../modules/Item'
 import {
   getCollectionsV1
 } from '../data/wearablesV1/addresses'
@@ -112,6 +112,7 @@ export function handleAddItem(event: AddItem): void {
   item.contentHash = contractItem.contentHash
   item.rawMetadata = contractItem.metadata
   item.searchIsCollectionApproved = collectionContract.isApproved()
+  item.image = getItemImage(item)
   item.minters = []
   item.managers = []
   item.URI = collectionContract.baseURI() + collectionAddress + '/' + itemId

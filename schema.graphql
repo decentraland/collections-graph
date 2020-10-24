@@ -27,6 +27,7 @@ type Item @entity {
   beneficiary: String!
   contentHash: Bytes
   URI: String!
+  image: String
   minters: [String!]
   managers: [String!]
   metadata: Metadata
@@ -34,6 +35,8 @@ type Item @entity {
   nfts: [NFT!] @derivedFrom(field: "item")
 
   # Searcheable fields
+  searchText: String
+
   ## Collection fields
   searchIsCollectionApproved: Boolean
 
@@ -54,14 +57,12 @@ type NFT @entity {
   itemType: ItemType!
   owner: Account!
   tokenURI: String
+  image: String
   catalystPointer: String!
 
   orders: [Order!] @derivedFrom(field: "nft") # History of all orders. Should only ever be ONE open order. all others must be cancelled or sold
   bids: [Bid!] @derivedFrom(field: "nft") # History of all bids.
   activeOrder: Order
-
-  name: String
-  image: String
 
   collection: Collection!
   item: Item
@@ -101,7 +102,8 @@ enum ItemType @entity {
 
 type Wearable @entity {
   id: ID!
-  representationId: String!
+  name: String!
+  description: String!
   collection: String!
   category: String!
   rarity: String!

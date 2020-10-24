@@ -38,7 +38,7 @@ import {
 } from '../../../data/wearablesV1'
 
 /**
- * @dev The item's rawMetadata for wearables should follow: version:item_type:representation_id:category:bodyshapes
+ * @dev The item's rawMetadata for wearables should follow: version:item_type:name:description:category:bodyshapes
  * @param item
  */
 export function buildWearableItem(item: Item): Wearable {
@@ -51,12 +51,13 @@ export function buildWearableItem(item: Item): Wearable {
     wearable = new Wearable(id)
   }
 
-  if (data.length >= 5) {
+  if (data.length >= 6) {
     wearable.collection = item.collection
-    wearable.representationId = data[2]
+    wearable.name = data[2]
+    wearable.description = data[3]
     wearable.rarity = item.rarity
-    wearable.category = data[3]
-    wearable.bodyShapes = data[4].split(',') // Could be more than one
+    wearable.category = data[4]
+    wearable.bodyShapes = data[5].split(',') // Could be more than one
   }
 
   wearable.save()
@@ -68,14 +69,13 @@ export function buildWearableV1(nft: NFT, representation: WearableRepresentation
   let wearable = new Wearable(representation.id)
 
   wearable.collection = nft.collection
-  wearable.representationId = representation.id
+  wearable.name = representation.name
+  wearable.description = representation.description
   wearable.rarity = representation.rarity
   wearable.category = representation.category
   wearable.bodyShapes = representation.bodyShapes
 
   wearable.save()
-  // @TODO move it to another place maybe
-  nft.name = representation.name
 
   return wearable
 }
@@ -84,6 +84,7 @@ export function setItemWearableSearchFields(item: Item): Item {
   let metadata = Metadata.load(item.metadata)
   let wearable = Wearable.load(metadata.wearable)
 
+  item.searchText = wearable.name + ' ' + wearable.description
   item.searchIsWearableHead = isWearableHead(wearable.category)
   item.searchIsWearableAccessory = isWearableAccessory(wearable.category)
   item.searchWearableCategory = wearable.category
@@ -97,6 +98,7 @@ export function setNFTWearableSearchFields(nft: NFT): NFT {
   let metadata = Metadata.load(nft.metadata)
   let wearable = Wearable.load(metadata.wearable)
 
+  nft.searchText = wearable.name + ' ' + wearable.description
   nft.searchIsWearableHead = isWearableHead(wearable.category)
   nft.searchIsWearableAccessory = isWearableAccessory(wearable.category)
   nft.searchWearableCategory = wearable.category
@@ -129,12 +131,12 @@ export function isWearableAccessory(category: string): boolean {
 }
 
 // Wearable V1 methods
-export function getWearableV1Image(wearable: Wearable): string {
+export function getWearableV1Image(collection: string, representationId: string): string {
   return (
     'https://wearable-api.decentraland.org/v2/collections/' +
-    wearable.collection +
+    collection +
     '/wearables/' +
-    wearable.representationId +
+    representationId +
     '/thumbnail'
   )
 }

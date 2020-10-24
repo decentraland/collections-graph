@@ -1,6 +1,6 @@
 import { BigInt, Address, log } from '@graphprotocol/graph-ts'
 
-import { getItemId } from '../modules/Item'
+import { getItemId, getItemImage } from '../modules/Item'
 import { createAccount, ZERO_ADDRESS } from '../modules/Account'
 import { setNFTSearchFields, buildWearableV1Metadata } from '../modules/metadata'
 import * as itemTypes from '../modules/metadata/itemTypes'
@@ -9,7 +9,7 @@ import {
   getNFTId, getTokenURI, isMint, cancelActiveOrder,
   clearNFTOrderProperties
 } from '../modules/NFT'
-import { NFT, Item, Collection, Wearable } from '../entities/schema'
+import { NFT, Item, Collection } from '../entities/schema'
 import { buildCountFromCollection, buildCountFromNFT, buildCountFromItem } from '../modules/Count'
 import { Issue, Transfer, CollectionV2 as CollectionContract } from '../entities/templates/CollectionV2/CollectionV2'
 import { Transfer as ERC721Transfer, AddWearable } from '../entities/templates/ERC721/ERC721'
@@ -35,8 +35,7 @@ export function handleMintNFT(event: Issue, collectionAddress: string, item: Ite
   nft.item = item.id
   nft.owner = event.params._beneficiary.toHexString()
   nft.tokenURI = item.URI + '/' + event.params._issuedId.toString()
-  nft.image = item.URI + '/' + event.params._issuedId.toString() + '/thumbnail'
-  nft.searchText = item.rawMetadata
+  nft.image = getItemImage(item)
   nft.metadata = item.metadata
   nft.catalystPointer = event.address.toHexString() + '-' + event.params._itemId.toString()
 
@@ -165,7 +164,7 @@ export function handleTransferWearableV1(event: ERC721Transfer): void {
   nft.owner = event.params.to.toHex()
   nft.contractAddress = collectionAddress
   nft.updatedAt = event.block.timestamp
-  nft.itemType = itemTypes.WEARABLE_V2
+  nft.itemType = itemTypes.WEARABLE_V1
   nft.tokenURI = tokenURI
   nft.catalystPointer = event.address.toHexString() + '-' + representationId
   nft.item = item.id
@@ -180,9 +179,7 @@ export function handleTransferWearableV1(event: ERC721Transfer): void {
     nft.metadata = metadata.id
     nft.itemType = metadata.itemType
 
-    let wearable = Wearable.load(metadata.wearable)
-
-    nft.image = getWearableV1Image(wearable!)
+    nft.image = getWearableV1Image(collectionAddress, representationId)
 
     nft = setNFTSearchFields(nft)
 
