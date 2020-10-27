@@ -179,7 +179,7 @@ export function handleTransferWearableV1(event: ERC721Transfer): void {
     nft.metadata = metadata.id
     nft.itemType = metadata.itemType
 
-    nft.image = getWearableV1Image(collectionAddress, representationId)
+    nft.image = getWearableV1Image(nft)
 
     nft = setNFTSearchFields(nft)
 
