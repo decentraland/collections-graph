@@ -112,10 +112,10 @@ export function handleAddItem(event: AddItem): void {
   item.contentHash = contractItem.contentHash
   item.rawMetadata = contractItem.metadata
   item.searchIsCollectionApproved = collectionContract.isApproved()
+  item.URI = collectionContract.baseURI() + collectionAddress + '/' + itemId
   item.image = getItemImage(item)
   item.minters = []
   item.managers = []
-  item.URI = collectionContract.baseURI() + collectionAddress + '/' + itemId
 
   let metadata = buildItemMetadata(item)
 
