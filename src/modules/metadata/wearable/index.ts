@@ -34,7 +34,8 @@ import {
   wonderzone_steampunk,
   wz_wonderbot,
   xmas_2019,
-  wearable_test
+  halloween_2020,
+  wearable_test,
 } from '../../../data/wearablesV1'
 
 /**
@@ -178,6 +179,7 @@ export function getWearableV1Representation(wearableId: string): WearableReprese
     wonderzone_steampunk,
     wz_wonderbot,
     xmas_2019,
+    halloween_2020,
     wearable_test
   ]
 
