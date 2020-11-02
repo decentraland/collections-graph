@@ -1,7 +1,7 @@
 import { log } from '@graphprotocol/graph-ts'
 
 import * as categories from './categories'
-import { Item, NFT, Metadata, Wearable } from '../../../entities/schema'
+import { Collection, Item, NFT, Metadata, Wearable } from '../../../entities/schema'
 import {
   Wearable as WearableRepresentation,
   binance_us_collection,
@@ -66,10 +66,10 @@ export function buildWearableItem(item: Item): Wearable {
   return wearable!
 }
 
-export function buildWearableV1(nft: NFT, representation: WearableRepresentation): Wearable {
+export function buildWearableV1(item: Item, representation: WearableRepresentation): Wearable {
   let wearable = new Wearable(representation.id)
 
-  wearable.collection = nft.collection
+  wearable.collection = item.collection
   wearable.name = representation.name
   wearable.description = representation.description
   wearable.rarity = representation.rarity
@@ -132,19 +132,31 @@ export function isWearableAccessory(category: string): boolean {
 }
 
 // Wearable V1 methods
-export function getWearableV1Image(nft: NFT): string {
-  // https://wearable-api.decentraland.org/v2/standards/erc721-metadata/collections/halloween_2019/wearables/funny_skull_mask/1
-  // or
-  // dcl://halloween_2019/vampire_feet/55
+export function getWearableV1Image(collection: Collection, item: Item, wearable: string): string {
+  let collectionName = collection.name.split('//')
 
-  let URI = nft.tokenURI.split('/')
-  return (
-    'https://wearable-api.decentraland.org/v2/collections/' +
-    URI[URI.length - 4] +
-    '/wearables/' +
-    URI[URI.length - 2] +
-    '/thumbnail'
-  )
+  // Mainnet collections v1. Example dcl://halloween_2019
+  if (collectionName.length == 2) {
+    return 'https://wearable-api.decentraland.org/v2/collections/' +
+      collectionName[1] +
+      '/wearables/' +
+      wearable +
+      '/thumbnail'
+  }
+
+  // Ropsten collections v1
+  // https://wearable-api.decentraland.org/v2/standards/erc721-metadata/collections/halloween_2019/wearables/funny_skull_mask
+  let itemURI = item.URI.split('/')
+  if (itemURI.length == 10) {
+    return 'https://wearable-api.decentraland.org/v2/collections/' +
+      itemURI[itemURI.length - 3] +
+      '/wearables/' +
+      wearable +
+      '/thumbnail'
+  }
+
+
+  return ''
 }
 
 export function getWearableV1Representation(wearableId: string): WearableRepresentation {
