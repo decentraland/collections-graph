@@ -1,7 +1,7 @@
 import { log } from '@graphprotocol/graph-ts'
 
 import * as categories from './categories'
-import { Item, NFT, Metadata, Wearable } from '../../../entities/schema'
+import { Collection, Item, NFT, Metadata, Wearable } from '../../../entities/schema'
 import {
   Wearable as WearableRepresentation,
   binance_us_collection,
@@ -34,11 +34,12 @@ import {
   wonderzone_steampunk,
   wz_wonderbot,
   xmas_2019,
-  wearable_test
+  halloween_2020,
+  wearable_test,
 } from '../../../data/wearablesV1'
 
 /**
- * @dev The item's rawMetadata for wearables should follow: version:item_type:representation_id:category:bodyshapes
+ * @dev The item's rawMetadata for wearables should follow: version:item_type:name:description:category:bodyshapes
  * @param item
  */
 export function buildWearableItem(item: Item): Wearable {
@@ -51,12 +52,13 @@ export function buildWearableItem(item: Item): Wearable {
     wearable = new Wearable(id)
   }
 
-  if (data.length >= 5) {
+  if (data.length >= 6) {
     wearable.collection = item.collection
-    wearable.representationId = data[2]
+    wearable.name = data[2]
+    wearable.description = data[3]
     wearable.rarity = item.rarity
-    wearable.category = data[3]
-    wearable.bodyShapes = data[4].split(',') // Could be more than one
+    wearable.category = data[4]
+    wearable.bodyShapes = data[5].split(',') // Could be more than one
   }
 
   wearable.save()
@@ -64,18 +66,17 @@ export function buildWearableItem(item: Item): Wearable {
   return wearable!
 }
 
-export function buildWearableV1(nft: NFT, representation: WearableRepresentation): Wearable {
+export function buildWearableV1(item: Item, representation: WearableRepresentation): Wearable {
   let wearable = new Wearable(representation.id)
 
-  wearable.collection = nft.collection
-  wearable.representationId = representation.id
+  wearable.collection = item.collection
+  wearable.name = representation.name
+  wearable.description = representation.description
   wearable.rarity = representation.rarity
   wearable.category = representation.category
   wearable.bodyShapes = representation.bodyShapes
 
   wearable.save()
-  // @TODO move it to another place maybe
-  nft.name = representation.name
 
   return wearable
 }
@@ -84,6 +85,7 @@ export function setItemWearableSearchFields(item: Item): Item {
   let metadata = Metadata.load(item.metadata)
   let wearable = Wearable.load(metadata.wearable)
 
+  item.searchText = wearable.name + ' ' + wearable.description
   item.searchIsWearableHead = isWearableHead(wearable.category)
   item.searchIsWearableAccessory = isWearableAccessory(wearable.category)
   item.searchWearableCategory = wearable.category
@@ -97,6 +99,7 @@ export function setNFTWearableSearchFields(nft: NFT): NFT {
   let metadata = Metadata.load(nft.metadata)
   let wearable = Wearable.load(metadata.wearable)
 
+  nft.searchText = wearable.name + ' ' + wearable.description
   nft.searchIsWearableHead = isWearableHead(wearable.category)
   nft.searchIsWearableAccessory = isWearableAccessory(wearable.category)
   nft.searchWearableCategory = wearable.category
@@ -129,14 +132,31 @@ export function isWearableAccessory(category: string): boolean {
 }
 
 // Wearable V1 methods
-export function getWearableV1Image(wearable: Wearable): string {
-  return (
-    'https://wearable-api.decentraland.org/v2/collections/' +
-    wearable.collection +
-    '/wearables/' +
-    wearable.representationId +
-    '/thumbnail'
-  )
+export function getWearableV1Image(collection: Collection, item: Item, wearable: string): string {
+  let collectionName = collection.name.split('//')
+
+  // Mainnet collections v1. Example dcl://halloween_2019
+  if (collectionName.length == 2) {
+    return 'https://wearable-api.decentraland.org/v2/collections/' +
+      collectionName[1] +
+      '/wearables/' +
+      wearable +
+      '/thumbnail'
+  }
+
+  // Ropsten collections v1
+  // https://wearable-api.decentraland.org/v2/standards/erc721-metadata/collections/halloween_2019/wearables/funny_skull_mask
+  let itemURI = item.URI.split('/')
+  if (itemURI.length == 10) {
+    return 'https://wearable-api.decentraland.org/v2/collections/' +
+      itemURI[itemURI.length - 3] +
+      '/wearables/' +
+      wearable +
+      '/thumbnail'
+  }
+
+
+  return ''
 }
 
 export function getWearableV1Representation(wearableId: string): WearableRepresentation {
@@ -176,6 +196,7 @@ export function getWearableV1Representation(wearableId: string): WearableReprese
     wonderzone_steampunk,
     wz_wonderbot,
     xmas_2019,
+    halloween_2020,
     wearable_test
   ]
 

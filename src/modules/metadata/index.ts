@@ -4,10 +4,9 @@ import {
   setNFTWearableSearchFields,
   setItemWearableSearchFields,
   buildWearableItem,
-  buildWearableV1,
-  getWearableV1Representation,
-  getWearableIdFromTokenURI
+  buildWearableV1
 } from './wearable'
+import { Wearable as WearableRepresentation } from '../../data/wearablesV1'
 
 /**
  * @notice the item's metadata must follow: version:item_type:representation_id:data
@@ -41,13 +40,10 @@ export function buildItemMetadata(item: Item): Metadata {
 }
 
 
-export function buildWearableV1Metadata(nft: NFT): Metadata {
-  let wearableId = getWearableIdFromTokenURI(nft.tokenURI)
-  let representation = getWearableV1Representation(wearableId)
-
+export function buildWearableV1Metadata(item: Item, representation: WearableRepresentation): Metadata {
   let metadata = new Metadata(representation.id)
 
-  let wearable = buildWearableV1(nft, representation)
+  let wearable = buildWearableV1(item, representation)
 
   metadata.itemType = itemTypes.WEARABLE_V1
   metadata.wearable = wearable.id
@@ -59,7 +55,7 @@ export function buildWearableV1Metadata(nft: NFT): Metadata {
 
 
 export function setItemSearchFields(item: Item): Item {
-  if (item.itemType == itemTypes.WEARABLE_V2) {
+  if (item.itemType == itemTypes.WEARABLE_V2 || item.itemType == itemTypes.WEARABLE_V1) {
     return setItemWearableSearchFields(item)
   }
 

@@ -32,6 +32,7 @@ export let DigitalAlchemy = '0x5cf39e64392c615fd8086838883958752a11b486'
 export let CZMercenaryMTZ = '0xc3ca6c364b854fd0a653a43f8344f8c22ddfdd26'
 export let WonderzoneSteampunk = '0xb96697fa4a3361ba35b774a42c58daccaad1b8e1'
 export let DCNiftyblocksmith = '0x102daabd1e9d294d4436ec4c521dce7b1f15499e'
+export let Halloween2020Collection = '0xfeb52cbf71b9adac957c6f948a6cf9980ac8c907'
 
 export function getCollectionsV1(): string[] {
   return [
@@ -66,5 +67,6 @@ export function getCollectionsV1(): string[] {
     CZMercenaryMTZ,
     WonderzoneSteampunk,
     DCNiftyblocksmith,
+    Halloween2020Collection
   ]
 }
