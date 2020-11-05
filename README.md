@@ -1,7 +1,7 @@
 # Decentraland collections graph
 
 - Mainnet: https://thegraph.com/explorer/subgraph/decentraland/collections
-- Ropsten: https://thegraph.com/explorer/subgraph/decentraland/collections_ropsten
+- Ropsten: https://thegraph.com/explorer/subgraph/decentraland/collections-ropsten
 
 ### Install
 
