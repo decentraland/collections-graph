@@ -5,15 +5,21 @@ import {
   BidCancelled
 } from '../entities/ERC721Bid/ERC721Bid'
 import { Bid, NFT } from '../entities/schema'
-import { getNFTId, cancelActiveBids } from '../modules/NFT'
+import { getNFTId } from '../modules/NFT'
 import * as status from '../modules/Order'
+import { getBidId } from '../modules/Bid'
 
 export function handleBidCreated(event: BidCreated): void {
   let nftId = getNFTId(
     event.params._tokenAddress.toHexString(),
     event.params._tokenId.toString()
   )
-  let id = event.params._id.toHex()
+
+  let id = getBidId(
+    event.params._tokenAddress.toHexString(),
+    event.params._tokenId.toString(),
+    event.params._bidder.toHexString()
+  )
 
   let bid = new Bid(id)
 
@@ -27,6 +33,7 @@ export function handleBidCreated(event: BidCreated): void {
   bid.nftAddress = event.params._tokenAddress
   bid.bidder = event.params._bidder
   bid.price = event.params._price
+  bid.blockchainId = event.params._id.toHexString()
   bid.blockNumber = event.block.number
   bid.expiresAt = event.params._expiresAt.times(BigInt.fromI32(1000))
   bid.createdAt = event.block.timestamp
@@ -36,8 +43,6 @@ export function handleBidCreated(event: BidCreated): void {
   bid.seller = Address.fromString(nft.owner)
 
   bid.save()
-
-  cancelActiveBids(nft!, event.block.timestamp)
 }
 
 export function handleBidAccepted(event: BidAccepted): void {

@@ -2,9 +2,9 @@ import { BigInt, Address, log } from '@graphprotocol/graph-ts'
 
 import { getItemId } from '../modules/Item'
 import { createAccount, ZERO_ADDRESS } from '../modules/Account'
-import { setItemSearchFields, setNFTSearchFields, buildWearableV1Metadata } from '../modules/metadata'
-import * as itemTypes from '../modules/metadata/itemTypes'
-import { getWearableV1Image, getWearableIdFromTokenURI, getWearableV1Representation } from '../modules/metadata/wearable'
+import { setItemSearchFields, setNFTSearchFields, buildWearableV1Metadata } from '../modules/Metadata'
+import * as itemTypes from '../modules/Metadata/itemTypes'
+import { getWearableV1Image, getWearableIdFromTokenURI, getWearableV1Representation } from '../modules/Metadata/wearable'
 import {
   getNFTId, getTokenURI, isMint, cancelActiveOrder,
   clearNFTOrderProperties

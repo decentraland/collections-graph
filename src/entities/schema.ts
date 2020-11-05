@@ -1335,6 +1335,15 @@ export class Bid extends Entity {
     this.set("nftAddress", Value.fromBytes(value));
   }
 
+  get blockchainId(): string {
+    let value = this.get("blockchainId");
+    return value.toString();
+  }
+
+  set blockchainId(value: string) {
+    this.set("blockchainId", Value.fromString(value));
+  }
+
   get bidder(): Bytes | null {
     let value = this.get("bidder");
     if (value === null) {
