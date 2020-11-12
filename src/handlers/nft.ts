@@ -4,7 +4,7 @@ import { getItemId } from '../modules/Item'
 import { createAccount, ZERO_ADDRESS } from '../modules/Account'
 import { setItemSearchFields, setNFTSearchFields, buildWearableV1Metadata } from '../modules/Metadata'
 import * as itemTypes from '../modules/Metadata/itemTypes'
-import { getWearableV1Image, getWearableIdFromTokenURI, getWearableV1Representation } from '../modules/Metadata/wearable'
+import { getWearableV1Image, getWearableIdFromTokenURI, getWearableV1Representation, getIssuedIdFromTokenURI } from '../modules/Metadata/wearable'
 import {
   getNFTId, getTokenURI, isMint, cancelActiveOrder,
   clearNFTOrderProperties
@@ -174,6 +174,7 @@ export function handleTransferWearableV1(event: ERC721Transfer): void {
 
   if (isMint(event.params.from.toHexString())) {
     nft.itemBlockchainId = item.blockchainId
+    nft.issuedId = BigInt.fromI32(getIssuedIdFromTokenURI(tokenURI) as i32)
     nft.metadata = item.metadata
     nft.itemType = item.itemType
     nft.image = item.image

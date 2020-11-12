@@ -228,6 +228,21 @@ export function getWearableIdFromTokenURI(tokenURI: string): string {
   return ''
 }
 
+
+export function getIssuedIdFromTokenURI(tokenURI: string): number {
+  let splitted = tokenURI.split('/')
+
+  // https://wearable-api.decentraland.org/v2/standards/erc721-metadata/collections/halloween_2019/wearables/funny_skull_mask/1
+  // or
+  // dcl://halloween_2019/vampire_feet/55
+  if (splitted.length == 11 || splitted.length == 5) {
+    let issuedId = splitted.slice(-1)
+    return parseInt(issuedId[0], 10)
+  }
+
+  return 0
+}
+
 function findWearable(id: string, collection: WearableRepresentation[]): WearableRepresentation {
   for (let i = 0; i < collection.length; i++) {
     let wearable = collection[i]
