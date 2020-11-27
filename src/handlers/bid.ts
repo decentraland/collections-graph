@@ -41,7 +41,6 @@ export function handleBidCreated(event: BidCreated): void {
 
   bid.nft = nftId
   bid.seller = Address.fromString(nft.owner)
-
   bid.save()
 
   nft.updatedAt = event.block.timestamp
@@ -69,11 +68,10 @@ export function handleBidAccepted(event: BidAccepted): void {
   bid.seller = event.params._seller
   bid.blockNumber = event.block.number
   bid.updatedAt = event.block.timestamp
+  bid.save()
 
   nft.updatedAt = event.block.timestamp
   nft.save()
-
-  bid.save()
 }
 
 export function handleBidCancelled(event: BidCancelled): void {
@@ -96,9 +94,8 @@ export function handleBidCancelled(event: BidCancelled): void {
   bid.status = status.CANCELLED
   bid.blockNumber = event.block.number
   bid.updatedAt = event.block.timestamp
+  bid.save()
 
   nft.updatedAt = event.block.timestamp
   nft.save()
-
-  bid.save()
 }
