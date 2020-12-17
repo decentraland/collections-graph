@@ -35,6 +35,11 @@ import {
   wz_wonderbot,
   xmas_2019,
   halloween_2020,
+  xmas_2020,
+  xmash_up_2020,
+  release_the_kraken,
+  threelau_basics,
+  meme_dontbuythis,
   wearable_test,
 } from '../../../data/wearablesV1'
 
@@ -197,6 +202,11 @@ export function getWearableV1Representation(wearableId: string): WearableReprese
     wz_wonderbot,
     xmas_2019,
     halloween_2020,
+    xmas_2020,
+    xmash_up_2020,
+    release_the_kraken,
+    threelau_basics,
+    meme_dontbuythis,
     wearable_test
   ]
 

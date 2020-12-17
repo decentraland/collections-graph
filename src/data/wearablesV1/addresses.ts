@@ -33,6 +33,11 @@ export let CZMercenaryMTZ = '0xc3ca6c364b854fd0a653a43f8344f8c22ddfdd26'
 export let WonderzoneSteampunk = '0xb96697fa4a3361ba35b774a42c58daccaad1b8e1'
 export let DCNiftyblocksmith = '0x102daabd1e9d294d4436ec4c521dce7b1f15499e'
 export let Halloween2020Collection = '0xfeb52cbf71b9adac957c6f948a6cf9980ac8c907'
+export let ThreeLAUBasics = '0xe1ecb4e5130f493551c7d6df96ad19e5b431a0a9'
+export let Xmas2020Collection = '0xecf073f91101ce5628669c487aee8f5822a101b1'
+export let XmashUp2020 = '0xdd9c7bc159dacb19c9f6b9d7e23948c87aa2397f'
+export let ReleaseTheKraken = '0xffc5043d9a00865d089d5eefa5b3d1625aec6763'
+export let MemeDontBuyThis = '0x1a57f6afc902d25792c53b8f19b7e17ef84222d5'
 
 export function getCollectionsV1(): string[] {
   return [
@@ -67,6 +72,11 @@ export function getCollectionsV1(): string[] {
     CZMercenaryMTZ,
     WonderzoneSteampunk,
     DCNiftyblocksmith,
-    Halloween2020Collection
+    Halloween2020Collection,
+    Xmas2020Collection,
+    XmashUp2020,
+    ThreeLAUBasics,
+    ReleaseTheKraken,
+    MemeDontBuyThis,
   ]
 }
