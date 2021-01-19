@@ -431,6 +431,23 @@ export class Item extends Entity {
     }
   }
 
+  get searchItemType(): string | null {
+    let value = this.get("searchItemType");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set searchItemType(value: string | null) {
+    if (value === null) {
+      this.unset("searchItemType");
+    } else {
+      this.set("searchItemType", Value.fromString(value as string));
+    }
+  }
+
   get searchIsCollectionApproved(): boolean {
     let value = this.get("searchIsCollectionApproved");
     return value.toBoolean();
@@ -782,6 +799,23 @@ export class NFT extends Entity {
       this.unset("searchText");
     } else {
       this.set("searchText", Value.fromString(value as string));
+    }
+  }
+
+  get searchItemType(): string | null {
+    let value = this.get("searchItemType");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set searchItemType(value: string | null) {
+    if (value === null) {
+      this.unset("searchItemType");
+    } else {
+      this.set("searchItemType", Value.fromString(value as string));
     }
   }
 

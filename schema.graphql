@@ -36,6 +36,7 @@ type Item @entity {
 
   # Searcheable fields
   searchText: String
+  searchItemType: String
 
   ## Collection fields
   searchIsCollectionApproved: Boolean
@@ -73,6 +74,7 @@ type NFT @entity {
 
   # Searcheable fields
   searchText: String
+  searchItemType: String
 
   ## Wearables search fields
   searchIsWearableHead: Boolean

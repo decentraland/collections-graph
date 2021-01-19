@@ -169,8 +169,10 @@ export function handleTransferWearableV1(event: ERC721Transfer): void {
   nft.updatedAt = event.block.timestamp
   nft.itemType = itemTypes.WEARABLE_V1
   nft.tokenURI = tokenURI
-  nft.catalystPointer = collection.name + '-' + representationId
   nft.item = item.id
+
+  let collectionName = collection.name.split('dcl://')
+  nft.catalystPointer = (collectionName.length > 1 ? collectionName[1] : collectionName[0]) + '-' + representationId
 
   if (isMint(event.params.from.toHexString())) {
     nft.itemBlockchainId = item.blockchainId

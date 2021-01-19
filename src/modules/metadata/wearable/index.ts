@@ -91,6 +91,7 @@ export function setItemWearableSearchFields(item: Item): Item {
   let wearable = Wearable.load(metadata.wearable)
 
   item.searchText = wearable.name + ' ' + wearable.description
+  item.searchItemType = item.itemType
   item.searchIsWearableHead = isWearableHead(wearable.category)
   item.searchIsWearableAccessory = isWearableAccessory(wearable.category)
   item.searchWearableCategory = wearable.category
@@ -105,6 +106,7 @@ export function setNFTWearableSearchFields(nft: NFT): NFT {
   let wearable = Wearable.load(metadata.wearable)
 
   nft.searchText = wearable.name + ' ' + wearable.description
+  nft.searchItemType = nft.itemType
   nft.searchIsWearableHead = isWearableHead(wearable.category)
   nft.searchIsWearableAccessory = isWearableAccessory(wearable.category)
   nft.searchWearableCategory = wearable.category
