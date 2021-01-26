@@ -1,0 +1,18 @@
+on:
+  pull_request:
+  push:
+
+name: Build and Test
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Use Node.js 14.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+      - name: Install node dependencies
+        run: npm install
+      - name: Build
+        run: npm run prepare:ropsten

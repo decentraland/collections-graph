@@ -44,7 +44,7 @@ export class Collection extends Entity {
 
   get items(): Array<string> | null {
     let value = this.get("items");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toStringArray();
@@ -70,7 +70,7 @@ export class Collection extends Entity {
 
   get creator(): string | null {
     let value = this.get("creator");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toString();
@@ -132,7 +132,7 @@ export class Collection extends Entity {
 
   get minters(): Array<string> | null {
     let value = this.get("minters");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toStringArray();
@@ -149,7 +149,7 @@ export class Collection extends Entity {
 
   get managers(): Array<string> | null {
     let value = this.get("managers");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toStringArray();
@@ -296,7 +296,7 @@ export class Item extends Entity {
 
   get contentHash(): Bytes | null {
     let value = this.get("contentHash");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toBytes();
@@ -322,7 +322,7 @@ export class Item extends Entity {
 
   get image(): string | null {
     let value = this.get("image");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toString();
@@ -339,7 +339,7 @@ export class Item extends Entity {
 
   get minters(): Array<string> | null {
     let value = this.get("minters");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toStringArray();
@@ -356,7 +356,7 @@ export class Item extends Entity {
 
   get managers(): Array<string> | null {
     let value = this.get("managers");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toStringArray();
@@ -373,7 +373,7 @@ export class Item extends Entity {
 
   get metadata(): string | null {
     let value = this.get("metadata");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toString();
@@ -399,7 +399,7 @@ export class Item extends Entity {
 
   get nfts(): Array<string> | null {
     let value = this.get("nfts");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toStringArray();
@@ -416,7 +416,7 @@ export class Item extends Entity {
 
   get searchText(): string | null {
     let value = this.get("searchText");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toString();
@@ -433,7 +433,7 @@ export class Item extends Entity {
 
   get searchItemType(): string | null {
     let value = this.get("searchItemType");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toString();
@@ -477,7 +477,7 @@ export class Item extends Entity {
 
   get searchWearableCategory(): string | null {
     let value = this.get("searchWearableCategory");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toString();
@@ -494,7 +494,7 @@ export class Item extends Entity {
 
   get searchWearableRarity(): string | null {
     let value = this.get("searchWearableRarity");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toString();
@@ -511,7 +511,7 @@ export class Item extends Entity {
 
   get searchWearableBodyShapes(): Array<string> | null {
     let value = this.get("searchWearableBodyShapes");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toStringArray();
@@ -580,7 +580,7 @@ export class NFT extends Entity {
 
   get itemBlockchainId(): BigInt | null {
     let value = this.get("itemBlockchainId");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toBigInt();
@@ -597,7 +597,7 @@ export class NFT extends Entity {
 
   get issuedId(): BigInt | null {
     let value = this.get("issuedId");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toBigInt();
@@ -632,7 +632,7 @@ export class NFT extends Entity {
 
   get tokenURI(): string | null {
     let value = this.get("tokenURI");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toString();
@@ -649,7 +649,7 @@ export class NFT extends Entity {
 
   get image(): string | null {
     let value = this.get("image");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toString();
@@ -673,9 +673,18 @@ export class NFT extends Entity {
     this.set("catalystPointer", Value.fromString(value));
   }
 
+  get urn(): string {
+    let value = this.get("urn");
+    return value.toString();
+  }
+
+  set urn(value: string) {
+    this.set("urn", Value.fromString(value));
+  }
+
   get orders(): Array<string> | null {
     let value = this.get("orders");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toStringArray();
@@ -692,7 +701,7 @@ export class NFT extends Entity {
 
   get bids(): Array<string> | null {
     let value = this.get("bids");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toStringArray();
@@ -709,7 +718,7 @@ export class NFT extends Entity {
 
   get activeOrder(): string | null {
     let value = this.get("activeOrder");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toString();
@@ -735,7 +744,7 @@ export class NFT extends Entity {
 
   get item(): string | null {
     let value = this.get("item");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toString();
@@ -752,7 +761,7 @@ export class NFT extends Entity {
 
   get metadata(): string | null {
     let value = this.get("metadata");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toString();
@@ -787,7 +796,7 @@ export class NFT extends Entity {
 
   get searchText(): string | null {
     let value = this.get("searchText");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toString();
@@ -804,7 +813,7 @@ export class NFT extends Entity {
 
   get searchItemType(): string | null {
     let value = this.get("searchItemType");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toString();
@@ -839,7 +848,7 @@ export class NFT extends Entity {
 
   get searchWearableCategory(): string | null {
     let value = this.get("searchWearableCategory");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toString();
@@ -856,7 +865,7 @@ export class NFT extends Entity {
 
   get searchWearableRarity(): string | null {
     let value = this.get("searchWearableRarity");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toString();
@@ -873,7 +882,7 @@ export class NFT extends Entity {
 
   get searchWearableBodyShapes(): Array<string> | null {
     let value = this.get("searchWearableBodyShapes");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toStringArray();
@@ -893,7 +902,7 @@ export class NFT extends Entity {
 
   get searchOrderStatus(): string | null {
     let value = this.get("searchOrderStatus");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toString();
@@ -910,7 +919,7 @@ export class NFT extends Entity {
 
   get searchOrderPrice(): BigInt | null {
     let value = this.get("searchOrderPrice");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toBigInt();
@@ -927,7 +936,7 @@ export class NFT extends Entity {
 
   get searchOrderExpiresAt(): BigInt | null {
     let value = this.get("searchOrderExpiresAt");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toBigInt();
@@ -944,7 +953,7 @@ export class NFT extends Entity {
 
   get searchOrderCreatedAt(): BigInt | null {
     let value = this.get("searchOrderCreatedAt");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toBigInt();
@@ -1001,7 +1010,7 @@ export class Metadata extends Entity {
 
   get wearable(): string | null {
     let value = this.get("wearable");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toString();
@@ -1094,7 +1103,7 @@ export class Wearable extends Entity {
 
   get bodyShapes(): Array<string> | null {
     let value = this.get("bodyShapes");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toStringArray();
@@ -1151,7 +1160,7 @@ export class Account extends Entity {
 
   get nfts(): Array<string> | null {
     let value = this.get("nfts");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toStringArray();
@@ -1199,7 +1208,7 @@ export class Order extends Entity {
 
   get nft(): string | null {
     let value = this.get("nft");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toString();
@@ -1243,7 +1252,7 @@ export class Order extends Entity {
 
   get buyer(): Bytes | null {
     let value = this.get("buyer");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toBytes();
@@ -1345,7 +1354,7 @@ export class Bid extends Entity {
 
   get nft(): string | null {
     let value = this.get("nft");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toString();
@@ -1380,7 +1389,7 @@ export class Bid extends Entity {
 
   get bidder(): Bytes | null {
     let value = this.get("bidder");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toBytes();
@@ -1397,7 +1406,7 @@ export class Bid extends Entity {
 
   get seller(): Bytes | null {
     let value = this.get("seller");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toBytes();

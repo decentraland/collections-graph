@@ -1,4 +1,4 @@
-import { BigInt, Address, log } from '@graphprotocol/graph-ts'
+import { BigInt, Address, log, dataSource } from '@graphprotocol/graph-ts'
 
 import { getItemId } from '../modules/Item'
 import { createAccount, ZERO_ADDRESS } from '../modules/Account'
@@ -14,6 +14,7 @@ import { buildCountFromCollection, buildCountFromNFT, buildCountFromItem } from 
 import { Issue, Transfer, CollectionV2 as CollectionContract } from '../entities/templates/CollectionV2/CollectionV2'
 import { Transfer as ERC721Transfer, AddWearable } from '../entities/templates/ERC721/ERC721'
 
+let usedNetwork = dataSource.network() == "mainnet" ? "ethereum" : dataSource.network();
 
 /**
  * @notice mint an NFT by a collection v2 issue event
@@ -38,6 +39,7 @@ export function handleMintNFT(event: Issue, collectionAddress: string, item: Ite
   nft.image = item.image
   nft.metadata = item.metadata
   nft.catalystPointer = event.address.toHexString() + '-' + event.params._itemId.toString()
+  nft.urn = 'urn:decentraland:' + usedNetwork + ':collections:v1:' + event.address.toHexString() + ':' + event.params._itemId.toString()
 
   nft.createdAt = event.block.timestamp
   nft.updatedAt = event.block.timestamp
