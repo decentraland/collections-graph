@@ -59,7 +59,7 @@ type NFT @entity {
   owner: Account!
   tokenURI: String
   image: String
-  catalystPointer: String!
+  urn: String!
 
   orders: [Order!] @derivedFrom(field: "nft") # History of all orders. Should only ever be ONE open order. all others must be cancelled or sold
   bids: [Bid!] @derivedFrom(field: "nft") # History of all bids.

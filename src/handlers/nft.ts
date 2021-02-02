@@ -1,5 +1,6 @@
 import { BigInt, Address, log } from '@graphprotocol/graph-ts'
 
+import { getNetwork } from '../modules/Network'
 import { getItemId } from '../modules/Item'
 import { createAccount, ZERO_ADDRESS } from '../modules/Account'
 import { setItemSearchFields, setNFTSearchFields, buildWearableV1Metadata } from '../modules/Metadata'
@@ -37,7 +38,7 @@ export function handleMintNFT(event: Issue, collectionAddress: string, item: Ite
   nft.tokenURI = item.URI + '/' + event.params._issuedId.toString()
   nft.image = item.image
   nft.metadata = item.metadata
-  nft.catalystPointer = event.address.toHexString() + '-' + event.params._itemId.toString()
+  nft.urn = 'urn:decentraland:' + getNetwork() + ':collections-v1:' + event.address.toHexString() + ':' + event.params._itemId.toString()
 
   nft.createdAt = event.block.timestamp
   nft.updatedAt = event.block.timestamp
@@ -172,7 +173,7 @@ export function handleTransferWearableV1(event: ERC721Transfer): void {
   nft.item = item.id
 
   let collectionName = collection.name.split('dcl://')
-  nft.catalystPointer = (collectionName.length > 1 ? collectionName[1] : collectionName[0]) + '-' + representationId
+  nft.urn = 'urn:decentraland:' + getNetwork() + ':collections-v2:' + (collectionName.length > 1 ? collectionName[1] : collectionName[0]) + ':' + representationId
 
   if (isMint(event.params.from.toHexString())) {
     nft.itemBlockchainId = item.blockchainId
