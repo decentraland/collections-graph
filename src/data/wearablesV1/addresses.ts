@@ -38,6 +38,9 @@ export let Xmas2020Collection = '0xecf073f91101ce5628669c487aee8f5822a101b1'
 export let XmashUp2020 = '0xdd9c7bc159dacb19c9f6b9d7e23948c87aa2397f'
 export let ReleaseTheKraken = '0xffc5043d9a00865d089d5eefa5b3d1625aec6763'
 export let MemeDontBuyThis = '0x1a57f6afc902d25792c53b8f19b7e17ef84222d5'
+export let MLLiondance = '0x0b1c6c75d511fae05e7dc696f4cf14129a9c43c9'
+export let AtariLaunch = '0x4c290f486bae507719c562b6b524bdb71a2570c9'
+
 
 export function getCollectionsV1(): string[] {
   return [
@@ -78,5 +81,7 @@ export function getCollectionsV1(): string[] {
     ThreeLAUBasics,
     ReleaseTheKraken,
     MemeDontBuyThis,
+    MLLiondance,
+    AtariLaunch,
   ]
 }

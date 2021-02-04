@@ -397,6 +397,15 @@ export class Item extends Entity {
     this.set("rawMetadata", Value.fromString(value));
   }
 
+  get urn(): string {
+    let value = this.get("urn");
+    return value.toString();
+  }
+
+  set urn(value: string) {
+    this.set("urn", Value.fromString(value));
+  }
+
   get nfts(): Array<string> | null {
     let value = this.get("nfts");
     if (value === null || value.kind == ValueKind.NULL) {

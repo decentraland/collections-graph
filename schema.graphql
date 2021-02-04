@@ -32,6 +32,7 @@ type Item @entity {
   managers: [String!]
   metadata: Metadata
   rawMetadata: String!
+  urn: String!
   nfts: [NFT!] @derivedFrom(field: "item")
 
   # Searcheable fields

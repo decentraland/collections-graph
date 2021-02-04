@@ -40,8 +40,12 @@ import {
   release_the_kraken,
   threelau_basics,
   meme_dontbuythis,
+  ml_liondance,
+  atari_launch,
   wearable_test,
 } from '../../../data/wearablesV1'
+import { getNetwork } from '../../Network'
+
 
 /**
  * @dev The item's rawMetadata for wearables should follow: version:item_type:name:description:category:bodyshapes
@@ -209,6 +213,8 @@ export function getWearableV1Representation(wearableId: string): WearableReprese
     release_the_kraken,
     threelau_basics,
     meme_dontbuythis,
+    ml_liondance,
+    atari_launch,
     wearable_test
   ]
 
@@ -253,6 +259,18 @@ export function getIssuedIdFromTokenURI(tokenURI: string): number {
   }
 
   return 0
+}
+
+let baseDecentralandURN = 'urn:decentraland:'
+
+export function getURNForWearableV1(collection: Collection, representationId: string): string {
+  let collectionName = collection.name.split('dcl://')
+  return baseDecentralandURN + getNetwork() + ':collections-v1:' + (collectionName.length > 1 ? collectionName[1] : collectionName[0]) + ':' + representationId
+
+}
+
+export function getURNForWearableV2(collectionAddress: string, itemId: string): string {
+  return baseDecentralandURN + getNetwork() + ':collections-v2:' + collectionAddress + ':' + itemId
 }
 
 function findWearable(id: string, collection: WearableRepresentation[]): WearableRepresentation {

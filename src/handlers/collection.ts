@@ -29,6 +29,7 @@ import {
 } from '../entities/templates/CollectionV2/CollectionV2'
 import { ERC721 } from '../entities/templates'
 import { CollectionV2 } from '../entities/templates'
+import { getURNForWearableV2 } from '../modules/Metadata/wearable'
 
 
 export function handleInitializeWearablesV1(_: OwnershipTransferred): void {
@@ -113,6 +114,7 @@ export function handleAddItem(event: AddItem): void {
   item.rawMetadata = contractItem.metadata
   item.searchIsCollectionApproved = collectionContract.isApproved()
   item.URI = collectionContract.baseURI() + collectionAddress + '/' + itemId
+  item.urn = getURNForWearableV2(collectionAddress, itemId.toString())
   item.image = getItemImage(item)
   item.minters = []
   item.managers = []

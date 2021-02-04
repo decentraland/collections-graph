@@ -1,11 +1,10 @@
 import { BigInt, Address, log } from '@graphprotocol/graph-ts'
 
-import { getNetwork } from '../modules/Network'
 import { getItemId } from '../modules/Item'
 import { createAccount, ZERO_ADDRESS } from '../modules/Account'
 import { setItemSearchFields, setNFTSearchFields, buildWearableV1Metadata } from '../modules/Metadata'
 import * as itemTypes from '../modules/Metadata/itemTypes'
-import { getWearableV1Image, getWearableIdFromTokenURI, getWearableV1Representation, getIssuedIdFromTokenURI } from '../modules/Metadata/wearable'
+import { getWearableV1Image, getWearableIdFromTokenURI, getWearableV1Representation, getIssuedIdFromTokenURI, getURNForWearableV1 } from '../modules/Metadata/wearable'
 import {
   getNFTId, getTokenURI, isMint, cancelActiveOrder,
   clearNFTOrderProperties
@@ -34,11 +33,11 @@ export function handleMintNFT(event: Issue, collectionAddress: string, item: Ite
   nft.issuedId = event.params._issuedId
   nft.collection = collectionAddress
   nft.item = item.id
+  nft.urn = item.urn
   nft.owner = event.params._beneficiary.toHexString()
   nft.tokenURI = item.URI + '/' + event.params._issuedId.toString()
   nft.image = item.image
   nft.metadata = item.metadata
-  nft.urn = 'urn:decentraland:' + getNetwork() + ':collections-v1:' + event.address.toHexString() + ':' + event.params._itemId.toString()
 
   nft.createdAt = event.block.timestamp
   nft.updatedAt = event.block.timestamp
@@ -125,6 +124,7 @@ export function handleAddItemV1(event: AddWearable): void {
   item.managers = [] // Not used for collections v1
   item.URI = collectionContract.baseURI() + event.params._wearableId
   item.image = getWearableV1Image(collection!, item, event.params._wearableId)
+  item.urn = getURNForWearableV1(collection!, representation.id)
 
   let metadata = buildWearableV1Metadata(item, representation)
   item.metadata = metadata.id
@@ -172,8 +172,7 @@ export function handleTransferWearableV1(event: ERC721Transfer): void {
   nft.tokenURI = tokenURI
   nft.item = item.id
 
-  let collectionName = collection.name.split('dcl://')
-  nft.urn = 'urn:decentraland:' + getNetwork() + ':collections-v2:' + (collectionName.length > 1 ? collectionName[1] : collectionName[0]) + ':' + representationId
+  nft.urn = item.urn
 
   if (isMint(event.params.from.toHexString())) {
     nft.itemBlockchainId = item.blockchainId
