@@ -33,28 +33,32 @@ export class AddItem__Params {
 }
 
 export class AddItem_itemStruct extends ethereum.Tuple {
-  get rarity(): i32 {
-    return this[0].toI32();
+  get rarity(): string {
+    return this[0].toString();
   }
 
-  get totalSupply(): BigInt {
+  get maxSupply(): BigInt {
     return this[1].toBigInt();
   }
 
-  get price(): BigInt {
+  get totalSupply(): BigInt {
     return this[2].toBigInt();
   }
 
+  get price(): BigInt {
+    return this[3].toBigInt();
+  }
+
   get beneficiary(): Address {
-    return this[3].toAddress();
+    return this[4].toAddress();
   }
 
   get metadata(): string {
-    return this[4].toString();
+    return this[5].toString();
   }
 
   get contentHash(): Bytes {
-    return this[5].toBytes();
+    return this[6].toBytes();
   }
 }
 
@@ -195,6 +199,36 @@ export class Issue__Params {
 
   get _issuedId(): BigInt {
     return this._event.parameters[3].value.toBigInt();
+  }
+
+  get _caller(): Address {
+    return this._event.parameters[4].value.toAddress();
+  }
+}
+
+export class MetaTransactionExecuted extends ethereum.Event {
+  get params(): MetaTransactionExecuted__Params {
+    return new MetaTransactionExecuted__Params(this);
+  }
+}
+
+export class MetaTransactionExecuted__Params {
+  _event: MetaTransactionExecuted;
+
+  constructor(event: MetaTransactionExecuted) {
+    this._event = event;
+  }
+
+  get userAddress(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get relayerAddress(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+
+  get functionSignature(): Bytes {
+    return this._event.parameters[2].value.toBytes();
   }
 }
 
@@ -381,8 +415,8 @@ export class SetItemMinter__Params {
     return this._event.parameters[1].value.toAddress();
   }
 
-  get _value(): boolean {
-    return this._event.parameters[2].value.toBoolean();
+  get _value(): BigInt {
+    return this._event.parameters[2].value.toBigInt();
   }
 }
 
@@ -412,38 +446,16 @@ export class Transfer__Params {
   }
 }
 
-export class UpdateItemMetadata extends ethereum.Event {
-  get params(): UpdateItemMetadata__Params {
-    return new UpdateItemMetadata__Params(this);
+export class UpdateItemData extends ethereum.Event {
+  get params(): UpdateItemData__Params {
+    return new UpdateItemData__Params(this);
   }
 }
 
-export class UpdateItemMetadata__Params {
-  _event: UpdateItemMetadata;
+export class UpdateItemData__Params {
+  _event: UpdateItemData;
 
-  constructor(event: UpdateItemMetadata) {
-    this._event = event;
-  }
-
-  get _itemId(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
-  }
-
-  get _metadata(): string {
-    return this._event.parameters[1].value.toString();
-  }
-}
-
-export class UpdateItemSalesData extends ethereum.Event {
-  get params(): UpdateItemSalesData__Params {
-    return new UpdateItemSalesData__Params(this);
-  }
-}
-
-export class UpdateItemSalesData__Params {
-  _event: UpdateItemSalesData;
-
-  constructor(event: UpdateItemSalesData) {
+  constructor(event: UpdateItemData) {
     this._event = event;
   }
 
@@ -457,6 +469,10 @@ export class UpdateItemSalesData__Params {
 
   get _beneficiary(): Address {
     return this._event.parameters[2].value.toAddress();
+  }
+
+  get _metadata(): string {
+    return this._event.parameters[3].value.toString();
   }
 }
 
@@ -478,20 +494,22 @@ export class CollectionV2__decodeTokenIdResult {
 }
 
 export class CollectionV2__itemsResult {
-  value0: i32;
+  value0: string;
   value1: BigInt;
   value2: BigInt;
-  value3: Address;
-  value4: string;
-  value5: Bytes;
+  value3: BigInt;
+  value4: Address;
+  value5: string;
+  value6: Bytes;
 
   constructor(
-    value0: i32,
+    value0: string,
     value1: BigInt,
     value2: BigInt,
-    value3: Address,
-    value4: string,
-    value5: Bytes
+    value3: BigInt,
+    value4: Address,
+    value5: string,
+    value6: Bytes
   ) {
     this.value0 = value0;
     this.value1 = value1;
@@ -499,19 +517,18 @@ export class CollectionV2__itemsResult {
     this.value3 = value3;
     this.value4 = value4;
     this.value5 = value5;
+    this.value6 = value6;
   }
 
   toMap(): TypedMap<string, ethereum.Value> {
     let map = new TypedMap<string, ethereum.Value>();
-    map.set(
-      "value0",
-      ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(this.value0))
-    );
+    map.set("value0", ethereum.Value.fromString(this.value0));
     map.set("value1", ethereum.Value.fromUnsignedBigInt(this.value1));
     map.set("value2", ethereum.Value.fromUnsignedBigInt(this.value2));
-    map.set("value3", ethereum.Value.fromAddress(this.value3));
-    map.set("value4", ethereum.Value.fromString(this.value4));
-    map.set("value5", ethereum.Value.fromFixedBytes(this.value5));
+    map.set("value3", ethereum.Value.fromUnsignedBigInt(this.value3));
+    map.set("value4", ethereum.Value.fromAddress(this.value4));
+    map.set("value5", ethereum.Value.fromString(this.value5));
+    map.set("value6", ethereum.Value.fromFixedBytes(this.value6));
     return map;
   }
 }
@@ -521,19 +538,27 @@ export class CollectionV2 extends ethereum.SmartContract {
     return new CollectionV2("CollectionV2", address);
   }
 
-  GRACE_PERIOD(): BigInt {
-    let result = super.call("GRACE_PERIOD", "GRACE_PERIOD():(uint256)", []);
+  COLLECTION_HASH(): Bytes {
+    let result = super.call(
+      "COLLECTION_HASH",
+      "COLLECTION_HASH():(bytes32)",
+      []
+    );
 
-    return result[0].toBigInt();
+    return result[0].toBytes();
   }
 
-  try_GRACE_PERIOD(): ethereum.CallResult<BigInt> {
-    let result = super.tryCall("GRACE_PERIOD", "GRACE_PERIOD():(uint256)", []);
+  try_COLLECTION_HASH(): ethereum.CallResult<Bytes> {
+    let result = super.tryCall(
+      "COLLECTION_HASH",
+      "COLLECTION_HASH():(bytes32)",
+      []
+    );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
     let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
+    return ethereum.CallResult.fromValue(value[0].toBytes());
   }
 
   ISSUED_ID_BITS(): i32 {
@@ -701,6 +726,29 @@ export class CollectionV2 extends ethereum.SmartContract {
     );
   }
 
+  domainSeparator(): Bytes {
+    let result = super.call(
+      "domainSeparator",
+      "domainSeparator():(bytes32)",
+      []
+    );
+
+    return result[0].toBytes();
+  }
+
+  try_domainSeparator(): ethereum.CallResult<Bytes> {
+    let result = super.tryCall(
+      "domainSeparator",
+      "domainSeparator():(bytes32)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBytes());
+  }
+
   encodeTokenId(_itemId: BigInt, _issuedId: BigInt): BigInt {
     let result = super.call(
       "encodeTokenId",
@@ -754,43 +802,33 @@ export class CollectionV2 extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
-  getRarityName(_rarity: i32): string {
-    let result = super.call("getRarityName", "getRarityName(uint8):(string)", [
-      ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(_rarity))
-    ]);
-
-    return result[0].toString();
-  }
-
-  try_getRarityName(_rarity: i32): ethereum.CallResult<string> {
-    let result = super.tryCall(
-      "getRarityName",
-      "getRarityName(uint8):(string)",
-      [ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(_rarity))]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toString());
-  }
-
-  getRarityValue(_rarity: i32): BigInt {
-    let result = super.call(
-      "getRarityValue",
-      "getRarityValue(uint8):(uint256)",
-      [ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(_rarity))]
-    );
+  getChainId(): BigInt {
+    let result = super.call("getChainId", "getChainId():(uint256)", []);
 
     return result[0].toBigInt();
   }
 
-  try_getRarityValue(_rarity: i32): ethereum.CallResult<BigInt> {
-    let result = super.tryCall(
-      "getRarityValue",
-      "getRarityValue(uint8):(uint256)",
-      [ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(_rarity))]
-    );
+  try_getChainId(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall("getChainId", "getChainId():(uint256)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  getNonce(user: Address): BigInt {
+    let result = super.call("getNonce", "getNonce(address):(uint256)", [
+      ethereum.Value.fromAddress(user)
+    ]);
+
+    return result[0].toBigInt();
+  }
+
+  try_getNonce(user: Address): ethereum.CallResult<BigInt> {
+    let result = super.tryCall("getNonce", "getNonce(address):(uint256)", [
+      ethereum.Value.fromAddress(user)
+    ]);
     if (result.reverted) {
       return new ethereum.CallResult();
     }
@@ -983,26 +1021,26 @@ export class CollectionV2 extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBoolean());
   }
 
-  itemMinters(param0: BigInt, param1: Address): boolean {
+  itemMinters(param0: BigInt, param1: Address): BigInt {
     let result = super.call(
       "itemMinters",
-      "itemMinters(uint256,address):(bool)",
+      "itemMinters(uint256,address):(uint256)",
       [
         ethereum.Value.fromUnsignedBigInt(param0),
         ethereum.Value.fromAddress(param1)
       ]
     );
 
-    return result[0].toBoolean();
+    return result[0].toBigInt();
   }
 
   try_itemMinters(
     param0: BigInt,
     param1: Address
-  ): ethereum.CallResult<boolean> {
+  ): ethereum.CallResult<BigInt> {
     let result = super.tryCall(
       "itemMinters",
-      "itemMinters(uint256,address):(bool)",
+      "itemMinters(uint256,address):(uint256)",
       [
         ethereum.Value.fromUnsignedBigInt(param0),
         ethereum.Value.fromAddress(param1)
@@ -1012,30 +1050,31 @@ export class CollectionV2 extends ethereum.SmartContract {
       return new ethereum.CallResult();
     }
     let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBoolean());
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
   items(param0: BigInt): CollectionV2__itemsResult {
     let result = super.call(
       "items",
-      "items(uint256):(uint8,uint256,uint256,address,string,bytes32)",
+      "items(uint256):(string,uint256,uint256,uint256,address,string,bytes32)",
       [ethereum.Value.fromUnsignedBigInt(param0)]
     );
 
     return new CollectionV2__itemsResult(
-      result[0].toI32(),
+      result[0].toString(),
       result[1].toBigInt(),
       result[2].toBigInt(),
-      result[3].toAddress(),
-      result[4].toString(),
-      result[5].toBytes()
+      result[3].toBigInt(),
+      result[4].toAddress(),
+      result[5].toString(),
+      result[6].toBytes()
     );
   }
 
   try_items(param0: BigInt): ethereum.CallResult<CollectionV2__itemsResult> {
     let result = super.tryCall(
       "items",
-      "items(uint256):(uint8,uint256,uint256,address,string,bytes32)",
+      "items(uint256):(string,uint256,uint256,uint256,address,string,bytes32)",
       [ethereum.Value.fromUnsignedBigInt(param0)]
     );
     if (result.reverted) {
@@ -1044,12 +1083,13 @@ export class CollectionV2 extends ethereum.SmartContract {
     let value = result.value;
     return ethereum.CallResult.fromValue(
       new CollectionV2__itemsResult(
-        value[0].toI32(),
+        value[0].toString(),
         value[1].toBigInt(),
         value[2].toBigInt(),
-        value[3].toAddress(),
-        value[4].toString(),
-        value[5].toBytes()
+        value[3].toBigInt(),
+        value[4].toAddress(),
+        value[5].toString(),
+        value[6].toBytes()
       )
     );
   }
@@ -1111,6 +1151,21 @@ export class CollectionV2 extends ethereum.SmartContract {
     let result = super.tryCall("ownerOf", "ownerOf(uint256):(address)", [
       ethereum.Value.fromUnsignedBigInt(tokenId)
     ]);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
+  rarities(): Address {
+    let result = super.call("rarities", "rarities():(address)", []);
+
+    return result[0].toAddress();
+  }
+
+  try_rarities(): ethereum.CallResult<Address> {
+    let result = super.tryCall("rarities", "rarities():(address)", []);
     if (result.reverted) {
       return new ethereum.CallResult();
     }
@@ -1303,28 +1358,20 @@ export class AddItemsCall__Outputs {
 }
 
 export class AddItemsCall_itemsStruct extends ethereum.Tuple {
-  get rarity(): i32 {
-    return this[0].toI32();
-  }
-
-  get totalSupply(): BigInt {
-    return this[1].toBigInt();
+  get rarity(): string {
+    return this[0].toString();
   }
 
   get price(): BigInt {
-    return this[2].toBigInt();
+    return this[1].toBigInt();
   }
 
   get beneficiary(): Address {
-    return this[3].toAddress();
+    return this[2].toAddress();
   }
 
   get metadata(): string {
-    return this[4].toString();
-  }
-
-  get contentHash(): Bytes {
-    return this[5].toBytes();
+    return this[3].toString();
   }
 }
 
@@ -1426,54 +1473,20 @@ export class CompleteCollectionCall__Outputs {
   }
 }
 
-export class EditItemsMetadataCall extends ethereum.Call {
-  get inputs(): EditItemsMetadataCall__Inputs {
-    return new EditItemsMetadataCall__Inputs(this);
+export class EditItemsDataCall extends ethereum.Call {
+  get inputs(): EditItemsDataCall__Inputs {
+    return new EditItemsDataCall__Inputs(this);
   }
 
-  get outputs(): EditItemsMetadataCall__Outputs {
-    return new EditItemsMetadataCall__Outputs(this);
-  }
-}
-
-export class EditItemsMetadataCall__Inputs {
-  _call: EditItemsMetadataCall;
-
-  constructor(call: EditItemsMetadataCall) {
-    this._call = call;
-  }
-
-  get _itemIds(): Array<BigInt> {
-    return this._call.inputValues[0].value.toBigIntArray();
-  }
-
-  get _metadatas(): Array<string> {
-    return this._call.inputValues[1].value.toStringArray();
+  get outputs(): EditItemsDataCall__Outputs {
+    return new EditItemsDataCall__Outputs(this);
   }
 }
 
-export class EditItemsMetadataCall__Outputs {
-  _call: EditItemsMetadataCall;
+export class EditItemsDataCall__Inputs {
+  _call: EditItemsDataCall;
 
-  constructor(call: EditItemsMetadataCall) {
-    this._call = call;
-  }
-}
-
-export class EditItemsSalesDataCall extends ethereum.Call {
-  get inputs(): EditItemsSalesDataCall__Inputs {
-    return new EditItemsSalesDataCall__Inputs(this);
-  }
-
-  get outputs(): EditItemsSalesDataCall__Outputs {
-    return new EditItemsSalesDataCall__Outputs(this);
-  }
-}
-
-export class EditItemsSalesDataCall__Inputs {
-  _call: EditItemsSalesDataCall;
-
-  constructor(call: EditItemsSalesDataCall) {
+  constructor(call: EditItemsDataCall) {
     this._call = call;
   }
 
@@ -1488,13 +1501,67 @@ export class EditItemsSalesDataCall__Inputs {
   get _beneficiaries(): Array<Address> {
     return this._call.inputValues[2].value.toAddressArray();
   }
+
+  get _metadatas(): Array<string> {
+    return this._call.inputValues[3].value.toStringArray();
+  }
 }
 
-export class EditItemsSalesDataCall__Outputs {
-  _call: EditItemsSalesDataCall;
+export class EditItemsDataCall__Outputs {
+  _call: EditItemsDataCall;
 
-  constructor(call: EditItemsSalesDataCall) {
+  constructor(call: EditItemsDataCall) {
     this._call = call;
+  }
+}
+
+export class ExecuteMetaTransactionCall extends ethereum.Call {
+  get inputs(): ExecuteMetaTransactionCall__Inputs {
+    return new ExecuteMetaTransactionCall__Inputs(this);
+  }
+
+  get outputs(): ExecuteMetaTransactionCall__Outputs {
+    return new ExecuteMetaTransactionCall__Outputs(this);
+  }
+}
+
+export class ExecuteMetaTransactionCall__Inputs {
+  _call: ExecuteMetaTransactionCall;
+
+  constructor(call: ExecuteMetaTransactionCall) {
+    this._call = call;
+  }
+
+  get userAddress(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get functionSignature(): Bytes {
+    return this._call.inputValues[1].value.toBytes();
+  }
+
+  get sigR(): Bytes {
+    return this._call.inputValues[2].value.toBytes();
+  }
+
+  get sigS(): Bytes {
+    return this._call.inputValues[3].value.toBytes();
+  }
+
+  get sigV(): i32 {
+    return this._call.inputValues[4].value.toI32();
+  }
+}
+
+export class ExecuteMetaTransactionCall__Outputs {
+  _call: ExecuteMetaTransactionCall;
+
+  constructor(call: ExecuteMetaTransactionCall) {
+    this._call = call;
+  }
+
+  get value0(): Bytes {
+    return this._call.outputValues[0].value.toBytes();
   }
 }
 
@@ -1523,20 +1590,28 @@ export class InitializeCall__Inputs {
     return this._call.inputValues[1].value.toString();
   }
 
+  get _baseURI(): string {
+    return this._call.inputValues[2].value.toString();
+  }
+
   get _creator(): Address {
-    return this._call.inputValues[2].value.toAddress();
+    return this._call.inputValues[3].value.toAddress();
   }
 
   get _shouldComplete(): boolean {
-    return this._call.inputValues[3].value.toBoolean();
+    return this._call.inputValues[4].value.toBoolean();
   }
 
-  get _baseURI(): string {
-    return this._call.inputValues[4].value.toString();
+  get _isApproved(): boolean {
+    return this._call.inputValues[5].value.toBoolean();
+  }
+
+  get _rarities(): Address {
+    return this._call.inputValues[6].value.toAddress();
   }
 
   get _items(): Array<InitializeCall_itemsStruct> {
-    return this._call.inputValues[5].value.toTupleArray<
+    return this._call.inputValues[7].value.toTupleArray<
       InitializeCall_itemsStruct
     >();
   }
@@ -1551,62 +1626,20 @@ export class InitializeCall__Outputs {
 }
 
 export class InitializeCall_itemsStruct extends ethereum.Tuple {
-  get rarity(): i32 {
-    return this[0].toI32();
-  }
-
-  get totalSupply(): BigInt {
-    return this[1].toBigInt();
+  get rarity(): string {
+    return this[0].toString();
   }
 
   get price(): BigInt {
-    return this[2].toBigInt();
+    return this[1].toBigInt();
   }
 
   get beneficiary(): Address {
-    return this[3].toAddress();
+    return this[2].toAddress();
   }
 
   get metadata(): string {
-    return this[4].toString();
-  }
-
-  get contentHash(): Bytes {
-    return this[5].toBytes();
-  }
-}
-
-export class IssueTokenCall extends ethereum.Call {
-  get inputs(): IssueTokenCall__Inputs {
-    return new IssueTokenCall__Inputs(this);
-  }
-
-  get outputs(): IssueTokenCall__Outputs {
-    return new IssueTokenCall__Outputs(this);
-  }
-}
-
-export class IssueTokenCall__Inputs {
-  _call: IssueTokenCall;
-
-  constructor(call: IssueTokenCall) {
-    this._call = call;
-  }
-
-  get _beneficiary(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-
-  get _itemId(): BigInt {
-    return this._call.inputValues[1].value.toBigInt();
-  }
-}
-
-export class IssueTokenCall__Outputs {
-  _call: IssueTokenCall;
-
-  constructor(call: IssueTokenCall) {
-    this._call = call;
+    return this[3].toString();
   }
 }
 
@@ -1736,54 +1769,16 @@ export class SafeBatchTransferFromCall__Inputs {
   get _tokenIds(): Array<BigInt> {
     return this._call.inputValues[2].value.toBigIntArray();
   }
-}
-
-export class SafeBatchTransferFromCall__Outputs {
-  _call: SafeBatchTransferFromCall;
-
-  constructor(call: SafeBatchTransferFromCall) {
-    this._call = call;
-  }
-}
-
-export class SafeBatchTransferFrom1Call extends ethereum.Call {
-  get inputs(): SafeBatchTransferFrom1Call__Inputs {
-    return new SafeBatchTransferFrom1Call__Inputs(this);
-  }
-
-  get outputs(): SafeBatchTransferFrom1Call__Outputs {
-    return new SafeBatchTransferFrom1Call__Outputs(this);
-  }
-}
-
-export class SafeBatchTransferFrom1Call__Inputs {
-  _call: SafeBatchTransferFrom1Call;
-
-  constructor(call: SafeBatchTransferFrom1Call) {
-    this._call = call;
-  }
-
-  get _from(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-
-  get _to(): Address {
-    return this._call.inputValues[1].value.toAddress();
-  }
-
-  get _tokenIds(): Array<BigInt> {
-    return this._call.inputValues[2].value.toBigIntArray();
-  }
 
   get _data(): Bytes {
     return this._call.inputValues[3].value.toBytes();
   }
 }
 
-export class SafeBatchTransferFrom1Call__Outputs {
-  _call: SafeBatchTransferFrom1Call;
+export class SafeBatchTransferFromCall__Outputs {
+  _call: SafeBatchTransferFromCall;
 
-  constructor(call: SafeBatchTransferFrom1Call) {
+  constructor(call: SafeBatchTransferFromCall) {
     this._call = call;
   }
 }
@@ -2055,8 +2050,8 @@ export class SetItemsMintersCall__Inputs {
     return this._call.inputValues[1].value.toAddressArray();
   }
 
-  get _values(): Array<boolean> {
-    return this._call.inputValues[2].value.toBooleanArray();
+  get _values(): Array<BigInt> {
+    return this._call.inputValues[2].value.toBigIntArray();
   }
 }
 

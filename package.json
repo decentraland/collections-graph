@@ -8,7 +8,7 @@
     "prepare:mumbai": "mustache config/mumbai.json subgraph.template.yaml > subgraph.yaml && npm run codegen",
     "deploy:mainnet": "npm run prepare:mainnet && npx graph deploy --debug  --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/  decentraland/collections",
     "deploy:ropsten": "npm run prepare:ropsten && npx graph deploy --debug  --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/  decentraland/collections-ropsten",
-    "deploy:mumbai": "npm run prepare:mumbai && npx graph deploy --debug  --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/  decentraland/collections-mumbai"
+    "deploy:mumbai": "npm run prepare:mumbai && npx graph deploy --node https://api.staging.thegraph.com/deploy/ --ipfs https://api.staging.thegraph.com/ipfs/ decentraland/collections-mumbai -v"
   },
   "devDependencies": {
     "@graphprotocol/graph-cli": "^0.19.0",

@@ -3,7 +3,7 @@ import { BigInt, Address, log } from '@graphprotocol/graph-ts'
 import { handleMintNFT, handleTransferNFT } from './nft'
 import { setItemSearchFields, buildItemMetadata } from '../modules/Metadata'
 import { buildCount, buildCountFromItem, buildCountFromCollection } from '../modules/Count'
-import { getItemId, getItemImage } from '../modules/Item'
+import { getItemId, getItemImage, removeItemMinter } from '../modules/Item'
 import {
   getCollectionsV1
 } from '../data/wearablesV1/addresses'
@@ -17,8 +17,7 @@ import {
   SetItemManager,
   AddItem,
   RescueItem,
-  UpdateItemSalesData,
-  UpdateItemMetadata,
+  UpdateItemData,
   Issue,
   SetApproved,
   SetEditable,
@@ -104,10 +103,10 @@ export function handleAddItem(event: AddItem): void {
   let item = new Item(id)
   item.blockchainId = event.params._itemId
   item.collection = collectionAddress
-  item.rarity = collectionContract.getRarityName(contractItem.rarity)
-  item.available = collectionContract.getRarityValue(contractItem.rarity)
+  item.rarity = contractItem.rarity
+  item.available = contractItem.maxSupply
   item.totalSupply = contractItem.totalSupply
-  item.maxSupply = item.available
+  item.maxSupply = contractItem.maxSupply
   item.price = contractItem.price
   item.beneficiary = contractItem.beneficiary.toHexString()
   item.contentHash = contractItem.contentHash
@@ -152,7 +151,7 @@ export function handleRescueItem(event: RescueItem): void {
   item.save()
 }
 
-export function handleUpdateItemSalesData(event: UpdateItemSalesData): void {
+export function handleUpdateItemData(event: UpdateItemData): void {
   let collectionAddress = event.address.toHexString()
   let itemId = event.params._itemId.toString()
   let id = getItemId(collectionAddress, itemId)
@@ -161,17 +160,6 @@ export function handleUpdateItemSalesData(event: UpdateItemSalesData): void {
 
   item.price = event.params._price
   item.beneficiary = event.params._beneficiary.toHexString()
-
-  item.save()
-}
-
-export function handleUpdateItemMetadata(event: UpdateItemMetadata): void {
-  let collectionAddress = event.address.toHexString()
-  let itemId = event.params._itemId.toString()
-  let id = getItemId(collectionAddress, itemId)
-
-  let item = Item.load(id)
-
   item.rawMetadata = event.params._metadata
 
   let metadata = buildItemMetadata(item!)
@@ -191,9 +179,26 @@ export function handleIssue(event: Issue): void {
 
   item.available = item.available.minus(BigInt.fromI32(1))
   item.totalSupply = item.totalSupply.plus(BigInt.fromI32(1))
+
   item.save()
 
+
   handleMintNFT(event, collectionAddress, item!)
+
+  // Bind contract
+  let collectionContract = CollectionContract.bind(event.address)
+  let isGlobalMinter = collectionContract.globalMinters(event.params._caller)
+
+  if (isGlobalMinter) {
+    return
+  }
+
+  let amountOfMintsAvailable = collectionContract.itemMinters(event.params._itemId, event.params._caller)
+
+  if (amountOfMintsAvailable.equals(BigInt.fromI32(0))) {
+    item.minters = removeItemMinter(item!, event.params._caller.toHexString())
+    item.save()
+  }
 }
 
 export function handleTransfer(event: Transfer): void {
@@ -258,19 +263,11 @@ export function handleSetItemMinter(event: SetItemMinter): void {
 
   let minters = item.minters
 
-  if (event.params._value == true) {
+  if (event.params._value.gt(BigInt.fromI32(0))) {
     minters.push(event.params._minter.toHexString())
     item.minters = minters
   } else {
-    let newMinters = new Array<string>(0)
-
-    for (let i = 0; i < minters.length; i++) {
-      if (minters![i] != event.params._minter.toHexString()) {
-        newMinters.push(minters![i])
-      }
-    }
-
-    item.minters = newMinters
+    item.minters = removeItemMinter(item!, event.params._minter.toHexString())
   }
 
   item.save()
