@@ -115,6 +115,29 @@ dataSources:
       eventHandlers:
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: handleInitializeWearablesV1
+  # ---------------------------------------------------------
+  # Committee ----------------------------------------------------
+  # ---------------------------------------------------------
+  - kind: ethereum/contract
+    name: Committee
+    network: {{network}}
+    source:
+      address: '{{address_committee}}'
+      abi: Committee
+      startBlock: {{startBlock_committee}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      file: ./src/handlers/committee.ts
+      entities:
+        - Bid
+      abis:
+        - name: Committee
+          file: ./abis/Committee.json
+      eventHandlers:
+        - event: MemberSet(indexed address,bool)
+          handler: handleMemeberSet
 templates:
   # ---------------------------------------------------------
   # Items V2 ------------------------------------------------
@@ -143,19 +166,17 @@ templates:
           handler: handleSetGlobalMinter
         - event: SetGlobalManager(indexed address,bool)
           handler: handleSetGlobalManager
-        - event: SetItemMinter(indexed uint256,indexed address,bool)
+        - event: SetItemMinter(indexed uint256,indexed address,uint256)
           handler: handleSetItemMinter
         - event: SetItemManager(indexed uint256,indexed address,bool)
           handler: handleSetItemManager
-        - event: AddItem(indexed uint256,(uint8,uint256,uint256,address,string,bytes32))
+        - event: AddItem(indexed uint256,(string,uint256,uint256,uint256,address,string,bytes32))
           handler: handleAddItem
         - event: RescueItem(indexed uint256,bytes32,string)
           handler: handleRescueItem
-        - event: UpdateItemSalesData(indexed uint256,uint256,address)
-          handler: handleUpdateItemSalesData
-        - event: UpdateItemMetadata(indexed uint256,string)
-          handler: handleUpdateItemMetadata
-        - event: Issue(indexed address,indexed uint256,indexed uint256,uint256)
+        - event: UpdateItemData(indexed uint256,uint256,address,string)
+          handler: handleUpdateItemData
+        - event: Issue(indexed address,indexed uint256,indexed uint256,uint256,address)
           handler: handleIssue
         - event: SetApproved(bool,bool)
           handler: handleSetApproved

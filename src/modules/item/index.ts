@@ -10,3 +10,16 @@ export function getItemImage(item: Item): string {
 
   return baseURI + 'contents/' + item.urn
 }
+
+export function removeItemMinter(item: Item, minter: string): Array<string> {
+  let newMinters = new Array<string>(0)
+  let minters = item.minters
+
+  for (let i = 0; i < minters.length; i++) {
+    if (minters![i] != minter) {
+      newMinters.push(minters![i])
+    }
+  }
+
+  return newMinters
+}

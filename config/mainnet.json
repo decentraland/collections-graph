@@ -1,11 +1,13 @@
 {
   "network": "mainnet",
+  "address_fist_collection_v1": "0xc1f4b0eea2bd6690930e6c66efd3e197d620b9c2",
+  "startBock_first_collections_v1": 8828687,
   "address_factory": "0x16d8bac5b67a6b782a9081377bec413bc5bb56a6",
   "startBlock_factory": 8828687,
-  "address_bid": "0xe479dfd9664c693b2e2992300930b00bfde08233",
-  "startBlock_bid": 8828687,
+  "address_committee": "0x16d8bac5b67a6b782a9081377bec413bc5bb56a6",
+  "startBlock_committee": 8787011,
   "address_marketplace": "0x8e5660b4ab70168b5a6feea0e0315cb49c8cd539",
   "startBlock_marketplace": 8828687,
-  "address_fist_collection_v1": "0xc1f4b0eea2bd6690930e6c66efd3e197d620b9c2",
-  "startBock_first_collections_v1": 8828687
+  "address_bid": "0xe479dfd9664c693b2e2992300930b00bfde08233",
+  "startBlock_bid": 8828687
 }

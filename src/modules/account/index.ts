@@ -3,7 +3,7 @@ import { Account } from '../../entities/schema'
 
 export let ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
-export function createAccount(id: Address): void {
+export function createOrLoadAccount(id: Address): Account {
   let account = Account.load(id.toHex())
 
   if (account == null) {
@@ -12,4 +12,6 @@ export function createAccount(id: Address): void {
   }
 
   account.save()
+
+  return account!
 }
