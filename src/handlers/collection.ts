@@ -1,4 +1,4 @@
-import { BigInt, Address, log } from '@graphprotocol/graph-ts'
+import { BigInt, Address } from '@graphprotocol/graph-ts'
 
 import { handleMintNFT, handleTransferNFT } from './nft'
 import { setItemSearchFields, buildItemMetadata } from '../modules/Metadata'
@@ -72,6 +72,7 @@ export function handleCollectionCreation(event: ProxyCreated): void {
   collection.managers = []
   collection.itemsCount = 0
   collection.createdAt = event.block.timestamp // to support old collections
+  collection.updatedAt = event.block.timestamp // to support old collections
   collection.save()
 
   let metric = buildCountFromCollection()
@@ -319,6 +320,7 @@ export function handleSetApproved(event: SetApproved): void {
     item.save()
   }
 
+  collection.updatedAt = event.block.timestamp // to support old collections
   collection.save()
 }
 

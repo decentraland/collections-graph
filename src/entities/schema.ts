@@ -181,6 +181,15 @@ export class Collection extends Entity {
   set createdAt(value: BigInt) {
     this.set("createdAt", Value.fromBigInt(value));
   }
+
+  get updatedAt(): BigInt {
+    let value = this.get("updatedAt");
+    return value.toBigInt();
+  }
+
+  set updatedAt(value: BigInt) {
+    this.set("updatedAt", Value.fromBigInt(value));
+  }
 }
 
 export class Item extends Entity {
@@ -1173,6 +1182,15 @@ export class Account extends Entity {
     } else {
       this.set("nfts", Value.fromStringArray(value as Array<string>));
     }
+  }
+
+  get isCommitteeMember(): boolean {
+    let value = this.get("isCommitteeMember");
+    return value.toBoolean();
+  }
+
+  set isCommitteeMember(value: boolean) {
+    this.set("isCommitteeMember", Value.fromBoolean(value));
   }
 }
 

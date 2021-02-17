@@ -1,0 +1,13 @@
+{
+  "network": "matic",
+  "address_fist_collection_v1": "",
+  "startBock_first_collections_v1": 0,
+  "address_factory": "",
+  "startBlock_factory": 0,
+  "address_committee": "",
+  "startBock_committee": 0,
+  "address_marketplace": "",
+  "startBlock_marketplace": 0,
+  "address_bid": "",
+  "startBlock_bid": 0
+}

@@ -1,7 +1,7 @@
 import { BigInt, Address, log } from '@graphprotocol/graph-ts'
 
 import { getItemId } from '../modules/Item'
-import { createAccount, ZERO_ADDRESS } from '../modules/Account'
+import { createOrLoadAccount, ZERO_ADDRESS } from '../modules/Account'
 import { setItemSearchFields, setNFTSearchFields, buildWearableV1Metadata } from '../modules/Metadata'
 import * as itemTypes from '../modules/Metadata/itemTypes'
 import { getWearableV1Image, getWearableIdFromTokenURI, getWearableV1Representation, getIssuedIdFromTokenURI, getURNForWearableV1 } from '../modules/Metadata/wearable'
@@ -44,7 +44,7 @@ export function handleMintNFT(event: Issue, collectionAddress: string, item: Ite
 
   nft = setNFTSearchFields(nft)
 
-  createAccount(event.params._beneficiary)
+  createOrLoadAccount(event.params._beneficiary)
 
   let metric = buildCountFromNFT()
   metric.save()
@@ -69,7 +69,7 @@ export function handleTransferNFT(event: Transfer): void {
     nft = clearNFTOrderProperties(nft!)
   }
 
-  createAccount(event.params.to)
+  createOrLoadAccount(event.params.to)
 
   nft.save()
 }
@@ -199,7 +199,7 @@ export function handleTransferWearableV1(event: ERC721Transfer): void {
     }
   }
 
-  createAccount(event.params.to)
+  createOrLoadAccount(event.params.to)
 
   nft.save()
 }

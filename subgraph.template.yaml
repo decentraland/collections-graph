@@ -115,6 +115,29 @@ dataSources:
       eventHandlers:
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: handleInitializeWearablesV1
+  # ---------------------------------------------------------
+  # Committee ----------------------------------------------------
+  # ---------------------------------------------------------
+  - kind: ethereum/contract
+    name: Committee
+    network: {{network}}
+    source:
+      address: '{{address_committee}}'
+      abi: Committee
+      startBlock: {{startBlock_committee}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      file: ./src/handlers/committee.ts
+      entities:
+        - Bid
+      abis:
+        - name: Committee
+          file: ./abis/Committee.json
+      eventHandlers:
+        - event: MemberSet(indexed address,bool)
+          handler: handleMemeberSet
 templates:
   # ---------------------------------------------------------
   # Items V2 ------------------------------------------------
