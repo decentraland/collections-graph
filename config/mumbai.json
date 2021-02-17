@@ -5,7 +5,7 @@
   "address_factory": "0x0657fA4a3B14E568b0D9D49910D2875C5B6620F0",
   "startBlock_factory": 10621000,
   "address_committee": "0xf22B2172998c3A40c8E38452d3A08D143b30223f",
-  "startBock_committee": 10621000,
+  "startBlock_committee": 10621000,
   "address_marketplace": "0xa274eC4366703d31bF58F5053b708335FaAC2b52",
   "startBlock_marketplace": 10621000,
   "address_bid": "0x250fa138c0a994799c7a49df3097dc71e37b3d6f",
