@@ -45,6 +45,7 @@ import {
   wearable_test,
 } from '../../../data/wearablesV1'
 import { getNetwork } from '../../Network'
+import { toLowerCase } from '../../../utils'
 
 
 /**
@@ -94,7 +95,7 @@ export function setItemWearableSearchFields(item: Item): Item {
   let metadata = Metadata.load(item.metadata)
   let wearable = Wearable.load(metadata.wearable)
 
-  item.searchText = wearable.name + ' ' + wearable.description
+  item.searchText = toLowerCase(wearable.name + ' ' + wearable.description)
   item.searchItemType = item.itemType
   item.searchIsWearableHead = isWearableHead(wearable.category)
   item.searchIsWearableAccessory = isWearableAccessory(wearable.category)
@@ -109,7 +110,7 @@ export function setNFTWearableSearchFields(nft: NFT): NFT {
   let metadata = Metadata.load(nft.metadata)
   let wearable = Wearable.load(metadata.wearable)
 
-  nft.searchText = wearable.name + ' ' + wearable.description
+  nft.searchText = toLowerCase(wearable.name + ' ' + wearable.description)
   nft.searchItemType = nft.itemType
   nft.searchIsWearableHead = isWearableHead(wearable.category)
   nft.searchIsWearableAccessory = isWearableAccessory(wearable.category)

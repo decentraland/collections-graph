@@ -12,6 +12,7 @@ type Collection @entity {
   managers: [String!]
   itemsCount: Int!
   createdAt: BigInt!
+  updatedAt: BigInt!
 }
 
 type Item @entity {
@@ -117,7 +118,7 @@ type Account @entity {
   id: ID! # ETH addr
   address: Bytes!
   nfts: [NFT!] @derivedFrom(field: "owner")
-  # mana: BigInt # Amount of mana owned
+  isCommitteeMember: Boolean
 }
 
 # ---------------------------------------------------------
