@@ -112,7 +112,7 @@ export function handleAddItem(event: AddItem): void {
   item.contentHash = contractItem.contentHash
   item.rawMetadata = contractItem.metadata
   item.searchIsCollectionApproved = collectionContract.isApproved()
-  item.URI = collectionContract.baseURI() + collectionAddress + '/' + itemId
+  item.URI = collectionContract.baseURI() + collectionContract.getChainId().toString() + '/' + collectionAddress + '/' + itemId
   item.urn = getURNForWearableV2(collectionAddress, itemId.toString())
   item.image = getItemImage(item)
   item.minters = []
