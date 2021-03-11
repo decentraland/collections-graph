@@ -42,6 +42,9 @@ import {
   meme_dontbuythis,
   ml_liondance,
   atari_launch,
+  rtfkt_x_atari,
+  rac_basics,
+  winklevoss_capital,
   wearable_test,
 } from '../../../data/wearablesV1'
 import { getNetwork } from '../../Network'
@@ -216,6 +219,9 @@ export function getWearableV1Representation(wearableId: string): WearableReprese
     meme_dontbuythis,
     ml_liondance,
     atari_launch,
+    rtfkt_x_atari,
+    rac_basics,
+    winklevoss_capital,
     wearable_test
   ]
 

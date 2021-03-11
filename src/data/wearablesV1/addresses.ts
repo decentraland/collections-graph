@@ -40,6 +40,10 @@ export let ReleaseTheKraken = '0xffc5043d9a00865d089d5eefa5b3d1625aec6763'
 export let MemeDontBuyThis = '0x1a57f6afc902d25792c53b8f19b7e17ef84222d5'
 export let MLLiondance = '0x0b1c6c75d511fae05e7dc696f4cf14129a9c43c9'
 export let AtariLaunch = '0x4c290f486bae507719c562b6b524bdb71a2570c9'
+export let RTFKTXAtari = '0x6b47e7066c7db71aa04a1d5872496fe05c4c331f'
+export let RACBasics = '0x68e139552c4077ce5c9ab929c7e18ca721ffff00'
+export let WinklevossCapital = '0xc82a864a94db3550bc71fcb4ce07228bcec21f1a'
+
 
 
 export function getCollectionsV1(): string[] {
@@ -83,5 +87,8 @@ export function getCollectionsV1(): string[] {
     MemeDontBuyThis,
     MLLiondance,
     AtariLaunch,
+    RTFKTXAtari,
+    RACBasics,
+    WinklevossCapital
   ]
 }
