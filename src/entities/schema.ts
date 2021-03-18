@@ -190,6 +190,15 @@ export class Collection extends Entity {
   set updatedAt(value: BigInt) {
     this.set("updatedAt", Value.fromBigInt(value));
   }
+
+  get reviewedAt(): BigInt {
+    let value = this.get("reviewedAt");
+    return value.toBigInt();
+  }
+
+  set reviewedAt(value: BigInt) {
+    this.set("reviewedAt", Value.fromBigInt(value));
+  }
 }
 
 export class Item extends Entity {

@@ -73,6 +73,7 @@ export function handleCollectionCreation(event: ProxyCreated): void {
   collection.itemsCount = 0
   collection.createdAt = event.block.timestamp // to support old collections
   collection.updatedAt = event.block.timestamp // to support old collections
+  collection.reviewedAt = event.block.timestamp // to support old collections
   collection.save()
 
   let metric = buildCountFromCollection()
@@ -321,6 +322,7 @@ export function handleSetApproved(event: SetApproved): void {
   }
 
   collection.updatedAt = event.block.timestamp // to support old collections
+  collection.reviewedAt = event.block.timestamp // to support old collections
   collection.save()
 }
 

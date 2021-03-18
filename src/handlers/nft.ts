@@ -96,6 +96,7 @@ export function handleAddItemV1(event: AddWearable): void {
     collection.itemsCount = 0
     collection.createdAt = event.block.timestamp // Not going to be used
     collection.updatedAt = event.block.timestamp // Not going to be used
+    collection.reviewedAt = event.block.timestamp // Not going to be used
 
     collection.save()
 

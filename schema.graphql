@@ -13,6 +13,7 @@ type Collection @entity {
   itemsCount: Int!
   createdAt: BigInt!
   updatedAt: BigInt!
+  reviewedAt: BigInt!
 }
 
 type Item @entity {
