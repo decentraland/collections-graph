@@ -4,7 +4,7 @@ import { getItemId } from '../modules/Item'
 import { createOrLoadAccount, ZERO_ADDRESS } from '../modules/Account'
 import { setItemSearchFields, setNFTSearchFields, buildWearableV1Metadata } from '../modules/Metadata'
 import * as itemTypes from '../modules/Metadata/itemTypes'
-import { getWearableV1Image, getWearableIdFromTokenURI, getWearableV1Representation, getIssuedIdFromTokenURI, getURNForWearableV1 } from '../modules/Metadata/wearable'
+import { getWearableV1Image, getWearableIdFromTokenURI, getWearableV1Representation, getIssuedIdFromTokenURI, getURNForCollectionV1, getURNForWearableV1 } from '../modules/Metadata/wearable'
 import {
   getNFTId, getTokenURI, isMint, cancelActiveOrder,
   clearNFTOrderProperties
@@ -94,6 +94,7 @@ export function handleAddItemV1(event: AddWearable): void {
     collection.minters = []
     collection.managers = []
     collection.itemsCount = 0
+    collection.urn = getURNForCollectionV1(collection!)
     collection.createdAt = event.block.timestamp // Not going to be used
     collection.updatedAt = event.block.timestamp // Not going to be used
     collection.reviewedAt = event.block.timestamp // Not going to be used

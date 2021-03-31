@@ -28,7 +28,7 @@ import {
 } from '../entities/templates/CollectionV2/CollectionV2'
 import { ERC721 } from '../entities/templates'
 import { CollectionV2 } from '../entities/templates'
-import { getURNForWearableV2 } from '../modules/Metadata/wearable'
+import { getURNForWearableV2, getURNForCollectionV2 } from '../modules/Metadata/wearable'
 
 
 export function handleInitializeWearablesV1(_: OwnershipTransferred): void {
@@ -70,6 +70,7 @@ export function handleCollectionCreation(event: ProxyCreated): void {
   collection.isEditable = collectionContract.isEditable()
   collection.minters = []
   collection.managers = []
+  collection.urn = getURNForCollectionV2(collectionAddress)
   collection.itemsCount = 0
   collection.createdAt = event.block.timestamp // to support old collections
   collection.updatedAt = event.block.timestamp // to support old collections

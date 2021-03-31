@@ -9,5 +9,7 @@
   "address_marketplace": "",
   "startBlock_marketplace": 0,
   "address_bid": "",
-  "startBlock_bid": 0
+  "startBlock_bid": 0,
+  "address_rarity": "",
+  "startBlock_rarity": 0
 }

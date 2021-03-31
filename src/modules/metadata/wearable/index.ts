@@ -270,14 +270,21 @@ export function getIssuedIdFromTokenURI(tokenURI: string): number {
 
 let baseDecentralandURN = 'urn:decentraland:'
 
-export function getURNForWearableV1(collection: Collection, representationId: string): string {
+export function getURNForCollectionV1(collection: Collection): string {
   let collectionName = collection.name.split('dcl://')
-  return baseDecentralandURN + getNetwork() + ':collections-v1:' + (collectionName.length > 1 ? collectionName[1] : collectionName[0]) + ':' + representationId
+  return baseDecentralandURN + getNetwork() + ':collections-v1:' + (collectionName.length > 1 ? collectionName[1] : collectionName[0])
+}
 
+export function getURNForCollectionV2(collectionAddress: string): string {
+  return baseDecentralandURN + getNetwork() + ':collections-v2:' + collectionAddress
+}
+
+export function getURNForWearableV1(collection: Collection, representationId: string): string {
+  return getURNForCollectionV1(collection) + ':' + representationId
 }
 
 export function getURNForWearableV2(collectionAddress: string, itemId: string): string {
-  return baseDecentralandURN + getNetwork() + ':collections-v2:' + collectionAddress + ':' + itemId
+  return getURNForCollectionV2(collectionAddress) + ':' + itemId
 }
 
 function findWearable(id: string, collection: WearableRepresentation[]): WearableRepresentation {

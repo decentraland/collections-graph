@@ -131,13 +131,38 @@ dataSources:
       language: wasm/assemblyscript
       file: ./src/handlers/committee.ts
       entities:
-        - Bid
+        - Account
       abis:
         - name: Committee
           file: ./abis/Committee.json
       eventHandlers:
         - event: MemberSet(indexed address,bool)
           handler: handleMemeberSet
+  # ---------------------------------------------------------
+  # Committee ----------------------------------------------------
+  # ---------------------------------------------------------
+  - kind: ethereum/contract
+    name: Rarity
+    network: {{network}}
+    source:
+      address: '{{address_rarity}}'
+      abi: Rarity
+      startBlock: {{startBlock_rarity}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      file: ./src/handlers/rarity.ts
+      entities:
+        - Rarity
+      abis:
+        - name: Rarity
+          file: ./abis/Rarity.json
+      eventHandlers:
+        - event: AddRarity((string,uint256,uint256))
+          handler: handleAddRarity
+        - event: UpdatePrice(string,uint256)
+          handler: handleUpdatePrice
 templates:
   # ---------------------------------------------------------
   # Items V2 ------------------------------------------------

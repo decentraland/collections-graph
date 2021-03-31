@@ -10,6 +10,7 @@ type Collection @entity {
   isEditable: Boolean
   minters: [String!]
   managers: [String!]
+  urn: String!
   itemsCount: Int!
   createdAt: BigInt!
   updatedAt: BigInt!
@@ -113,6 +114,13 @@ type Wearable @entity {
   category: String!
   rarity: String!
   bodyShapes: [String!]
+}
+
+type Rarity @entity {
+  id: ID!
+  name: String!
+  maxSupply: BigInt!
+  price: BigInt!
 }
 
 type Account @entity {

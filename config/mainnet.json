@@ -9,5 +9,7 @@
   "address_marketplace": "0x8e5660b4ab70168b5a6feea0e0315cb49c8cd539",
   "startBlock_marketplace": 8828687,
   "address_bid": "0xe479dfd9664c693b2e2992300930b00bfde08233",
-  "startBlock_bid": 8828687
+  "startBlock_bid": 8828687,
+  "address_rarity": "0x0000000000000000000000000000000000000000",
+  "startBlock_rarity": 8828687
 }
