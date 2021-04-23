@@ -94,6 +94,7 @@ export function handleAddItem(event: AddItem): void {
 
   // Count item
   collection.itemsCount += 1
+  collection.save()
 
   // Bind contract
   let collectionContract = CollectionContract.bind(event.address)
