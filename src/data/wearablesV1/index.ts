@@ -42,6 +42,8 @@ export * from './atari_launch'
 export * from './rtfkt_x_atari'
 export * from './rac_basics'
 export * from './winklevoss_capital'
+export * from './dg_atari_dillon_francis'
+
 
 
 

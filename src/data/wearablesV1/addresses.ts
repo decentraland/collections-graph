@@ -43,7 +43,7 @@ export let AtariLaunch = '0x4c290f486bae507719c562b6b524bdb71a2570c9'
 export let RTFKTXAtari = '0x6b47e7066c7db71aa04a1d5872496fe05c4c331f'
 export let RACBasics = '0x68e139552c4077ce5c9ab929c7e18ca721ffff00'
 export let WinklevossCapital = '0xc82a864a94db3550bc71fcb4ce07228bcec21f1a'
-
+export let DGAtariDillonFrancis = '0x51e0b1afe5da0c038fc93a3fc8e11cf7a238b40b'
 
 
 export function getCollectionsV1(): string[] {
@@ -89,6 +89,7 @@ export function getCollectionsV1(): string[] {
     AtariLaunch,
     RTFKTXAtari,
     RACBasics,
-    WinklevossCapital
+    WinklevossCapital,
+    DGAtariDillonFrancis
   ]
 }

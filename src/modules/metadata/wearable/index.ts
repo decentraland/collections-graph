@@ -45,6 +45,7 @@ import {
   rtfkt_x_atari,
   rac_basics,
   winklevoss_capital,
+  dg_atari_dillon_francis,
   wearable_test,
 } from '../../../data/wearablesV1'
 import { getNetwork } from '../../Network'
@@ -222,6 +223,7 @@ export function getWearableV1Representation(wearableId: string): WearableReprese
     rtfkt_x_atari,
     rac_basics,
     winklevoss_capital,
+    dg_atari_dillon_francis,
     wearable_test
   ]
 
