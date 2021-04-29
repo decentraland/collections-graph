@@ -1,15 +1,15 @@
 {
   "network": "mumbai",
   "address_fist_collection_v1": "0x30ae57840b0e9b8ea55334083d53d80b2cfe80e0",
-  "startBock_first_collections_v1": 10621000,
-  "address_factory": "0x0657fA4a3B14E568b0D9D49910D2875C5B6620F0",
-  "startBlock_factory": 10621000,
-  "address_committee": "0xf22B2172998c3A40c8E38452d3A08D143b30223f",
-  "startBlock_committee": 10621000,
-  "address_marketplace": "0xa274eC4366703d31bF58F5053b708335FaAC2b52",
-  "startBlock_marketplace": 10621000,
+  "startBock_first_collections_v1": 13274093,
+  "address_factory": "0x2C3212DEae0554E253e91cBa2B36A6ee888483C6",
+  "startBlock_factory": 13274093,
+  "address_committee": "0x55Ab761941dD07d71154922E09Df87023889a58d",
+  "startBlock_committee": 13274093,
+  "address_marketplace": "0x4D005B77334E36cD53843e9bABDf10340862C7f2",
+  "startBlock_marketplace": 13274093,
   "address_bid": "0x250fa138c0a994799c7a49df3097dc71e37b3d6f",
-  "startBlock_bid": 10621000,
-  "address_rarity": "0xeF2d490521801CbC005FcB2f4ce0478FEEd95c89",
-  "startBlock_rarity": 10621000
+  "startBlock_bid": 13274093,
+  "address_rarity": "0x540ed731A11dE041c09CA1bd4e5729dbF8A721Ea",
+  "startBlock_rarity": 13274093
 }

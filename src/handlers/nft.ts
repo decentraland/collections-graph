@@ -53,7 +53,7 @@ export function handleMintNFT(event: Issue, collectionAddress: string, item: Ite
 }
 
 export function handleTransferNFT(event: Transfer): void {
-  if (event.params.tokenId.toString() == '') { //@TODO: could this happen?
+  if (event.params.tokenId.toString() == '') {
     return
   }
 

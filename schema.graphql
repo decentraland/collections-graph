@@ -48,9 +48,9 @@ type Item @entity {
   ## Wearables search fields
   searchIsWearableHead: Boolean
   searchIsWearableAccessory: Boolean
-  searchWearableCategory: String
-  searchWearableRarity: String
-  searchWearableBodyShapes: [String!]
+  searchWearableCategory: WearableCategory
+  searchWearableRarity: WearableRarity
+  searchWearableBodyShapes: [WearableBodyShape!]
 }
 
 type NFT @entity {
@@ -83,9 +83,9 @@ type NFT @entity {
   ## Wearables search fields
   searchIsWearableHead: Boolean
   searchIsWearableAccessory: Boolean
-  searchWearableCategory: String
-  searchWearableRarity: String
-  searchWearableBodyShapes: [String!]
+  searchWearableCategory: WearableCategory
+  searchWearableRarity: WearableRarity
+  searchWearableBodyShapes: [WearableBodyShape!]
 
   ## Order search fields
   searchOrderStatus: OrderStatus
@@ -111,9 +111,42 @@ type Wearable @entity {
   name: String!
   description: String!
   collection: String!
-  category: String!
-  rarity: String!
-  bodyShapes: [String!]
+  category: WearableCategory!
+  rarity: WearableRarity!
+  bodyShapes: [WearableBodyShape!]
+}
+
+enum WearableCategory @entity {
+  eyebrows
+  eyes
+  facial_hair
+  hair
+  mouth
+  upper_body
+  lower_body
+  feet
+  earring
+  eyewear
+  hat
+  helmet
+  mask
+  tiara
+  top_head
+}
+
+enum WearableRarity @entity {
+  common
+  uncommon
+  rare
+  epic
+  legendary
+  mythic
+  unique
+}
+
+enum WearableBodyShape @entity {
+  BaseFemale
+  BaseMale
 }
 
 # ---------------------------------------------------------
