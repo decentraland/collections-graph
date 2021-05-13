@@ -50,6 +50,7 @@ import {
 } from '../../../data/wearablesV1'
 import { getNetwork } from '../../Network'
 import { toLowerCase } from '../../../utils'
+import { getCatalystBase } from '../../Catalyst'
 
 
 /**
@@ -148,31 +149,10 @@ export function isWearableAccessory(category: string): boolean {
 }
 
 // Wearable V1 methods
-export function getWearableV1Image(collection: Collection, item: Item, wearable: string): string {
-  let collectionName = collection.name.split('//')
+export function getWearableV1Image(item: Item): string {
+  let baseURI = getCatalystBase()
 
-  // Mainnet collections v1. Example dcl://halloween_2019
-  if (collectionName.length == 2) {
-    return 'https://wearable-api.decentraland.org/v2/collections/' +
-      collectionName[1] +
-      '/wearables/' +
-      wearable +
-      '/thumbnail'
-  }
-
-  // Ropsten collections v1
-  // https://wearable-api.decentraland.org/v2/standards/erc721-metadata/collections/halloween_2019/wearables/funny_skull_mask
-  let itemURI = item.URI.split('/')
-  if (itemURI.length == 10) {
-    return 'https://wearable-api.decentraland.org/v2/collections/' +
-      itemURI[itemURI.length - 3] +
-      '/wearables/' +
-      wearable +
-      '/thumbnail'
-  }
-
-
-  return ''
+  return baseURI + '/lambdas/collections/contents/' + item.urn + '/thumbnail'
 }
 
 export function getWearableV1Representation(wearableId: string): WearableRepresentation {

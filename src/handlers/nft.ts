@@ -126,8 +126,8 @@ export function handleAddItemV1(event: AddWearable): void {
   item.minters = [] // Not used for collections v1
   item.managers = [] // Not used for collections v1
   item.URI = collectionContract.baseURI() + event.params._wearableId
-  item.image = getWearableV1Image(collection!, item, event.params._wearableId)
   item.urn = getURNForWearableV1(collection!, representation.id)
+  item.image = getWearableV1Image(item)
 
   let metadata = buildWearableV1Metadata(item, representation)
   item.metadata = metadata.id
