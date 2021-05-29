@@ -62,6 +62,58 @@ export class AddItem_itemStruct extends ethereum.Tuple {
   }
 }
 
+export class AddItem1 extends ethereum.Event {
+  get params(): AddItem1__Params {
+    return new AddItem1__Params(this);
+  }
+}
+
+export class AddItem1__Params {
+  _event: AddItem1;
+
+  constructor(event: AddItem1) {
+    this._event = event;
+  }
+
+  get _itemId(): BigInt {
+    return this._event.parameters[0].value.toBigInt();
+  }
+
+  get _item(): AddItem1_itemStruct {
+    return this._event.parameters[1].value.toTuple() as AddItem1_itemStruct;
+  }
+}
+
+export class AddItem1_itemStruct extends ethereum.Tuple {
+  get rarity(): string {
+    return this[0].toString();
+  }
+
+  get maxSupply(): BigInt {
+    return this[1].toBigInt();
+  }
+
+  get totalSupply(): BigInt {
+    return this[2].toBigInt();
+  }
+
+  get price(): BigInt {
+    return this[3].toBigInt();
+  }
+
+  get beneficiary(): Address {
+    return this[4].toAddress();
+  }
+
+  get metadata(): string {
+    return this[5].toString();
+  }
+
+  get contentHash(): string {
+    return this[6].toString();
+  }
+}
+
 export class Approval extends ethereum.Event {
   get params(): Approval__Params {
     return new Approval__Params(this);
@@ -273,6 +325,32 @@ export class RescueItem__Params {
 
   get _contentHash(): Bytes {
     return this._event.parameters[1].value.toBytes();
+  }
+
+  get _metadata(): string {
+    return this._event.parameters[2].value.toString();
+  }
+}
+
+export class RescueItem1 extends ethereum.Event {
+  get params(): RescueItem1__Params {
+    return new RescueItem1__Params(this);
+  }
+}
+
+export class RescueItem1__Params {
+  _event: RescueItem1;
+
+  constructor(event: RescueItem1) {
+    this._event = event;
+  }
+
+  get _itemId(): BigInt {
+    return this._event.parameters[0].value.toBigInt();
+  }
+
+  get _contentHash(): string {
+    return this._event.parameters[1].value.toString();
   }
 
   get _metadata(): string {
@@ -500,7 +578,7 @@ export class CollectionV2__itemsResult {
   value3: BigInt;
   value4: Address;
   value5: string;
-  value6: Bytes;
+  value6: string;
 
   constructor(
     value0: string,
@@ -509,7 +587,7 @@ export class CollectionV2__itemsResult {
     value3: BigInt,
     value4: Address,
     value5: string,
-    value6: Bytes
+    value6: string
   ) {
     this.value0 = value0;
     this.value1 = value1;
@@ -528,7 +606,7 @@ export class CollectionV2__itemsResult {
     map.set("value3", ethereum.Value.fromUnsignedBigInt(this.value3));
     map.set("value4", ethereum.Value.fromAddress(this.value4));
     map.set("value5", ethereum.Value.fromString(this.value5));
-    map.set("value6", ethereum.Value.fromFixedBytes(this.value6));
+    map.set("value6", ethereum.Value.fromString(this.value6));
     return map;
   }
 }
@@ -1056,7 +1134,7 @@ export class CollectionV2 extends ethereum.SmartContract {
   items(param0: BigInt): CollectionV2__itemsResult {
     let result = super.call(
       "items",
-      "items(uint256):(string,uint256,uint256,uint256,address,string,bytes32)",
+      "items(uint256):(string,uint256,uint256,uint256,address,string,string)",
       [ethereum.Value.fromUnsignedBigInt(param0)]
     );
 
@@ -1067,14 +1145,14 @@ export class CollectionV2 extends ethereum.SmartContract {
       result[3].toBigInt(),
       result[4].toAddress(),
       result[5].toString(),
-      result[6].toBytes()
+      result[6].toString()
     );
   }
 
   try_items(param0: BigInt): ethereum.CallResult<CollectionV2__itemsResult> {
     let result = super.tryCall(
       "items",
-      "items(uint256):(string,uint256,uint256,uint256,address,string,bytes32)",
+      "items(uint256):(string,uint256,uint256,uint256,address,string,string)",
       [ethereum.Value.fromUnsignedBigInt(param0)]
     );
     if (result.reverted) {
@@ -1089,7 +1167,7 @@ export class CollectionV2 extends ethereum.SmartContract {
         value[3].toBigInt(),
         value[4].toAddress(),
         value[5].toString(),
-        value[6].toBytes()
+        value[6].toString()
       )
     );
   }
@@ -1296,32 +1374,6 @@ export class CollectionV2 extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toBigInt());
-  }
-}
-
-export class ConstructorCall extends ethereum.Call {
-  get inputs(): ConstructorCall__Inputs {
-    return new ConstructorCall__Inputs(this);
-  }
-
-  get outputs(): ConstructorCall__Outputs {
-    return new ConstructorCall__Outputs(this);
-  }
-}
-
-export class ConstructorCall__Inputs {
-  _call: ConstructorCall;
-
-  constructor(call: ConstructorCall) {
-    this._call = call;
-  }
-}
-
-export class ConstructorCall__Outputs {
-  _call: ConstructorCall;
-
-  constructor(call: ConstructorCall) {
-    this._call = call;
   }
 }
 
@@ -1565,6 +1617,32 @@ export class ExecuteMetaTransactionCall__Outputs {
   }
 }
 
+export class InitImplementationCall extends ethereum.Call {
+  get inputs(): InitImplementationCall__Inputs {
+    return new InitImplementationCall__Inputs(this);
+  }
+
+  get outputs(): InitImplementationCall__Outputs {
+    return new InitImplementationCall__Outputs(this);
+  }
+}
+
+export class InitImplementationCall__Inputs {
+  _call: InitImplementationCall;
+
+  constructor(call: InitImplementationCall) {
+    this._call = call;
+  }
+}
+
+export class InitImplementationCall__Outputs {
+  _call: InitImplementationCall;
+
+  constructor(call: InitImplementationCall) {
+    this._call = call;
+  }
+}
+
 export class InitializeCall extends ethereum.Call {
   get inputs(): InitializeCall__Inputs {
     return new InitializeCall__Inputs(this);
@@ -1724,8 +1802,8 @@ export class RescueItemsCall__Inputs {
     return this._call.inputValues[0].value.toBigIntArray();
   }
 
-  get _contentHashes(): Array<Bytes> {
-    return this._call.inputValues[1].value.toBytesArray();
+  get _contentHashes(): Array<string> {
+    return this._call.inputValues[1].value.toStringArray();
   }
 
   get _metadatas(): Array<string> {

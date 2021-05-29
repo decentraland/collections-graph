@@ -321,20 +321,20 @@ export class Item extends Entity {
     this.set("beneficiary", Value.fromString(value));
   }
 
-  get contentHash(): Bytes | null {
+  get contentHash(): string | null {
     let value = this.get("contentHash");
     if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
-      return value.toBytes();
+      return value.toString();
     }
   }
 
-  set contentHash(value: Bytes | null) {
+  set contentHash(value: string | null) {
     if (value === null) {
       this.unset("contentHash");
     } else {
-      this.set("contentHash", Value.fromBytes(value as Bytes));
+      this.set("contentHash", Value.fromString(value as string));
     }
   }
 

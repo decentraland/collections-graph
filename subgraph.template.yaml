@@ -195,9 +195,17 @@ templates:
           handler: handleSetItemMinter
         - event: SetItemManager(indexed uint256,indexed address,bool)
           handler: handleSetItemManager
+          # OLD Add Item: contentHash is bytes32
         - event: AddItem(indexed uint256,(string,uint256,uint256,uint256,address,string,bytes32))
           handler: handleAddItem
+          # NEW Add Item: contentHash is string
+        - event: AddItem(indexed uint256,(string,uint256,uint256,uint256,address,string,string))
+          handler: handleAddItem
+          # OLD Add Item: contentHash is bytes32
         - event: RescueItem(indexed uint256,bytes32,string)
+          handler: handleRescueItem
+          # NEW Add Item: contentHash is string
+        - event: RescueItem(indexed uint256,string,string)
           handler: handleRescueItem
         - event: UpdateItemData(indexed uint256,uint256,address,string)
           handler: handleUpdateItemData

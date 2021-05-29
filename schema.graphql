@@ -28,7 +28,7 @@ type Item @entity {
   available: BigInt!
   price: BigInt!
   beneficiary: String!
-  contentHash: Bytes
+  contentHash: String
   URI: String!
   image: String
   minters: [String!]
