@@ -57,58 +57,6 @@ export class AddItem_itemStruct extends ethereum.Tuple {
     return this[5].toString();
   }
 
-  get contentHash(): Bytes {
-    return this[6].toBytes();
-  }
-}
-
-export class AddItem1 extends ethereum.Event {
-  get params(): AddItem1__Params {
-    return new AddItem1__Params(this);
-  }
-}
-
-export class AddItem1__Params {
-  _event: AddItem1;
-
-  constructor(event: AddItem1) {
-    this._event = event;
-  }
-
-  get _itemId(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
-  }
-
-  get _item(): AddItem1_itemStruct {
-    return this._event.parameters[1].value.toTuple() as AddItem1_itemStruct;
-  }
-}
-
-export class AddItem1_itemStruct extends ethereum.Tuple {
-  get rarity(): string {
-    return this[0].toString();
-  }
-
-  get maxSupply(): BigInt {
-    return this[1].toBigInt();
-  }
-
-  get totalSupply(): BigInt {
-    return this[2].toBigInt();
-  }
-
-  get price(): BigInt {
-    return this[3].toBigInt();
-  }
-
-  get beneficiary(): Address {
-    return this[4].toAddress();
-  }
-
-  get metadata(): string {
-    return this[5].toString();
-  }
-
   get contentHash(): string {
     return this[6].toString();
   }
@@ -316,32 +264,6 @@ export class RescueItem__Params {
   _event: RescueItem;
 
   constructor(event: RescueItem) {
-    this._event = event;
-  }
-
-  get _itemId(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
-  }
-
-  get _contentHash(): Bytes {
-    return this._event.parameters[1].value.toBytes();
-  }
-
-  get _metadata(): string {
-    return this._event.parameters[2].value.toString();
-  }
-}
-
-export class RescueItem1 extends ethereum.Event {
-  get params(): RescueItem1__Params {
-    return new RescueItem1__Params(this);
-  }
-}
-
-export class RescueItem1__Params {
-  _event: RescueItem1;
-
-  constructor(event: RescueItem1) {
     this._event = event;
   }
 

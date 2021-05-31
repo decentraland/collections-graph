@@ -113,7 +113,7 @@ export function handleAddItem(event: AddItem): void {
   item.maxSupply = contractItem.maxSupply
   item.price = contractItem.price
   item.beneficiary = contractItem.beneficiary.toHexString()
-  item.contentHash = contractItem.contentHash.toString()
+  item.contentHash = contractItem.contentHash
   item.rawMetadata = contractItem.metadata
   item.searchIsCollectionApproved = collectionContract.isApproved()
   item.URI = collectionContract.baseURI() + collectionContract.getChainId().toString() + '/' + collectionAddress + '/' + itemId
@@ -143,7 +143,7 @@ export function handleRescueItem(event: RescueItem): void {
   let item = Item.load(id)
 
   item.rawMetadata = event.params._metadata
-  item.contentHash = event.params._contentHash.toString()
+  item.contentHash = event.params._contentHash
 
   let metadata = buildItemMetadata(item!)
 

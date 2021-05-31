@@ -41,62 +41,6 @@
             "type": "string"
           },
           {
-            "internalType": "bytes32",
-            "name": "contentHash",
-            "type": "bytes32"
-          }
-        ],
-        "indexed": false,
-        "internalType": "struct ERC721BaseCollectionV2.Item",
-        "name": "_item",
-        "type": "tuple"
-      }
-    ],
-    "name": "AddItem",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "_itemId",
-        "type": "uint256"
-      },
-      {
-        "components": [
-          {
-            "internalType": "string",
-            "name": "rarity",
-            "type": "string"
-          },
-          {
-            "internalType": "uint256",
-            "name": "maxSupply",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "totalSupply",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "price",
-            "type": "uint256"
-          },
-          {
-            "internalType": "address",
-            "name": "beneficiary",
-            "type": "address"
-          },
-          {
-            "internalType": "string",
-            "name": "metadata",
-            "type": "string"
-          },
-          {
             "internalType": "string",
             "name": "contentHash",
             "type": "string"
@@ -284,31 +228,6 @@
       }
     ],
     "name": "OwnershipTransferred",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "_itemId",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "bytes32",
-        "name": "_contentHash",
-        "type": "bytes32"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "_metadata",
-        "type": "string"
-      }
-    ],
-    "name": "RescueItem",
     "type": "event"
   },
   {

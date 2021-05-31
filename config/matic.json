@@ -1,15 +1,15 @@
 {
   "network": "matic",
-  "address_fist_collection_v1": "",
-  "startBock_first_collections_v1": 0,
-  "address_factory": "",
-  "startBlock_factory": 0,
-  "address_committee": "",
-  "startBlock_committee": 0,
-  "address_marketplace": "",
-  "startBlock_marketplace": 0,
-  "address_bid": "",
-  "startBlock_bid": 0,
-  "address_rarity": "",
-  "startBlock_rarity": 0
+  "address_fist_collection_v1": "0x30ae57840b0e9b8ea55334083d53d80b2cfe80e0",
+  "startBock_first_collections_v1": 15121100,
+  "address_factory": "0x390Fd5eF73EdE6cBD344F6fC8Ce26dED572FA7d2",
+  "startBlock_factory": 15121100,
+  "address_committee": "0x4a06E89BD8833a49Ad6Edf7245F39e8E08497499",
+  "startBlock_committee": 15121100,
+  "address_marketplace": "0x65376FA5A0de14b28777Eb6fF9B5619aDcABc76b",
+  "startBlock_marketplace": 15121100,
+  "address_bid": "0x250fa138c0a994799c7a49df3097dc71e37b3d6f",
+  "startBlock_bid": 15121100,
+  "address_rarity": "0xAF7c995D7aa624452FB127F530332ac6641e627B",
+  "startBlock_rarity": 15121100
 }
