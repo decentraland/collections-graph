@@ -49,7 +49,7 @@ type Item @entity {
   searchIsWearableHead: Boolean
   searchIsWearableAccessory: Boolean
   searchWearableCategory: WearableCategory
-  searchWearableRarity: WearableRarity
+  searchWearableRarity: String # We're using String instead of WearableRarity here so we can later query this field via ()_in
   searchWearableBodyShapes: [WearableBodyShape!]
 }
 
@@ -84,7 +84,7 @@ type NFT @entity {
   searchIsWearableHead: Boolean
   searchIsWearableAccessory: Boolean
   searchWearableCategory: WearableCategory
-  searchWearableRarity: WearableRarity
+  searchWearableRarity: String # We're using String instead of WearableRarity here so we can later query this field via ()_in
   searchWearableBodyShapes: [WearableBodyShape!]
 
   ## Order search fields
