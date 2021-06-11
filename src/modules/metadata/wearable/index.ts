@@ -57,28 +57,66 @@ import { getCatalystBase } from '../../Catalyst'
  * @dev The item's rawMetadata for wearables should follow: version:item_type:name:description:category:bodyshapes
  * @param item
  */
-export function buildWearableItem(item: Item): Wearable {
+export function buildWearableItem(item: Item): Wearable | null {
   let id = item.id
   let data = item.rawMetadata.split(':')
+  if (data.length == 6 && isValidCategory(data[4]) && isValidBodyShape(data[5].split(','))) {
 
-  let wearable = Wearable.load(id)
+    let wearable = Wearable.load(id)
 
-  if (wearable == null) {
-    wearable = new Wearable(id)
-  }
+    if (wearable == null) {
+      wearable = new Wearable(id)
+    }
 
-  if (data.length >= 6) {
     wearable.collection = item.collection
     wearable.name = data[2]
     wearable.description = data[3]
     wearable.rarity = item.rarity
     wearable.category = data[4]
     wearable.bodyShapes = data[5].split(',') // Could be more than one
+    wearable.save()
+
+    return wearable
   }
 
-  wearable.save()
+  return null
+}
 
-  return wearable!
+function isValidCategory(category: string): boolean {
+  if (category == 'eyebrows' ||
+    category == 'eyes' ||
+    category == 'facial_hair' ||
+    category == 'hair' ||
+    category == 'mouth' ||
+    category == 'upper_body' ||
+    category == 'lower_body' ||
+    category == 'feet' ||
+    category == 'earring' ||
+    category == 'eyewear' ||
+    category == 'hat' ||
+    category == 'helmet' ||
+    category == 'mask' ||
+    category == 'tiara' ||
+    category == 'top_head') {
+    return true
+  }
+
+  log.error('Invalid Category {}', [category])
+
+  return false
+}
+
+function isValidBodyShape(bodyShapes: string[]): boolean {
+  for (let i = 0; i++; i < bodyShapes.length) {
+    let bodyShape = bodyShapes[i]
+    if (bodyShape != 'BaseFemale' &&
+      bodyShape != 'BaseMale') {
+      log.error('Invalid BodyShape {}', [bodyShape])
+      return false
+    }
+  }
+
+  return true
 }
 
 export function buildWearableV1(item: Item, representation: WearableRepresentation): Wearable {

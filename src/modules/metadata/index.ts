@@ -23,8 +23,8 @@ export function buildItemMetadata(item: Item): Metadata {
   if (data.length >= 2) {
     let type = data[1]
 
-    if (type == itemTypes.WEARABLE_TYPE_SHORT) {
-      let wearable = buildWearableItem(item)
+    let wearable = buildWearableItem(item)
+    if (wearable != null && type == itemTypes.WEARABLE_TYPE_SHORT) {
       metadata.itemType = itemTypes.WEARABLE_V2
       metadata.wearable = wearable.id
     } else {
