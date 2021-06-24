@@ -26,7 +26,7 @@ Ethereum addresses should be passed lowercased:
 - `0xB549B2442b2BD0a53795BC5cDcBFE0cAF7ACA9f8` ❌
 - `0xb549b2442b2bd0a53795bc5cdcbfe0caf7aca9f8` ✅
 
-#### Get fist 5 collections and items balances
+#### Get first 5 collections and items balances
 
 ```typescript
 {
@@ -66,6 +66,39 @@ Ethereum addresses should be passed lowercased:
         category
       }
     }
+  }
+}
+```
+
+#### Get first 5 Collection NFTs
+
+Owner's `id` is the owner's Ethereum address
+
+```typescript
+{
+  nfts(first: 5) {
+    id
+   	tokenId
+    owner {
+      id
+    }
+  }
+}
+```
+
+#### Get first 5 Collection NFTs Orders
+
+```typescript
+{
+  orders(first: 5) {
+    id
+    nftAddress
+    price
+    buyer
+    status
+    nft {
+      id
+    }  
   }
 }
 ```
