@@ -79,7 +79,7 @@ Owner's `id` is the owner's Ethereum address
 {
   nfts(first: 5) {
     id
-   	tokenId
+    tokenId
     owner {
       id
     }
