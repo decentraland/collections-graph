@@ -55,12 +55,13 @@ import { getCatalystBase } from '../../Catalyst'
 
 /**
  * @dev The item's rawMetadata for wearables should follow: version:item_type:name:description:category:bodyshapes
+ * If the item has been rescues, the metadata could be be version:item_type:name:description:category:bodyshapes:prev_hash:new_entity_timestamp
  * @param item
  */
 export function buildWearableItem(item: Item): Wearable | null {
   let id = item.id
   let data = item.rawMetadata.split(':')
-  if (data.length == 6 && isValidCategory(data[4]) && isValidBodyShape(data[5].split(','))) {
+  if ((data.length == 6 || data.length == 8) && isValidCategory(data[4]) && isValidBodyShape(data[5].split(','))) {
 
     let wearable = Wearable.load(id)
 
