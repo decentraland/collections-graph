@@ -170,6 +170,7 @@ export function handleUpdateItemData(event: UpdateItemData): void {
 
   item.metadata = metadata.id
   item.itemType = metadata.itemType
+  item = setItemSearchFields(item!)
 
   item.save()
 }
