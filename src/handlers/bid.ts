@@ -31,6 +31,7 @@ export function handleBidCreated(event: BidCreated): void {
 
   bid.status = status.OPEN
   bid.nftAddress = event.params._tokenAddress
+  bid.tokenId = event.params._tokenId
   bid.bidder = event.params._bidder
   bid.price = event.params._price
   bid.blockchainId = event.params._id.toHexString()

@@ -1326,6 +1326,15 @@ export class Order extends Entity {
     this.set("nftAddress", Value.fromBytes(value));
   }
 
+  get tokenId(): BigInt {
+    let value = this.get("tokenId");
+    return value.toBigInt();
+  }
+
+  set tokenId(value: BigInt) {
+    this.set("tokenId", Value.fromBigInt(value));
+  }
+
   get txHash(): Bytes {
     let value = this.get("txHash");
     return value.toBytes();
@@ -1470,6 +1479,15 @@ export class Bid extends Entity {
 
   set nftAddress(value: Bytes) {
     this.set("nftAddress", Value.fromBytes(value));
+  }
+
+  get tokenId(): BigInt {
+    let value = this.get("tokenId");
+    return value.toBigInt();
+  }
+
+  set tokenId(value: BigInt) {
+    this.set("tokenId", Value.fromBigInt(value));
   }
 
   get blockchainId(): string {

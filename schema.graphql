@@ -186,6 +186,7 @@ type Order @entity {
   id: ID!
   nft: NFT
   nftAddress: Bytes!
+  tokenId: BigInt!
   txHash: Bytes!
   owner: Bytes!
   buyer: Bytes
@@ -205,6 +206,7 @@ type Bid @entity {
   id: ID!
   nft: NFT
   nftAddress: Bytes!
+  tokenId: BigInt!
   blockchainId: String!
   bidder: Bytes
   seller: Bytes
