@@ -274,8 +274,9 @@ export function handleSetGlobalMinter(event: SetGlobalMinter): void {
         if (item != null) {
           // check if store is item minter
           let isStoreItemMinter = false
+          let itemMinters = item.minters
           for (let j = 0; j < item.minters.length; j++) {
-            if (storeAddress == item.minters[i]) {
+            if (storeAddress == itemMinters![i]) {
               isStoreItemMinter = true
             }
           }
