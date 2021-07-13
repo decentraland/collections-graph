@@ -11,6 +11,6 @@ export function getCatalystBase(): string {
     return 'https://peer.decentraland.zone'
   }
 
-  log.debug('Invalid network {}', [network])
+  log.debug('Could not find catalyst base. Invalid network {}', [network])
   return ''
 }

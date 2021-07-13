@@ -200,6 +200,15 @@ export class Collection extends Entity {
   set reviewedAt(value: BigInt) {
     this.set("reviewedAt", Value.fromBigInt(value));
   }
+
+  get searchIsStoreMinter(): boolean {
+    let value = this.get("searchIsStoreMinter");
+    return value.toBoolean();
+  }
+
+  set searchIsStoreMinter(value: boolean) {
+    this.set("searchIsStoreMinter", Value.fromBoolean(value));
+  }
 }
 
 export class Item extends Entity {
@@ -492,6 +501,15 @@ export class Item extends Entity {
 
   set searchIsCollectionApproved(value: boolean) {
     this.set("searchIsCollectionApproved", Value.fromBoolean(value));
+  }
+
+  get searchIsStoreMinter(): boolean {
+    let value = this.get("searchIsStoreMinter");
+    return value.toBoolean();
+  }
+
+  set searchIsStoreMinter(value: boolean) {
+    this.set("searchIsStoreMinter", Value.fromBoolean(value));
   }
 
   get searchIsWearableHead(): boolean {
