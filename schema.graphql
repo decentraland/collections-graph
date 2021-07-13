@@ -2,7 +2,7 @@ type Collection @entity {
   id: ID!
   items: [Item!] @derivedFrom(field: "collection")
   owner: String!
-  creator: String
+  creator: String!
   name: String!
   symbol: String!
   isCompleted: Boolean
@@ -21,6 +21,7 @@ type Item @entity {
   id: ID! # ${Collection address}_${item Id}
   collection: Collection!
   blockchainId: BigInt!
+  creator: String!
   itemType: ItemType!
   totalSupply: BigInt!
   maxSupply: BigInt!
