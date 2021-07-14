@@ -68,21 +68,13 @@ export class Collection extends Entity {
     this.set("owner", Value.fromString(value));
   }
 
-  get creator(): string | null {
+  get creator(): string {
     let value = this.get("creator");
-    if (value === null || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
+    return value.toString();
   }
 
-  set creator(value: string | null) {
-    if (value === null) {
-      this.unset("creator");
-    } else {
-      this.set("creator", Value.fromString(value as string));
-    }
+  set creator(value: string) {
+    this.set("creator", Value.fromString(value));
   }
 
   get name(): string {
@@ -208,6 +200,15 @@ export class Collection extends Entity {
   set reviewedAt(value: BigInt) {
     this.set("reviewedAt", Value.fromBigInt(value));
   }
+
+  get searchIsStoreMinter(): boolean {
+    let value = this.get("searchIsStoreMinter");
+    return value.toBoolean();
+  }
+
+  set searchIsStoreMinter(value: boolean) {
+    this.set("searchIsStoreMinter", Value.fromBoolean(value));
+  }
 }
 
 export class Item extends Entity {
@@ -256,6 +257,15 @@ export class Item extends Entity {
 
   set blockchainId(value: BigInt) {
     this.set("blockchainId", Value.fromBigInt(value));
+  }
+
+  get creator(): string {
+    let value = this.get("creator");
+    return value.toString();
+  }
+
+  set creator(value: string) {
+    this.set("creator", Value.fromString(value));
   }
 
   get itemType(): string {
@@ -491,6 +501,15 @@ export class Item extends Entity {
 
   set searchIsCollectionApproved(value: boolean) {
     this.set("searchIsCollectionApproved", Value.fromBoolean(value));
+  }
+
+  get searchIsStoreMinter(): boolean {
+    let value = this.get("searchIsStoreMinter");
+    return value.toBoolean();
+  }
+
+  set searchIsStoreMinter(value: boolean) {
+    this.set("searchIsStoreMinter", Value.fromBoolean(value));
   }
 
   get searchIsWearableHead(): boolean {

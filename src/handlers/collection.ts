@@ -1,15 +1,19 @@
 import { BigInt, Address } from '@graphprotocol/graph-ts'
-
 import { handleMintNFT, handleTransferNFT } from './nft'
 import { setItemSearchFields, buildItemMetadata } from '../modules/Metadata'
-import { buildCount, buildCountFromItem, buildCountFromCollection } from '../modules/Count'
-import { getItemId, getItemImage, removeItemMinter } from '../modules/Item'
 import {
-  getCollectionsV1
-} from '../data/wearablesV1/addresses'
+  buildCount,
+  buildCountFromItem,
+  buildCountFromCollection,
+} from '../modules/Count'
+import { getItemId, getItemImage, removeItemMinter } from '../modules/Item'
+import { getCollectionsV1 } from '../data/wearablesV1/addresses'
 import { isMint } from '../modules/NFT'
 import { Collection, Item } from '../entities/schema'
-import { ProxyCreated, OwnershipTransferred } from '../entities/CollectionFactory/CollectionFactory'
+import {
+  ProxyCreated,
+  OwnershipTransferred,
+} from '../entities/CollectionFactory/CollectionFactory'
 import {
   SetGlobalMinter,
   SetItemMinter,
@@ -24,12 +28,15 @@ import {
   Complete,
   CreatorshipTransferred,
   CollectionV2 as CollectionContract,
-  Transfer
+  Transfer,
 } from '../entities/templates/CollectionV2/CollectionV2'
 import { ERC721 } from '../entities/templates'
 import { CollectionV2 } from '../entities/templates'
-import { getURNForWearableV2, getURNForCollectionV2 } from '../modules/Metadata/wearable'
-
+import {
+  getURNForWearableV2,
+  getURNForCollectionV2,
+} from '../modules/Metadata/wearable'
+import { getStoreAddress } from '../modules/store'
 
 export function handleInitializeWearablesV1(_: OwnershipTransferred): void {
   let count = buildCount()
@@ -37,7 +44,7 @@ export function handleInitializeWearablesV1(_: OwnershipTransferred): void {
   let collectionsV1 = getCollectionsV1()
 
   if (count.started == 0) {
-    collectionsV1.forEach(collectionAddress => {
+    collectionsV1.forEach((collectionAddress) => {
       // Create template bindings
       ERC721.create(Address.fromString(collectionAddress))
     })
@@ -75,12 +82,12 @@ export function handleCollectionCreation(event: ProxyCreated): void {
   collection.createdAt = event.block.timestamp // to support old collections
   collection.updatedAt = event.block.timestamp // to support old collections
   collection.reviewedAt = event.block.timestamp // to support old collections
+  collection.searchIsStoreMinter = false
   collection.save()
 
   let metric = buildCountFromCollection()
   metric.save()
 }
-
 
 export function handleAddItem(event: AddItem): void {
   let collectionAddress = event.address.toHexString()
@@ -105,6 +112,7 @@ export function handleAddItem(event: AddItem): void {
   let id = getItemId(collectionAddress, itemId.toString())
 
   let item = new Item(id)
+  item.creator = collection.creator
   item.blockchainId = event.params._itemId
   item.collection = collectionAddress
   item.rarity = contractItem.rarity
@@ -116,11 +124,18 @@ export function handleAddItem(event: AddItem): void {
   item.contentHash = contractItem.contentHash
   item.rawMetadata = contractItem.metadata
   item.searchIsCollectionApproved = collectionContract.isApproved()
-  item.URI = collectionContract.baseURI() + collectionContract.getChainId().toString() + '/' + collectionAddress + '/' + itemId
+  item.URI =
+    collectionContract.baseURI() +
+    collectionContract.getChainId().toString() +
+    '/' +
+    collectionAddress +
+    '/' +
+    itemId
   item.urn = getURNForWearableV2(collectionAddress, itemId.toString())
   item.image = getItemImage(item)
   item.minters = []
   item.managers = []
+  item.searchIsStoreMinter = false
 
   let metadata = buildItemMetadata(item)
 
@@ -187,7 +202,6 @@ export function handleIssue(event: Issue): void {
 
   item.save()
 
-
   handleMintNFT(event, collectionAddress, item!)
 
   // Bind contract
@@ -198,10 +212,18 @@ export function handleIssue(event: Issue): void {
     return
   }
 
-  let amountOfMintsAvailable = collectionContract.itemMinters(event.params._itemId, event.params._caller)
+  let amountOfMintsAvailable = collectionContract.itemMinters(
+    event.params._itemId,
+    event.params._caller
+  )
 
   if (amountOfMintsAvailable.equals(BigInt.fromI32(0))) {
-    item.minters = removeItemMinter(item!, event.params._caller.toHexString())
+    let minterAddress = event.params._caller.toHexString()
+    item.minters = removeItemMinter(item!, minterAddress)
+    // unset flag if minter is store
+    if (minterAddress == getStoreAddress()) {
+      item.searchIsStoreMinter = false
+    }
     item.save()
   }
 }
@@ -214,19 +236,61 @@ export function handleTransfer(event: Transfer): void {
 }
 
 export function handleSetGlobalMinter(event: SetGlobalMinter): void {
-  let collection = Collection.load(event.address.toHexString())
+  let collectionAddress = event.address.toHexString()
+  let storeAddress = getStoreAddress()
+  let minterAddress = event.params._minter.toHexString()
+  let collection = Collection.load(collectionAddress)
 
   let minters = collection.minters
 
   if (event.params._value == true) {
     minters.push(event.params._minter.toHexString())
     collection.minters = minters
+
+    // set flag on collection
+    if (minterAddress == storeAddress) {
+      collection.searchIsStoreMinter = true
+      // loop over all items and set flag
+      let itemCount = collection.itemsCount
+      for (let i = 0; i < itemCount; i++) {
+        let itemId = getItemId(collectionAddress, i.toString())
+        let item = Item.load(itemId)
+        if (item != null) {
+          item.searchIsStoreMinter = true
+          item.save()
+        }
+      }
+    }
   } else {
     let newMinters = new Array<string>(0)
 
     for (let i = 0; i < minters.length; i++) {
       if (minters![i] != event.params._minter.toHexString()) {
         newMinters.push(minters![i])
+      }
+    }
+
+    // unset flag on collection
+    if (minterAddress == storeAddress) {
+      collection.searchIsStoreMinter = false
+      // loop over all items and unset flag (only if store is not an item minter)
+      let itemCount = collection.itemsCount
+      for (let i = 0; i < itemCount; i++) {
+        let itemId = getItemId(collectionAddress, i.toString())
+        let item = Item.load(itemId)
+        if (item != null) {
+          // check if store is item minter
+          let isStoreItemMinter = false
+          let itemMinters = item.minters
+          for (let j = 0; j < item.minters.length; j++) {
+            if (storeAddress == itemMinters![i]) {
+              isStoreItemMinter = true
+            }
+          }
+          // set flag only if store is item minter, otherwise unset it
+          item.searchIsStoreMinter = isStoreItemMinter
+          item.save()
+        }
       }
     }
 
@@ -261,6 +325,8 @@ export function handleSetGlobalManager(event: SetGlobalManager): void {
 
 export function handleSetItemMinter(event: SetItemMinter): void {
   let collectionAddress = event.address.toHexString()
+  let storeAddress = getStoreAddress()
+  let minterAddress = event.params._minter.toHexString()
   let itemId = event.params._itemId.toString()
   let id = getItemId(collectionAddress, itemId)
 
@@ -269,10 +335,19 @@ export function handleSetItemMinter(event: SetItemMinter): void {
   let minters = item.minters
 
   if (event.params._value.gt(BigInt.fromI32(0))) {
-    minters.push(event.params._minter.toHexString())
+    minters.push(minterAddress)
     item.minters = minters
+    // if minter is store address, set flag
+    if (minterAddress == storeAddress) {
+      item.searchIsStoreMinter = true
+    }
   } else {
-    item.minters = removeItemMinter(item!, event.params._minter.toHexString())
+    item.minters = removeItemMinter(item!, minterAddress)
+    // if minter is store address, unset flag, but only if store is not global minter
+    let collection = Collection.load(item.collection)
+    if (!collection.searchIsStoreMinter && minterAddress == storeAddress) {
+      item.searchIsStoreMinter = false
+    }
   }
 
   item.save()
@@ -315,7 +390,11 @@ export function handleSetApproved(event: SetApproved): void {
   let collectionContract = CollectionContract.bind(event.address)
   let itemsCount = collectionContract.itemsCount()
 
-  for (let i = BigInt.fromI32(0); i.lt(itemsCount); i = i.plus(BigInt.fromI32(1))) {
+  for (
+    let i = BigInt.fromI32(0);
+    i.lt(itemsCount);
+    i = i.plus(BigInt.fromI32(1))
+  ) {
     let id = getItemId(collectionAddress, i.toString())
     let item = Item.load(id)
 

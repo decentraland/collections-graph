@@ -2,7 +2,7 @@ type Collection @entity {
   id: ID!
   items: [Item!] @derivedFrom(field: "collection")
   owner: String!
-  creator: String
+  creator: String!
   name: String!
   symbol: String!
   isCompleted: Boolean
@@ -15,12 +15,16 @@ type Collection @entity {
   createdAt: BigInt!
   updatedAt: BigInt!
   reviewedAt: BigInt!
+
+  # Searcheable fields
+  searchIsStoreMinter: Boolean!
 }
 
 type Item @entity {
   id: ID! # ${Collection address}_${item Id}
   collection: Collection!
   blockchainId: BigInt!
+  creator: String!
   itemType: ItemType!
   totalSupply: BigInt!
   maxSupply: BigInt!
@@ -44,6 +48,7 @@ type Item @entity {
 
   ## Collection fields
   searchIsCollectionApproved: Boolean
+  searchIsStoreMinter: Boolean!
 
   ## Wearables search fields
   searchIsWearableHead: Boolean
