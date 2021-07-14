@@ -218,7 +218,12 @@ export function handleIssue(event: Issue): void {
   )
 
   if (amountOfMintsAvailable.equals(BigInt.fromI32(0))) {
-    item.minters = removeItemMinter(item!, event.params._caller.toHexString())
+    let minterAddress = event.params._caller.toHexString()
+    item.minters = removeItemMinter(item!, minterAddress)
+    // unset flag if minter is store
+    if (minterAddress == getStoreAddress()) {
+      item.searchIsStoreMinter = false
+    }
     item.save()
   }
 }
