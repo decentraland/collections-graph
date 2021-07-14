@@ -17,7 +17,7 @@ type Collection @entity {
   reviewedAt: BigInt!
 
   # Searcheable fields
-  searchIsStoreMinter: Boolean
+  searchIsStoreMinter: Boolean!
 }
 
 type Item @entity {
@@ -48,7 +48,7 @@ type Item @entity {
 
   ## Collection fields
   searchIsCollectionApproved: Boolean
-  searchIsStoreMinter: Boolean
+  searchIsStoreMinter: Boolean!
 
   ## Wearables search fields
   searchIsWearableHead: Boolean

@@ -82,6 +82,7 @@ export function handleCollectionCreation(event: ProxyCreated): void {
   collection.createdAt = event.block.timestamp // to support old collections
   collection.updatedAt = event.block.timestamp // to support old collections
   collection.reviewedAt = event.block.timestamp // to support old collections
+  collection.searchIsStoreMinter = false
   collection.save()
 
   let metric = buildCountFromCollection()
