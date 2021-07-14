@@ -282,10 +282,8 @@ export function handleSetGlobalMinter(event: SetGlobalMinter): void {
               isStoreItemMinter = true
             }
           }
-          // if not, unset flag on item
-          if (!isStoreItemMinter) {
-            item.searchIsStoreMinter = false
-          }
+          // set flag only if store is item minter, otherwise unset it
+          item.searchIsStoreMinter = isStoreItemMinter
           item.save()
         }
       }
