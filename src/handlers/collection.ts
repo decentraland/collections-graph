@@ -134,6 +134,7 @@ export function handleAddItem(event: AddItem): void {
   item.image = getItemImage(item)
   item.minters = []
   item.managers = []
+  item.searchIsStoreMinter = false
 
   let metadata = buildItemMetadata(item)
 
