@@ -136,6 +136,8 @@ export function handleAddItem(event: AddItem): void {
   item.minters = []
   item.managers = []
   item.searchIsStoreMinter = false
+  item.createdAt = event.block.timestamp
+  item.updatedAt = event.block.timestamp
 
   let metadata = buildItemMetadata(item)
 
@@ -167,6 +169,8 @@ export function handleRescueItem(event: RescueItem): void {
 
   item = setItemSearchFields(item!)
 
+  item.updatedAt = event.block.timestamp
+
   item.save()
 }
 
@@ -186,6 +190,8 @@ export function handleUpdateItemData(event: UpdateItemData): void {
   item.metadata = metadata.id
   item.itemType = metadata.itemType
   item = setItemSearchFields(item!)
+
+  item.updatedAt = event.block.timestamp
 
   item.save()
 }

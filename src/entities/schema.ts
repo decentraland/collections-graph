@@ -460,6 +460,24 @@ export class Item extends Entity {
     }
   }
 
+  get createdAt(): BigInt {
+    let value = this.get("createdAt");
+    return value.toBigInt();
+  }
+
+  set createdAt(value: BigInt) {
+    this.set("createdAt", Value.fromBigInt(value));
+  }
+
+  get updatedAt(): BigInt {
+    let value = this.get("updatedAt");
+    return value.toBigInt();
+  }
+
+  set updatedAt(value: BigInt) {
+    this.set("updatedAt", Value.fromBigInt(value));
+  }
+
   get searchText(): string | null {
     let value = this.get("searchText");
     if (value === null || value.kind == ValueKind.NULL) {

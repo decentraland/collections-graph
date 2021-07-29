@@ -41,6 +41,8 @@ type Item @entity {
   rawMetadata: String!
   urn: String!
   nfts: [NFT!] @derivedFrom(field: "item")
+  createdAt: BigInt!
+  updatedAt: BigInt!
 
   # Searcheable fields
   searchText: String
