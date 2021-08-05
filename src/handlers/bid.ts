@@ -8,7 +8,7 @@ import { Bid, NFT } from '../entities/schema'
 import { getNFTId } from '../modules/NFT'
 import * as status from '../modules/Order'
 import { getBidId } from '../modules/Bid'
-import { buildCount } from '../modules/Count'
+import { buildCountFromSecondarySale } from '../modules/Count'
 
 export function handleBidCreated(event: BidCreated): void {
   let nftId = getNFTId(
@@ -76,9 +76,7 @@ export function handleBidAccepted(event: BidAccepted): void {
   nft.save()
 
   // count secondary sale
-  let count = buildCount()
-  count.secondarySalesTotal += 1
-  count.secondarySalesManaTotal = count.secondarySalesManaTotal.plus(bid.price)
+  let count = buildCountFromSecondarySale(bid.price)
   count.save()
 }
 

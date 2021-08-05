@@ -10,7 +10,7 @@ import {
   updateNFTOrderProperties,
   cancelActiveOrder
 } from '../modules/NFT'
-import { buildCount, buildCountFromOrder } from '../modules/Count'
+import { buildCountFromOrder, buildCountFromSecondarySale } from '../modules/Count'
 import * as status from '../modules/Order'
 
 export function handleOrderCreated(event: OrderCreated): void {
@@ -80,9 +80,7 @@ export function handleOrderSuccessful(event: OrderSuccessful): void {
   nft.save()
 
   // count secondary sale
-  let count = buildCount()
-  count.secondarySalesTotal += 1
-  count.secondarySalesManaTotal = count.secondarySalesManaTotal.plus(order.price)
+  let count = buildCountFromSecondarySale(order.price)
   count.save()
 }
 

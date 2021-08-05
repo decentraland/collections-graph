@@ -28,7 +28,7 @@ import {
   buildCountFromCollection,
   buildCountFromNFT,
   buildCountFromItem,
-  buildCount,
+  buildCountFromPrimarySale,
 } from '../modules/Count'
 import {
   Issue,
@@ -105,9 +105,7 @@ export function handleMintNFT(
 
   // count primary sale
   if (isStoreMinter) {
-    let count = buildCount()
-    count.primarySalesTotal += 1
-    count.primarySalesManaTotal = count.primarySalesManaTotal.plus(item.price)
+    let count = buildCountFromPrimarySale(item.price)
     count.save()
   }
 }

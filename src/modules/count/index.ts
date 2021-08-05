@@ -53,3 +53,18 @@ export function buildCountFromOrder(): Count {
 
   return count
 }
+
+export function buildCountFromPrimarySale(price: BigInt) {
+  let count = buildCount()
+  count.primarySalesTotal += 1
+  count.primarySalesManaTotal = count.primarySalesManaTotal.plus(price)
+  return count
+}
+
+
+export function buildCountFromSecondarySale(price: BigInt) {
+  let count = buildCount()
+  count.secondarySalesTotal += 1
+  count.secondarySalesManaTotal = count.secondarySalesManaTotal.plus(price)
+  return count
+}
