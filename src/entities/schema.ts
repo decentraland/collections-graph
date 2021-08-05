@@ -1821,13 +1821,21 @@ export class Mint extends Entity {
     this.set("timestamp", Value.fromBigInt(value));
   }
 
-  get searchPrice(): BigInt {
-    let value = this.get("searchPrice");
-    return value.toBigInt();
+  get searchPrimarySalePrice(): BigInt | null {
+    let value = this.get("searchPrimarySalePrice");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set searchPrice(value: BigInt) {
-    this.set("searchPrice", Value.fromBigInt(value));
+  set searchPrimarySalePrice(value: BigInt | null) {
+    if (value === null) {
+      this.unset("searchPrimarySalePrice");
+    } else {
+      this.set("searchPrimarySalePrice", Value.fromBigInt(value as BigInt));
+    }
   }
 
   get searchContractAddress(): string {

@@ -93,7 +93,9 @@ export function handleMintNFT(
   mint.beneficiary = nft.owner
   mint.minter = minterAddress
   mint.timestamp = event.block.timestamp
-  mint.searchPrice = item.price
+  if (isStoreMinter) {
+    mint.searchPrimarySalePrice = item.price
+  }
   mint.searchContractAddress = nft.contractAddress
   mint.searchTokenId = nft.tokenId
   mint.searchItemId = item.blockchainId

@@ -259,7 +259,7 @@ type Mint @entity {
   minter: String!
   timestamp: BigInt!
 
-  searchPrice: BigInt!
+  searchPrimarySalePrice: BigInt
   searchContractAddress: String!
   searchItemId: BigInt!
   searchTokenId: BigInt!
