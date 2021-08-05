@@ -1700,6 +1700,42 @@ export class Count extends Entity {
     this.set("nftTotal", Value.fromI32(value));
   }
 
+  get primarySalesTotal(): i32 {
+    let value = this.get("primarySalesTotal");
+    return value.toI32();
+  }
+
+  set primarySalesTotal(value: i32) {
+    this.set("primarySalesTotal", Value.fromI32(value));
+  }
+
+  get primarySalesManaTotal(): BigInt {
+    let value = this.get("primarySalesManaTotal");
+    return value.toBigInt();
+  }
+
+  set primarySalesManaTotal(value: BigInt) {
+    this.set("primarySalesManaTotal", Value.fromBigInt(value));
+  }
+
+  get secondarySalesTotal(): i32 {
+    let value = this.get("secondarySalesTotal");
+    return value.toI32();
+  }
+
+  set secondarySalesTotal(value: i32) {
+    this.set("secondarySalesTotal", Value.fromI32(value));
+  }
+
+  get secondarySalesManaTotal(): BigInt {
+    let value = this.get("secondarySalesManaTotal");
+    return value.toBigInt();
+  }
+
+  set secondarySalesManaTotal(value: BigInt) {
+    this.set("secondarySalesManaTotal", Value.fromBigInt(value));
+  }
+
   get started(): i32 {
     let value = this.get("started");
     return value.toI32();

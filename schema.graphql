@@ -238,6 +238,10 @@ type Count @entity {
   collectionTotal: Int!
   itemTotal: Int!
   nftTotal: Int!
+  primarySalesTotal: Int!
+  primarySalesManaTotal: BigInt!
+  secondarySalesTotal: Int!
+  secondarySalesManaTotal: BigInt!
   started: Int!
 }
 

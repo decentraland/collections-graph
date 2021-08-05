@@ -1,3 +1,4 @@
+import { BigInt } from '@graphprotocol/graph-ts'
 import { Count } from '../../entities/schema'
 
 export const DEFAULT_ID = 'all'
@@ -11,6 +12,10 @@ export function buildCount(): Count {
     count.collectionTotal = 0
     count.itemTotal = 0
     count.nftTotal = 0
+    count.primarySalesTotal = 0
+    count.primarySalesManaTotal = BigInt.fromI32(0);
+    count.secondarySalesTotal = 0
+    count.secondarySalesManaTotal = BigInt.fromI32(0);
     count.started = 0
   }
 

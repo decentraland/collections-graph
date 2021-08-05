@@ -28,6 +28,7 @@ import {
   buildCountFromCollection,
   buildCountFromNFT,
   buildCountFromItem,
+  buildCount,
 } from '../modules/Count'
 import {
   Issue,
@@ -54,6 +55,8 @@ export function handleMintNFT(
   let nftId = getNFTId(collectionAddress, event.params._tokenId.toString())
   let nft = new NFT(nftId)
 
+  let issuedId = event.params._issuedId
+
   let collection = Collection.load(collectionAddress)
   nft.collection = collection.id
   nft.tokenId = event.params._tokenId
@@ -65,7 +68,7 @@ export function handleMintNFT(
   nft.item = item.id
   nft.urn = item.urn
   nft.owner = event.params._beneficiary.toHexString()
-  nft.tokenURI = item.URI + '/' + event.params._issuedId.toString()
+  nft.tokenURI = item.URI + '/' + issuedId.toString()
   nft.image = item.image
   nft.metadata = item.metadata
 
@@ -83,6 +86,7 @@ export function handleMintNFT(
 
   // store mint data
   let minterAddress = event.params._caller.toHexString()
+  let isStoreMinter = minterAddress === getStoreAddress()
   let mint = new Mint(nftId)
   mint.nft = nft.id
   mint.item = item.id
@@ -93,9 +97,17 @@ export function handleMintNFT(
   mint.searchContractAddress = nft.contractAddress
   mint.searchTokenId = nft.tokenId
   mint.searchItemId = item.blockchainId
-  mint.searchIssuedId = nft.issuedId
-  mint.searchIsStoreMinter = minterAddress === getStoreAddress()
+  mint.searchIssuedId = issuedId
+  mint.searchIsStoreMinter = isStoreMinter
   mint.save()
+
+  // count primary sale
+  if (isStoreMinter) {
+    let count = buildCount()
+    count.primarySalesTotal += 1
+    count.primarySalesManaTotal = count.primarySalesManaTotal.plus(item.price)
+    count.save()
+  }
 }
 
 export function handleTransferNFT(event: Transfer): void {
