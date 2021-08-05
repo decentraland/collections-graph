@@ -86,7 +86,7 @@ export function handleMintNFT(
 
   // store mint data
   let minterAddress = event.params._caller.toHexString()
-  let isStoreMinter = minterAddress === getStoreAddress()
+  let isStoreMinter = minterAddress == getStoreAddress()
   let mint = new Mint(nftId)
   mint.nft = nft.id
   mint.item = item.id
