@@ -264,6 +264,6 @@ type Mint @entity {
   searchContractAddress: String!
   searchItemId: BigInt!
   searchTokenId: BigInt!
-  searchIssuedId: BigInt!
+  searchIssuedId: BigInt
   searchIsStoreMinter: Boolean!
 }

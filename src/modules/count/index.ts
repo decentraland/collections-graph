@@ -63,7 +63,7 @@ export function buildCountFromBid(): Count {
   return count
 }
 
-export function buildCountFromPrimarySale(price: BigInt) {
+export function buildCountFromPrimarySale(price: BigInt): Count {
   let count = buildCount()
   count.primarySalesTotal += 1
   count.primarySalesManaTotal = count.primarySalesManaTotal.plus(price)
@@ -71,7 +71,7 @@ export function buildCountFromPrimarySale(price: BigInt) {
 }
 
 
-export function buildCountFromSecondarySale(price: BigInt) {
+export function buildCountFromSecondarySale(price: BigInt): Count {
   let count = buildCount()
   count.secondarySalesTotal += 1
   count.secondarySalesManaTotal = count.secondarySalesManaTotal.plus(price)

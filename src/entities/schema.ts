@@ -1874,13 +1874,21 @@ export class Mint extends Entity {
     this.set("searchTokenId", Value.fromBigInt(value));
   }
 
-  get searchIssuedId(): BigInt {
+  get searchIssuedId(): BigInt | null {
     let value = this.get("searchIssuedId");
-    return value.toBigInt();
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set searchIssuedId(value: BigInt) {
-    this.set("searchIssuedId", Value.fromBigInt(value));
+  set searchIssuedId(value: BigInt | null) {
+    if (value === null) {
+      this.unset("searchIssuedId");
+    } else {
+      this.set("searchIssuedId", Value.fromBigInt(value as BigInt));
+    }
   }
 
   get searchIsStoreMinter(): boolean {
