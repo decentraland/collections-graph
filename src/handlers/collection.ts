@@ -138,6 +138,7 @@ export function handleAddItem(event: AddItem): void {
   item.searchIsStoreMinter = false
   item.createdAt = event.block.timestamp
   item.updatedAt = event.block.timestamp
+  item.reviewedAt = event.block.timestamp
 
   let metadata = buildItemMetadata(item)
 
@@ -405,7 +406,7 @@ export function handleSetApproved(event: SetApproved): void {
     let item = Item.load(id)
 
     item.searchIsCollectionApproved = event.params._newValue
-
+    item.reviewedAt = event.block.timestamp
     item.save()
   }
 

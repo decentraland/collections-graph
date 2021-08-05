@@ -478,6 +478,15 @@ export class Item extends Entity {
     this.set("updatedAt", Value.fromBigInt(value));
   }
 
+  get reviewedAt(): BigInt {
+    let value = this.get("reviewedAt");
+    return value.toBigInt();
+  }
+
+  set reviewedAt(value: BigInt) {
+    this.set("reviewedAt", Value.fromBigInt(value));
+  }
+
   get searchText(): string | null {
     let value = this.get("searchText");
     if (value === null || value.kind == ValueKind.NULL) {

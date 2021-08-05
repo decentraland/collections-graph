@@ -43,6 +43,7 @@ type Item @entity {
   nfts: [NFT!] @derivedFrom(field: "item")
   createdAt: BigInt!
   updatedAt: BigInt!
+  reviewedAt: BigInt!
 
   # Searcheable fields
   searchText: String
