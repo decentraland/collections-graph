@@ -257,6 +257,20 @@ export function handleTransferWearableV1(event: ERC721Transfer): void {
     item.totalSupply = item.totalSupply.plus(BigInt.fromI32(1))
 
     item.save()
+
+    // store mint
+    let mint = new Mint(id)
+    mint.nft = nft.id
+    mint.item = item.id
+    mint.beneficiary = nft.owner
+    mint.minter = event.transaction.from.toHexString()
+    mint.timestamp = event.block.timestamp
+    mint.searchContractAddress = nft.contractAddress
+    mint.searchTokenId = nft.tokenId
+    mint.searchItemId = item.blockchainId
+    mint.searchIssuedId = nft.issuedId
+    mint.searchIsStoreMinter = false
+    mint.save()
   } else {
     let oldNFT = NFT.load(id)
     if (cancelActiveOrder(oldNFT!, event.block.timestamp)) {
