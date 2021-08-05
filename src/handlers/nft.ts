@@ -23,7 +23,7 @@ import {
   cancelActiveOrder,
   clearNFTOrderProperties,
 } from '../modules/NFT'
-import { NFT, Item, Collection } from '../entities/schema'
+import { NFT, Item, Collection, Mint } from '../entities/schema'
 import {
   buildCountFromCollection,
   buildCountFromNFT,
@@ -38,6 +38,7 @@ import {
   Transfer as ERC721Transfer,
   AddWearable,
 } from '../entities/templates/ERC721/ERC721'
+import { getStoreAddress } from '../modules/store'
 
 /**
  * @notice mint an NFT by a collection v2 issue event
@@ -50,9 +51,8 @@ export function handleMintNFT(
   collectionAddress: string,
   item: Item
 ): void {
-  let nft = new NFT(
-    getNFTId(collectionAddress, event.params._tokenId.toString())
-  )
+  let nftId = getNFTId(collectionAddress, event.params._tokenId.toString())
+  let nft = new NFT(nftId)
 
   let collection = Collection.load(collectionAddress)
   nft.collection = collection.id
@@ -80,6 +80,22 @@ export function handleMintNFT(
   metric.save()
 
   nft.save()
+
+  // store mint data
+  let minterAddress = event.params._caller.toHexString()
+  let mint = new Mint(nftId)
+  mint.nft = nft.id
+  mint.item = item.id
+  mint.beneficiary = nft.owner
+  mint.minter = minterAddress
+  mint.timestamp = event.block.timestamp
+  mint.searchPrice = item.price
+  mint.searchContractAddress = nft.contractAddress
+  mint.searchTokenId = nft.tokenId
+  mint.searchItemId = item.blockchainId
+  mint.searchIssuedId = nft.issuedId
+  mint.searchIsStoreMinter = minterAddress === getStoreAddress()
+  mint.save()
 }
 
 export function handleTransferNFT(event: Transfer): void {

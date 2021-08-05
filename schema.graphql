@@ -240,3 +240,25 @@ type Count @entity {
   nftTotal: Int!
   started: Int!
 }
+
+# ---------------------------------------------------------
+# Mints ---------------------------------------------------
+# ---------------------------------------------------------
+
+type Mint @entity {
+  id: ID!
+
+  item: Item!
+  nft: NFT!
+
+  beneficiary: String!
+  minter: String!
+  timestamp: BigInt!
+
+  searchPrice: BigInt!
+  searchContractAddress: String!
+  searchItemId: BigInt!
+  searchTokenId: BigInt!
+  searchIssuedId: BigInt!
+  searchIsStoreMinter: Boolean!
+}

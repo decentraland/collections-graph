@@ -1709,3 +1709,133 @@ export class Count extends Entity {
     this.set("started", Value.fromI32(value));
   }
 }
+
+export class Mint extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save Mint entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save Mint entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("Mint", id.toString(), this);
+  }
+
+  static load(id: string): Mint | null {
+    return store.get("Mint", id) as Mint | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get item(): string {
+    let value = this.get("item");
+    return value.toString();
+  }
+
+  set item(value: string) {
+    this.set("item", Value.fromString(value));
+  }
+
+  get nft(): string {
+    let value = this.get("nft");
+    return value.toString();
+  }
+
+  set nft(value: string) {
+    this.set("nft", Value.fromString(value));
+  }
+
+  get beneficiary(): string {
+    let value = this.get("beneficiary");
+    return value.toString();
+  }
+
+  set beneficiary(value: string) {
+    this.set("beneficiary", Value.fromString(value));
+  }
+
+  get minter(): string {
+    let value = this.get("minter");
+    return value.toString();
+  }
+
+  set minter(value: string) {
+    this.set("minter", Value.fromString(value));
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
+  }
+
+  get searchPrice(): BigInt {
+    let value = this.get("searchPrice");
+    return value.toBigInt();
+  }
+
+  set searchPrice(value: BigInt) {
+    this.set("searchPrice", Value.fromBigInt(value));
+  }
+
+  get searchContractAddress(): string {
+    let value = this.get("searchContractAddress");
+    return value.toString();
+  }
+
+  set searchContractAddress(value: string) {
+    this.set("searchContractAddress", Value.fromString(value));
+  }
+
+  get searchItemId(): BigInt {
+    let value = this.get("searchItemId");
+    return value.toBigInt();
+  }
+
+  set searchItemId(value: BigInt) {
+    this.set("searchItemId", Value.fromBigInt(value));
+  }
+
+  get searchTokenId(): BigInt {
+    let value = this.get("searchTokenId");
+    return value.toBigInt();
+  }
+
+  set searchTokenId(value: BigInt) {
+    this.set("searchTokenId", Value.fromBigInt(value));
+  }
+
+  get searchIssuedId(): BigInt {
+    let value = this.get("searchIssuedId");
+    return value.toBigInt();
+  }
+
+  set searchIssuedId(value: BigInt) {
+    this.set("searchIssuedId", Value.fromBigInt(value));
+  }
+
+  get searchIsStoreMinter(): boolean {
+    let value = this.get("searchIsStoreMinter");
+    return value.toBoolean();
+  }
+
+  set searchIsStoreMinter(value: boolean) {
+    this.set("searchIsStoreMinter", Value.fromBoolean(value));
+  }
+}
