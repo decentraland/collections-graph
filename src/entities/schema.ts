@@ -1673,6 +1673,15 @@ export class Count extends Entity {
     this.set("orderTotal", Value.fromI32(value));
   }
 
+  get bidTotal(): i32 {
+    let value = this.get("bidTotal");
+    return value.toI32();
+  }
+
+  set bidTotal(value: i32) {
+    this.set("bidTotal", Value.fromI32(value));
+  }
+
   get collectionTotal(): i32 {
     let value = this.get("collectionTotal");
     return value.toI32();

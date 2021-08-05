@@ -9,6 +9,7 @@ export function buildCount(): Count {
   if (count == null) {
     count = new Count(DEFAULT_ID)
     count.orderTotal = 0
+    count.bidTotal = 0
     count.collectionTotal = 0
     count.itemTotal = 0
     count.nftTotal = 0
@@ -50,6 +51,14 @@ export function buildCountFromOrder(): Count {
   let count = buildCount()
 
   count.orderTotal += 1
+
+  return count
+}
+
+export function buildCountFromBid(): Count {
+  let count = buildCount()
+
+  count.bidTotal += 1
 
   return count
 }

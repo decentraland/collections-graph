@@ -235,6 +235,7 @@ type Bid @entity {
 type Count @entity {
   id: ID!
   orderTotal: Int!
+  bidTotal: Int!
   collectionTotal: Int!
   itemTotal: Int!
   nftTotal: Int!
