@@ -235,8 +235,35 @@ type Bid @entity {
 type Count @entity {
   id: ID!
   orderTotal: Int!
+  bidTotal: Int!
   collectionTotal: Int!
   itemTotal: Int!
   nftTotal: Int!
+  primarySalesTotal: Int!
+  primarySalesManaTotal: BigInt!
+  secondarySalesTotal: Int!
+  secondarySalesManaTotal: BigInt!
   started: Int!
+}
+
+# ---------------------------------------------------------
+# Mints ---------------------------------------------------
+# ---------------------------------------------------------
+
+type Mint @entity {
+  id: ID!
+
+  item: Item!
+  nft: NFT!
+
+  beneficiary: String!
+  minter: String!
+  timestamp: BigInt!
+
+  searchPrimarySalePrice: BigInt
+  searchContractAddress: String!
+  searchItemId: BigInt!
+  searchTokenId: BigInt!
+  searchIssuedId: BigInt
+  searchIsStoreMinter: Boolean!
 }

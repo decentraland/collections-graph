@@ -10,7 +10,7 @@ import {
   updateNFTOrderProperties,
   cancelActiveOrder
 } from '../modules/NFT'
-import { buildCountFromOrder } from '../modules/Count'
+import { buildCountFromOrder, buildCountFromSecondarySale } from '../modules/Count'
 import * as status from '../modules/Order'
 
 export function handleOrderCreated(event: OrderCreated): void {
@@ -78,6 +78,10 @@ export function handleOrderSuccessful(event: OrderSuccessful): void {
   nft.updatedAt = event.block.timestamp
   nft = updateNFTOrderProperties(nft!, order!)
   nft.save()
+
+  // count secondary sale
+  let count = buildCountFromSecondarySale(order.price)
+  count.save()
 }
 
 export function handleOrderCancelled(event: OrderCancelled): void {

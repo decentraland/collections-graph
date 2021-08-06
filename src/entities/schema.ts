@@ -1673,6 +1673,15 @@ export class Count extends Entity {
     this.set("orderTotal", Value.fromI32(value));
   }
 
+  get bidTotal(): i32 {
+    let value = this.get("bidTotal");
+    return value.toI32();
+  }
+
+  set bidTotal(value: i32) {
+    this.set("bidTotal", Value.fromI32(value));
+  }
+
   get collectionTotal(): i32 {
     let value = this.get("collectionTotal");
     return value.toI32();
@@ -1700,6 +1709,42 @@ export class Count extends Entity {
     this.set("nftTotal", Value.fromI32(value));
   }
 
+  get primarySalesTotal(): i32 {
+    let value = this.get("primarySalesTotal");
+    return value.toI32();
+  }
+
+  set primarySalesTotal(value: i32) {
+    this.set("primarySalesTotal", Value.fromI32(value));
+  }
+
+  get primarySalesManaTotal(): BigInt {
+    let value = this.get("primarySalesManaTotal");
+    return value.toBigInt();
+  }
+
+  set primarySalesManaTotal(value: BigInt) {
+    this.set("primarySalesManaTotal", Value.fromBigInt(value));
+  }
+
+  get secondarySalesTotal(): i32 {
+    let value = this.get("secondarySalesTotal");
+    return value.toI32();
+  }
+
+  set secondarySalesTotal(value: i32) {
+    this.set("secondarySalesTotal", Value.fromI32(value));
+  }
+
+  get secondarySalesManaTotal(): BigInt {
+    let value = this.get("secondarySalesManaTotal");
+    return value.toBigInt();
+  }
+
+  set secondarySalesManaTotal(value: BigInt) {
+    this.set("secondarySalesManaTotal", Value.fromBigInt(value));
+  }
+
   get started(): i32 {
     let value = this.get("started");
     return value.toI32();
@@ -1707,5 +1752,151 @@ export class Count extends Entity {
 
   set started(value: i32) {
     this.set("started", Value.fromI32(value));
+  }
+}
+
+export class Mint extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save Mint entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save Mint entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("Mint", id.toString(), this);
+  }
+
+  static load(id: string): Mint | null {
+    return store.get("Mint", id) as Mint | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get item(): string {
+    let value = this.get("item");
+    return value.toString();
+  }
+
+  set item(value: string) {
+    this.set("item", Value.fromString(value));
+  }
+
+  get nft(): string {
+    let value = this.get("nft");
+    return value.toString();
+  }
+
+  set nft(value: string) {
+    this.set("nft", Value.fromString(value));
+  }
+
+  get beneficiary(): string {
+    let value = this.get("beneficiary");
+    return value.toString();
+  }
+
+  set beneficiary(value: string) {
+    this.set("beneficiary", Value.fromString(value));
+  }
+
+  get minter(): string {
+    let value = this.get("minter");
+    return value.toString();
+  }
+
+  set minter(value: string) {
+    this.set("minter", Value.fromString(value));
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
+  }
+
+  get searchPrimarySalePrice(): BigInt | null {
+    let value = this.get("searchPrimarySalePrice");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set searchPrimarySalePrice(value: BigInt | null) {
+    if (value === null) {
+      this.unset("searchPrimarySalePrice");
+    } else {
+      this.set("searchPrimarySalePrice", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get searchContractAddress(): string {
+    let value = this.get("searchContractAddress");
+    return value.toString();
+  }
+
+  set searchContractAddress(value: string) {
+    this.set("searchContractAddress", Value.fromString(value));
+  }
+
+  get searchItemId(): BigInt {
+    let value = this.get("searchItemId");
+    return value.toBigInt();
+  }
+
+  set searchItemId(value: BigInt) {
+    this.set("searchItemId", Value.fromBigInt(value));
+  }
+
+  get searchTokenId(): BigInt {
+    let value = this.get("searchTokenId");
+    return value.toBigInt();
+  }
+
+  set searchTokenId(value: BigInt) {
+    this.set("searchTokenId", Value.fromBigInt(value));
+  }
+
+  get searchIssuedId(): BigInt | null {
+    let value = this.get("searchIssuedId");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set searchIssuedId(value: BigInt | null) {
+    if (value === null) {
+      this.unset("searchIssuedId");
+    } else {
+      this.set("searchIssuedId", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get searchIsStoreMinter(): boolean {
+    let value = this.get("searchIsStoreMinter");
+    return value.toBoolean();
+  }
+
+  set searchIsStoreMinter(value: boolean) {
+    this.set("searchIsStoreMinter", Value.fromBoolean(value));
   }
 }

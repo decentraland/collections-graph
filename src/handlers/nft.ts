@@ -23,11 +23,12 @@ import {
   cancelActiveOrder,
   clearNFTOrderProperties,
 } from '../modules/NFT'
-import { NFT, Item, Collection } from '../entities/schema'
+import { NFT, Item, Collection, Mint } from '../entities/schema'
 import {
   buildCountFromCollection,
   buildCountFromNFT,
   buildCountFromItem,
+  buildCountFromPrimarySale,
 } from '../modules/Count'
 import {
   Issue,
@@ -38,6 +39,7 @@ import {
   Transfer as ERC721Transfer,
   AddWearable,
 } from '../entities/templates/ERC721/ERC721'
+import { getStoreAddress } from '../modules/store'
 
 /**
  * @notice mint an NFT by a collection v2 issue event
@@ -50,9 +52,10 @@ export function handleMintNFT(
   collectionAddress: string,
   item: Item
 ): void {
-  let nft = new NFT(
-    getNFTId(collectionAddress, event.params._tokenId.toString())
-  )
+  let nftId = getNFTId(collectionAddress, event.params._tokenId.toString())
+  let nft = new NFT(nftId)
+
+  let issuedId = event.params._issuedId
 
   let collection = Collection.load(collectionAddress)
   nft.collection = collection.id
@@ -65,7 +68,7 @@ export function handleMintNFT(
   nft.item = item.id
   nft.urn = item.urn
   nft.owner = event.params._beneficiary.toHexString()
-  nft.tokenURI = item.URI + '/' + event.params._issuedId.toString()
+  nft.tokenURI = item.URI + '/' + issuedId.toString()
   nft.image = item.image
   nft.metadata = item.metadata
 
@@ -80,6 +83,31 @@ export function handleMintNFT(
   metric.save()
 
   nft.save()
+
+  // store mint data
+  let minterAddress = event.params._caller.toHexString()
+  let isStoreMinter = minterAddress == getStoreAddress()
+  let mint = new Mint(nftId)
+  mint.nft = nft.id
+  mint.item = item.id
+  mint.beneficiary = nft.owner
+  mint.minter = minterAddress
+  mint.timestamp = event.block.timestamp
+  mint.searchContractAddress = nft.contractAddress
+  mint.searchTokenId = nft.tokenId
+  mint.searchItemId = item.blockchainId
+  mint.searchIssuedId = issuedId
+  mint.searchIsStoreMinter = isStoreMinter
+  
+
+  // count primary sale
+  if (isStoreMinter) {
+    mint.searchPrimarySalePrice = item.price
+    let count = buildCountFromPrimarySale(item.price)
+    count.save()
+  }
+
+  mint.save()
 }
 
 export function handleTransferNFT(event: Transfer): void {
@@ -227,6 +255,20 @@ export function handleTransferWearableV1(event: ERC721Transfer): void {
     item.totalSupply = item.totalSupply.plus(BigInt.fromI32(1))
 
     item.save()
+
+    // store mint
+    let mint = new Mint(id)
+    mint.nft = nft.id
+    mint.item = item.id
+    mint.beneficiary = nft.owner
+    mint.minter = event.transaction.from.toHexString()
+    mint.timestamp = event.block.timestamp
+    mint.searchContractAddress = nft.contractAddress
+    mint.searchTokenId = nft.tokenId
+    mint.searchItemId = item.blockchainId
+    mint.searchIssuedId = nft.issuedId
+    mint.searchIsStoreMinter = false
+    mint.save()
   } else {
     let oldNFT = NFT.load(id)
     if (cancelActiveOrder(oldNFT!, event.block.timestamp)) {
