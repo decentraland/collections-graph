@@ -93,21 +93,21 @@ export function handleMintNFT(
   mint.beneficiary = nft.owner
   mint.minter = minterAddress
   mint.timestamp = event.block.timestamp
-  if (isStoreMinter) {
-    mint.searchPrimarySalePrice = item.price
-  }
   mint.searchContractAddress = nft.contractAddress
   mint.searchTokenId = nft.tokenId
   mint.searchItemId = item.blockchainId
   mint.searchIssuedId = issuedId
   mint.searchIsStoreMinter = isStoreMinter
-  mint.save()
+  
 
   // count primary sale
   if (isStoreMinter) {
+    mint.searchPrimarySalePrice = item.price
     let count = buildCountFromPrimarySale(item.price)
     count.save()
   }
+
+  mint.save()
 }
 
 export function handleTransferNFT(event: Transfer): void {
