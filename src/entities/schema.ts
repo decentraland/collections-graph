@@ -1967,6 +1967,15 @@ export class Curation extends Entity {
     this.set("collection", Value.fromString(value));
   }
 
+  get isApproved(): boolean {
+    let value = this.get("isApproved");
+    return value.toBoolean();
+  }
+
+  set isApproved(value: boolean) {
+    this.set("isApproved", Value.fromBoolean(value));
+  }
+
   get timestamp(): BigInt {
     let value = this.get("timestamp");
     return value.toBigInt();
