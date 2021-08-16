@@ -427,6 +427,7 @@ export function handleSetApproved(event: SetApproved): void {
     let curator = '0x' + txInput.substr(index.plus(BigInt.fromI32(32)).toI32(), 40)
     curation.curator = curator
     curation.collection = collectionAddress
+    curation.isApproved = event.params._newValue
     curation.txHash = event.transaction.hash
     curation.timestamp = event.block.timestamp
 

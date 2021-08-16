@@ -278,5 +278,6 @@ type Curation @entity {
   txHash: Bytes!
   curator: Account!
   collection: Collection!
+  isApproved: Boolean!
   timestamp: BigInt!
 }
