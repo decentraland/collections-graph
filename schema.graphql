@@ -267,3 +267,15 @@ type Mint @entity {
   searchIssuedId: BigInt
   searchIsStoreMinter: Boolean!
 }
+
+# ---------------------------------------------------------
+# Curations ---------------------------------------------------
+# ---------------------------------------------------------
+
+type Curation @entity {
+  id: ID!
+  txHash: Bytes!
+  curator: Account!
+  collection: Collection!
+  timestamp: BigInt!
+}
