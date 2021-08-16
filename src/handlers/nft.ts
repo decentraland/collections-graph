@@ -98,7 +98,7 @@ export function handleMintNFT(
   mint.searchItemId = item.blockchainId
   mint.searchIssuedId = issuedId
   mint.searchIsStoreMinter = isStoreMinter
-  
+
 
   // count primary sale
   if (isStoreMinter) {
@@ -139,6 +139,8 @@ export function handleAddItemV1(event: AddWearable): void {
     Address.fromString(collectionAddress)
   )
 
+  let owner = collectionContract.owner().toHexString()
+
   // Create Collection
   if (collection == null) {
     // Bind contract
@@ -149,7 +151,8 @@ export function handleAddItemV1(event: AddWearable): void {
     // Set base collection data
     collection.name = collectionContract.name()
     collection.symbol = collectionContract.symbol()
-    collection.owner = collectionContract.owner().toHexString()
+    collection.owner = owner
+    collection.creator = owner
     collection.isCompleted = true
     collection.minters = []
     collection.managers = []
@@ -174,6 +177,7 @@ export function handleAddItemV1(event: AddWearable): void {
   let representation = getWearableV1Representation(event.params._wearableId)
 
   let item = new Item(id)
+  item.creator = owner
   item.blockchainId = BigInt.fromI32(collection.itemsCount)
   item.collection = collectionAddress
   item.rarity = representation.rarity
@@ -189,6 +193,10 @@ export function handleAddItemV1(event: AddWearable): void {
   item.URI = collectionContract.baseURI() + event.params._wearableId
   item.urn = getURNForWearableV1(collection!, representation.id)
   item.image = getWearableV1Image(item)
+  item.createdAt = event.block.timestamp // Not used for collections v1
+  item.updatedAt = event.block.timestamp // Not used for collections v1
+  item.reviewedAt = event.block.timestamp // Not used for collections v1
+  item.searchIsStoreMinter = false // Not used for collections v1
 
   let metadata = buildWearableV1Metadata(item, representation)
   item.metadata = metadata.id
