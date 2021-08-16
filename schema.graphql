@@ -177,6 +177,7 @@ type Account @entity {
   address: Bytes!
   nfts: [NFT!] @derivedFrom(field: "owner")
   isCommitteeMember: Boolean
+  totalCurations: Int
 }
 
 # ---------------------------------------------------------
@@ -266,4 +267,16 @@ type Mint @entity {
   searchTokenId: BigInt!
   searchIssuedId: BigInt
   searchIsStoreMinter: Boolean!
+}
+
+# ---------------------------------------------------------
+# Curations ---------------------------------------------------
+# ---------------------------------------------------------
+
+type Curation @entity {
+  id: ID!
+  txHash: Bytes!
+  curator: Account!
+  collection: Collection!
+  timestamp: BigInt!
 }

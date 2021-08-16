@@ -1314,6 +1314,15 @@ export class Account extends Entity {
   set isCommitteeMember(value: boolean) {
     this.set("isCommitteeMember", Value.fromBoolean(value));
   }
+
+  get totalCurations(): i32 {
+    let value = this.get("totalCurations");
+    return value.toI32();
+  }
+
+  set totalCurations(value: i32) {
+    this.set("totalCurations", Value.fromI32(value));
+  }
 }
 
 export class Order extends Entity {
@@ -1898,5 +1907,72 @@ export class Mint extends Entity {
 
   set searchIsStoreMinter(value: boolean) {
     this.set("searchIsStoreMinter", Value.fromBoolean(value));
+  }
+}
+
+export class Curation extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save Curation entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save Curation entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("Curation", id.toString(), this);
+  }
+
+  static load(id: string): Curation | null {
+    return store.get("Curation", id) as Curation | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get txHash(): Bytes {
+    let value = this.get("txHash");
+    return value.toBytes();
+  }
+
+  set txHash(value: Bytes) {
+    this.set("txHash", Value.fromBytes(value));
+  }
+
+  get curator(): string {
+    let value = this.get("curator");
+    return value.toString();
+  }
+
+  set curator(value: string) {
+    this.set("curator", Value.fromString(value));
+  }
+
+  get collection(): string {
+    let value = this.get("collection");
+    return value.toString();
+  }
+
+  set collection(value: string) {
+    this.set("collection", Value.fromString(value));
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
   }
 }
