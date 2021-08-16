@@ -1314,6 +1314,15 @@ export class Account extends Entity {
   set isCommitteeMember(value: boolean) {
     this.set("isCommitteeMember", Value.fromBoolean(value));
   }
+
+  get totalCurations(): i32 {
+    let value = this.get("totalCurations");
+    return value.toI32();
+  }
+
+  set totalCurations(value: i32) {
+    this.set("totalCurations", Value.fromI32(value));
+  }
 }
 
 export class Order extends Entity {

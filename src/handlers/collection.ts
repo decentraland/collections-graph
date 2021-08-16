@@ -7,6 +7,7 @@ import {
   buildCountFromCollection,
 } from '../modules/Count'
 import { getItemId, getItemImage, removeItemMinter } from '../modules/Item'
+import { createOrLoadAccount } from '../modules/Account'
 import { getCollectionsV1 } from '../data/wearablesV1/addresses'
 import { isMint } from '../modules/NFT'
 import { Collection, Curation, Item } from '../entities/schema'
@@ -423,12 +424,20 @@ export function handleSetApproved(event: SetApproved): void {
 
     let curation = new Curation(collectionAddress + '-' + event.block.timestamp.toString())
     // Sender is the first parameter of the executeMetaTransaction
-    curation.curator = '0x' + txInput.substr(index.plus(BigInt.fromI32(32)).toI32(), 40)
+    let curator = '0x' + txInput.substr(index.plus(BigInt.fromI32(32)).toI32(), 40)
+    curation.curator = curator
     curation.collection = collectionAddress
     curation.txHash = event.transaction.hash
     curation.timestamp = event.block.timestamp
 
     curation.save()
+
+    // Increase total curations
+    let account = createOrLoadAccount(Address.fromString(curator))
+
+    account.totalCurations += 1
+
+    account.save()
   }
 }
 

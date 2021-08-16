@@ -9,6 +9,7 @@ export function createOrLoadAccount(id: Address): Account {
   if (account == null) {
     account = new Account(id.toHex())
     account.address = id
+    account.totalCurations = 0
   }
 
   account.save()
