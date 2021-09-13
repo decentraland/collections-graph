@@ -7,7 +7,7 @@
   "address_old_committee": "0x71d9350Ef44E1e451F00e447C0DfF2d1FB75510a",
   "startBlock_old_committee": 15202000,
   "address_committee": "",
-  "startBlock_committee": ,
+  "startBlock_committee": 0,
   "address_marketplace": "0x02080031b45A3c67d338Dd4A2CC309D28756A160",
   "startBlock_marketplace": 15202000,
   "address_bid": "0x250fa138c0a994799c7a49df3097dc71e37b3d6f",
