@@ -1,5 +1,8 @@
 specVersion: 0.0.2
 description: Decentraland collections
+#graft:
+#  base: QmYf4h6nbvohbxUAXF6U3sVsNvQrZz5zkNgeh6Ah4S7vts # Subgraph ID of base subgraph
+#  block: 18290388 # Block number
 repository: https://github.com/decentraland/collections-graph
 schema:
   file: ./schema.graphql
@@ -116,6 +119,29 @@ dataSources:
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: handleInitializeWearablesV1
   # ---------------------------------------------------------
+  # OLD Committee ----------------------------------------------------
+  # ---------------------------------------------------------
+  - kind: ethereum/contract
+    name: OLD_Committee
+    network: {{network}}
+    source:
+      address: '{{address_old_committee}}'
+      abi: Committee
+      startBlock: {{startBlock_old_committee}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      file: ./src/handlers/committee.ts
+      entities:
+        - Account
+      abis:
+        - name: Committee
+          file: ./abis/Committee.json
+      eventHandlers:
+        - event: MemberSet(indexed address,bool)
+          handler: handleMemeberSet
+   # ---------------------------------------------------------
   # Committee ----------------------------------------------------
   # ---------------------------------------------------------
   - kind: ethereum/contract
@@ -139,7 +165,7 @@ dataSources:
         - event: MemberSet(indexed address,bool)
           handler: handleMemeberSet
   # ---------------------------------------------------------
-  # Committee ----------------------------------------------------
+  # Rarity ----------------------------------------------------
   # ---------------------------------------------------------
   - kind: ethereum/contract
     name: Rarity
