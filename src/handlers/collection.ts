@@ -38,6 +38,7 @@ import {
   getURNForCollectionV2,
 } from '../modules/Metadata/wearable'
 import { getStoreAddress } from '../modules/store'
+import { getCurationId, getBlockWhereRescueItemsStarted } from '../modules/Curation'
 
 export function handleInitializeWearablesV1(_: OwnershipTransferred): void {
   let count = buildCount()
@@ -174,6 +175,43 @@ export function handleRescueItem(event: RescueItem): void {
   item.updatedAt = event.block.timestamp
 
   item.save()
+
+  let collection = Collection.load(collectionAddress)
+  collection.updatedAt = event.block.timestamp
+  collection.reviewedAt = event.block.timestamp
+
+  collection.save()
+
+  let block = getBlockWhereRescueItemsStarted()
+  if (event.block.number.gt(block) || event.block.number.equals(block)) {
+    // Create curation
+    let txInput = event.transaction.input.toHexString()
+    // forwardMetaTx(address _target, bytes calldata _data) selector
+    if (txInput.startsWith('0x07bd3522')) {
+      // executeMetaTransaction(address,bytes,bytes32,bytes32,uint8) selector
+      let index = BigInt.fromI32(txInput.indexOf('0c53c51c'))
+
+      let curationId = getCurationId(collectionAddress, event.transaction.hash.toHexString(), event.logIndex.toString())
+      let curation = new Curation(curationId)
+      // Sender is the first parameter of the executeMetaTransaction
+      let curator = '0x' + txInput.substr(index.plus(BigInt.fromI32(32)).toI32(), 40)
+      curation.curator = curator
+      curation.collection = collectionAddress
+      curation.item = itemId
+      curation.isApproved = true
+      curation.txHash = event.transaction.hash
+      curation.timestamp = event.block.timestamp
+
+      curation.save()
+
+      // Increase total curations
+      let account = createOrLoadAccount(Address.fromString(curator))
+
+      account.totalCurations += 1
+
+      account.save()
+    }
+  }
 }
 
 export function handleUpdateItemData(event: UpdateItemData): void {
@@ -394,7 +432,7 @@ export function handleSetApproved(event: SetApproved): void {
 
   collection.isApproved = event.params._newValue
 
-  // Bind contract
+  // Bind contrat
   let collectionContract = CollectionContract.bind(event.address)
   let itemsCount = collectionContract.itemsCount()
 
@@ -415,30 +453,34 @@ export function handleSetApproved(event: SetApproved): void {
   collection.reviewedAt = event.block.timestamp // to support old collections
   collection.save()
 
-  // Create curation
-  let txInput = event.transaction.input.toHexString()
-  // forwardMetaTx(address _target, bytes calldata _data) selector
-  if (txInput.startsWith('0x07bd3522')) {
-    // executeMetaTransaction(address,bytes,bytes32,bytes32,uint8) selector
-    let index = BigInt.fromI32(txInput.indexOf('0c53c51c'))
+  let block = getBlockWhereRescueItemsStarted()
+  if (event.block.number.lt(block)) {
+    // Create curation
+    let txInput = event.transaction.input.toHexString()
+    // forwardMetaTx(address _target, bytes calldata _data) selector
+    if (txInput.startsWith('0x07bd3522')) {
+      // executeMetaTransaction(address,bytes,bytes32,bytes32,uint8) selector
+      let index = BigInt.fromI32(txInput.indexOf('0c53c51c'))
 
-    let curation = new Curation(collectionAddress + '-' + event.block.timestamp.toString())
-    // Sender is the first parameter of the executeMetaTransaction
-    let curator = '0x' + txInput.substr(index.plus(BigInt.fromI32(32)).toI32(), 40)
-    curation.curator = curator
-    curation.collection = collectionAddress
-    curation.isApproved = event.params._newValue
-    curation.txHash = event.transaction.hash
-    curation.timestamp = event.block.timestamp
+      let curationId = getCurationId(collectionAddress, event.transaction.hash.toHexString(), event.logIndex.toString())
+      let curation = new Curation(curationId)
+      // Sender is the first parameter of the executeMetaTransaction
+      let curator = '0x' + txInput.substr(index.plus(BigInt.fromI32(32)).toI32(), 40)
+      curation.curator = curator
+      curation.collection = collectionAddress
+      curation.isApproved = event.params._newValue
+      curation.txHash = event.transaction.hash
+      curation.timestamp = event.block.timestamp
 
-    curation.save()
+      curation.save()
 
-    // Increase total curations
-    let account = createOrLoadAccount(Address.fromString(curator))
+      // Increase total curations
+      let account = createOrLoadAccount(Address.fromString(curator))
 
-    account.totalCurations += 1
+      account.totalCurations += 1
 
-    account.save()
+      account.save()
+    }
   }
 }
 
