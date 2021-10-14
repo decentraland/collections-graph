@@ -257,6 +257,7 @@ type Mint @entity {
   item: Item!
   nft: NFT!
 
+  creator: String!
   beneficiary: String!
   minter: String!
   timestamp: BigInt!
@@ -270,7 +271,7 @@ type Mint @entity {
 }
 
 # ---------------------------------------------------------
-# Curations ---------------------------------------------------
+# Curations -----------------------------------------------
 # ---------------------------------------------------------
 
 type Curation @entity {

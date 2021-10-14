@@ -1812,6 +1812,15 @@ export class Mint extends Entity {
     this.set("nft", Value.fromString(value));
   }
 
+  get creator(): string {
+    let value = this.get("creator");
+    return value.toString();
+  }
+
+  set creator(value: string) {
+    this.set("creator", Value.fromString(value));
+  }
+
   get beneficiary(): string {
     let value = this.get("beneficiary");
     return value.toString();
