@@ -1967,6 +1967,23 @@ export class Curation extends Entity {
     this.set("collection", Value.fromString(value));
   }
 
+  get item(): string | null {
+    let value = this.get("item");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set item(value: string | null) {
+    if (value === null) {
+      this.unset("item");
+    } else {
+      this.set("item", Value.fromString(value as string));
+    }
+  }
+
   get isApproved(): boolean {
     let value = this.get("isApproved");
     return value.toBoolean();
