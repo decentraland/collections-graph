@@ -432,7 +432,7 @@ export function handleSetApproved(event: SetApproved): void {
 
   collection.isApproved = event.params._newValue
 
-  // Bind contrat
+  // Bind contract
   let collectionContract = CollectionContract.bind(event.address)
   let itemsCount = collectionContract.itemsCount()
 

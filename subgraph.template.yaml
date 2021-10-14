@@ -12,10 +12,10 @@ dataSources:
   # ---------------------------------------------------------
   - kind: ethereum/contract
     name: CollectionFactory
-    network: { { network } }
+    network: {{network}}
     source:
       abi: CollectionFactory
-      startBlock: { { startBlock_factory } }
+      startBlock: {{startBlock_factory}}
       address: '{{address_factory}}'
     mapping:
       kind: ethereum/events
@@ -40,11 +40,11 @@ dataSources:
   # ---------------------------------------------------------
   - kind: ethereum/contract
     name: Marketplace
-    network: { { network } }
+    network: {{network}}
     source:
       address: '{{address_marketplace}}'
       abi: Marketplace
-      startBlock: { { startBlock_marketplace } }
+      startBlock: {{startBlock_marketplace}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
@@ -68,11 +68,11 @@ dataSources:
   # ---------------------------------------------------------
   - kind: ethereum/contract
     name: ERC721Bid
-    network: { { network } }
+    network: {{network}}
     source:
       address: '{{address_bid}}'
       abi: ERC721Bid
-      startBlock: { { startBlock_bid } }
+      startBlock: {{startBlock_bid}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
@@ -98,11 +98,11 @@ dataSources:
   # ---------------------------------------------------------
   - kind: ethereum/contract
     name: CollectionV1
-    network: { { network } }
+    network: {{network}}
     source:
       address: '{{address_fist_collection_v1}}'
       abi: CollectionV2
-      startBlock: { { startBock_first_collections_v1 } }
+      startBlock: {{startBock_first_collections_v1}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
@@ -123,11 +123,11 @@ dataSources:
   # ---------------------------------------------------------
   - kind: ethereum/contract
     name: OLD_Committee
-    network: { { network } }
+    network: {{network}}
     source:
       address: '{{address_old_committee}}'
       abi: Committee
-      startBlock: { { startBlock_old_committee } }
+      startBlock: {{startBlock_old_committee}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
@@ -141,16 +141,16 @@ dataSources:
       eventHandlers:
         - event: MemberSet(indexed address,bool)
           handler: handleMemeberSet
-    # ---------------------------------------------------------
+   # ---------------------------------------------------------
   # Committee ----------------------------------------------------
   # ---------------------------------------------------------
   - kind: ethereum/contract
     name: Committee
-    network: { { network } }
+    network: {{network}}
     source:
       address: '{{address_committee}}'
       abi: Committee
-      startBlock: { { startBlock_committee } }
+      startBlock: {{startBlock_committee}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
@@ -169,11 +169,11 @@ dataSources:
   # ---------------------------------------------------------
   - kind: ethereum/contract
     name: Rarity
-    network: { { network } }
+    network: {{network}}
     source:
       address: '{{address_rarity}}'
       abi: Rarity
-      startBlock: { { startBlock_rarity } }
+      startBlock: {{startBlock_rarity}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
@@ -195,7 +195,7 @@ templates:
   # ---------------------------------------------------------
   - name: CollectionV2
     kind: ethereum/contract
-    network: { { network } }
+    network: {{network}}
     source:
       abi: CollectionV2
     mapping:
@@ -246,7 +246,7 @@ templates:
   # ---------------------------------------------------------
   - name: ERC721
     kind: ethereum/contract
-    network: { { network } }
+    network: {{network}}
     source:
       abi: ERC721
     mapping:
