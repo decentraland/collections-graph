@@ -269,7 +269,7 @@ export function handleTransferWearableV1(event: ERC721Transfer): void {
     mint.nft = nft.id
     mint.item = item.id
     mint.beneficiary = nft.owner
-    mint.creator = item.creator
+    mint.creator = ZERO_ADDRESS // v1 collections don't have a creator
     mint.minter = event.transaction.from.toHexString()
     mint.timestamp = event.block.timestamp
     mint.searchContractAddress = nft.contractAddress
