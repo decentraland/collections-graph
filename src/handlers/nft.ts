@@ -91,6 +91,7 @@ export function handleMintNFT(
   mint.nft = nft.id
   mint.item = item.id
   mint.beneficiary = nft.owner
+  mint.creator = item.creator
   mint.minter = minterAddress
   mint.timestamp = event.block.timestamp
   mint.searchContractAddress = nft.contractAddress
@@ -98,7 +99,6 @@ export function handleMintNFT(
   mint.searchItemId = item.blockchainId
   mint.searchIssuedId = issuedId
   mint.searchIsStoreMinter = isStoreMinter
-
 
   // count primary sale
   if (isStoreMinter) {
@@ -269,6 +269,7 @@ export function handleTransferWearableV1(event: ERC721Transfer): void {
     mint.nft = nft.id
     mint.item = item.id
     mint.beneficiary = nft.owner
+    mint.creator = ZERO_ADDRESS // v1 collections don't have a creator
     mint.minter = event.transaction.from.toHexString()
     mint.timestamp = event.block.timestamp
     mint.searchContractAddress = nft.contractAddress
