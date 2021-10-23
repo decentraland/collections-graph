@@ -2,11 +2,7 @@ import { BigInt, Address, log } from '@graphprotocol/graph-ts'
 
 import { getItemId } from '../modules/Item'
 import { createOrLoadAccount, ZERO_ADDRESS } from '../modules/Account'
-import {
-  setItemSearchFields,
-  setNFTSearchFields,
-  buildWearableV1Metadata,
-} from '../modules/Metadata'
+import { setItemSearchFields, setNFTSearchFields, buildWearableV1Metadata } from '../modules/Metadata'
 import * as itemTypes from '../modules/Metadata/itemTypes'
 import {
   getWearableV1Image,
@@ -14,32 +10,15 @@ import {
   getWearableV1Representation,
   getIssuedIdFromTokenURI,
   getURNForCollectionV1,
-  getURNForWearableV1,
+  getURNForWearableV1
 } from '../modules/Metadata/wearable'
-import {
-  getNFTId,
-  getTokenURI,
-  isMint,
-  cancelActiveOrder,
-  clearNFTOrderProperties,
-} from '../modules/NFT'
+import { getNFTId, getTokenURI, isMint, cancelActiveOrder, clearNFTOrderProperties } from '../modules/NFT'
 import { NFT, Item, Collection, Mint } from '../entities/schema'
-import {
-  buildCountFromCollection,
-  buildCountFromNFT,
-  buildCountFromItem,
-  buildCountFromPrimarySale,
-} from '../modules/Count'
-import {
-  Issue,
-  Transfer,
-  CollectionV2 as CollectionContract,
-} from '../entities/templates/CollectionV2/CollectionV2'
-import {
-  Transfer as ERC721Transfer,
-  AddWearable,
-} from '../entities/templates/ERC721/ERC721'
+import { buildCountFromCollection, buildCountFromNFT, buildCountFromItem, buildCountFromPrimarySale } from '../modules/Count'
+import { Issue, Transfer, CollectionV2 as CollectionContract } from '../entities/templates/CollectionV2/CollectionV2'
+import { Transfer as ERC721Transfer, AddWearable } from '../entities/templates/ERC721/ERC721'
 import { getStoreAddress } from '../modules/store'
+import { trackPrimarySale } from '../modules/analytics'
 
 /**
  * @notice mint an NFT by a collection v2 issue event
@@ -47,11 +26,7 @@ import { getStoreAddress } from '../modules/store'
  * @param collectionAddress
  * @param item
  */
-export function handleMintNFT(
-  event: Issue,
-  collectionAddress: string,
-  item: Item
-): void {
+export function handleMintNFT(event: Issue, collectionAddress: string, item: Item): void {
   let nftId = getNFTId(collectionAddress, event.params._tokenId.toString())
   let nft = new NFT(nftId)
 
@@ -74,6 +49,10 @@ export function handleMintNFT(
 
   nft.createdAt = event.block.timestamp
   nft.updatedAt = event.block.timestamp
+  nft.soldAt = null
+
+  nft.sales = 0
+  nft.volume = BigInt.fromI32(0)
 
   nft = setNFTSearchFields(nft)
 
@@ -103,8 +82,16 @@ export function handleMintNFT(
   // count primary sale
   if (isStoreMinter) {
     mint.searchPrimarySalePrice = item.price
-    let count = buildCountFromPrimarySale(item.price)
-    count.save()
+    trackPrimarySale(
+      'mint',
+      event.params._beneficiary,
+      Address.fromString(item.creator),
+      item.id,
+      nft.id,
+      item.price,
+      event.block.timestamp,
+      event.transaction.hash
+    )
   }
 
   mint.save()
@@ -135,9 +122,7 @@ export function handleTransferNFT(event: Transfer): void {
 export function handleAddItemV1(event: AddWearable): void {
   let collectionAddress = event.address.toHexString()
   let collection = Collection.load(collectionAddress)
-  let collectionContract = CollectionContract.bind(
-    Address.fromString(collectionAddress)
-  )
+  let collectionContract = CollectionContract.bind(Address.fromString(collectionAddress))
 
   let owner = collectionContract.owner().toHexString()
 
@@ -197,6 +182,9 @@ export function handleAddItemV1(event: AddWearable): void {
   item.updatedAt = event.block.timestamp // Not used for collections v1
   item.reviewedAt = event.block.timestamp // Not used for collections v1
   item.searchIsStoreMinter = false // Not used for collections v1
+  item.soldAt = null
+  item.sales = 0
+  item.volume = BigInt.fromI32(0)
 
   let metadata = buildWearableV1Metadata(item, representation)
   item.metadata = metadata.id
@@ -228,10 +216,7 @@ export function handleTransferWearableV1(event: ERC721Transfer): void {
     return
   }
 
-  let id = getNFTId(
-    event.address.toHexString(),
-    event.params.tokenId.toString()
-  )
+  let id = getNFTId(event.address.toHexString(), event.params.tokenId.toString())
 
   let nft = new NFT(id)
 
@@ -240,11 +225,15 @@ export function handleTransferWearableV1(event: ERC721Transfer): void {
   nft.owner = event.params.to.toHex()
   nft.contractAddress = collectionAddress
   nft.updatedAt = event.block.timestamp
+  nft.soldAt = null
   nft.itemType = itemTypes.WEARABLE_V1
   nft.tokenURI = tokenURI
   nft.item = item.id
 
   nft.urn = item.urn
+
+  nft.sales = 0
+  nft.volume = BigInt.fromI32(0)
 
   if (isMint(event.params.from.toHexString())) {
     nft.itemBlockchainId = item.blockchainId

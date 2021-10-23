@@ -1,26 +1,16 @@
 import { BigInt, Address, log } from '@graphprotocol/graph-ts'
-import {
-  BidCreated,
-  BidAccepted,
-  BidCancelled
-} from '../entities/ERC721Bid/ERC721Bid'
-import { Bid, NFT } from '../entities/schema'
+import { BidCreated, BidAccepted, BidCancelled } from '../entities/ERC721Bid/ERC721Bid'
+import { Bid, NFT, Item } from '../entities/schema'
 import { getNFTId } from '../modules/NFT'
 import * as status from '../modules/Order'
-import { getBidId } from '../modules/Bid'
-import { buildCountFromBid, buildCountFromSecondarySale } from '../modules/Count'
+import { getBidId } from '../modules/bid'
+import { buildCountFromBid } from '../modules/Count'
+import { trackSecondarySale } from '../modules/analytics'
 
 export function handleBidCreated(event: BidCreated): void {
-  let nftId = getNFTId(
-    event.params._tokenAddress.toHexString(),
-    event.params._tokenId.toString()
-  )
+  let nftId = getNFTId(event.params._tokenAddress.toHexString(), event.params._tokenId.toString())
 
-  let id = getBidId(
-    event.params._tokenAddress.toHexString(),
-    event.params._tokenId.toString(),
-    event.params._bidder.toHexString()
-  )
+  let id = getBidId(event.params._tokenAddress.toHexString(), event.params._tokenId.toString(), event.params._bidder.toHexString())
 
   let bid = new Bid(id)
 
@@ -80,8 +70,16 @@ export function handleBidAccepted(event: BidAccepted): void {
   nft.save()
 
   // count secondary sale
-  let count = buildCountFromSecondarySale(bid.price)
-  count.save()
+  trackSecondarySale(
+    'bid',
+    event.params._bidder,
+    event.params._seller,
+    nft.item,
+    nft.id,
+    bid.price,
+    event.block.timestamp,
+    event.transaction.hash
+  )
 }
 
 export function handleBidCancelled(event: BidCancelled): void {

@@ -13,10 +13,12 @@ export function buildCount(): Count {
     count.collectionTotal = 0
     count.itemTotal = 0
     count.nftTotal = 0
+    count.salesTotal = 0
+    count.salesManaTotal = BigInt.fromI32(0)
     count.primarySalesTotal = 0
-    count.primarySalesManaTotal = BigInt.fromI32(0);
+    count.primarySalesManaTotal = BigInt.fromI32(0)
     count.secondarySalesTotal = 0
-    count.secondarySalesManaTotal = BigInt.fromI32(0);
+    count.secondarySalesManaTotal = BigInt.fromI32(0)
     count.started = 0
   }
 
@@ -70,10 +72,16 @@ export function buildCountFromPrimarySale(price: BigInt): Count {
   return count
 }
 
-
 export function buildCountFromSecondarySale(price: BigInt): Count {
   let count = buildCount()
   count.secondarySalesTotal += 1
   count.secondarySalesManaTotal = count.secondarySalesManaTotal.plus(price)
+  return count
+}
+
+export function buildCountFromSale(price: BigInt): Count {
+  let count = buildCount()
+  count.salesTotal += 1
+  count.salesManaTotal = count.salesManaTotal.plus(price)
   return count
 }
