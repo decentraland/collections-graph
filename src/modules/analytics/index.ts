@@ -7,8 +7,8 @@ function trackSale(
   type: string,
   buyer: Address,
   seller: Address,
-  itemId: string | null,
-  nftId: string | null,
+  itemId: string,
+  nftId: string,
   price: BigInt,
   timestamp: BigInt,
   txHash: Bytes
@@ -17,6 +17,11 @@ function trackSale(
   let count = buildCountFromSale(price)
   count.save()
 
+  // load entities
+  let item = Item.load(itemId)
+  let nft = NFT.load(nftId)
+
+  // save sale
   let saleId = BigInt.fromI32(count.salesTotal).toString()
   let sale = new Sale(saleId)
   sale.type = type
@@ -27,61 +32,44 @@ function trackSale(
   sale.nft = nftId
   sale.timestamp = timestamp
   sale.txHash = txHash
-  sale.searchItemId = null
-  sale.searchTokenId = null
-  sale.searchContractAddress = null
+  sale.searchItemId = item.blockchainId
+  sale.searchTokenId = nft.tokenId
+  sale.searchContractAddress = nft.contractAddress
+  sale.save()
 
+  // update buyer account
   let buyerAccount = createOrLoadAccount(buyer)
   buyerAccount.purchases += 1
   buyerAccount.spent = buyerAccount.spent.plus(price)
   buyerAccount.save()
 
+  // update seller account
   let sellerAccount = createOrLoadAccount(seller)
   sellerAccount.sales += 1
   sellerAccount.earned = sellerAccount.earned.plus(price)
   sellerAccount.save()
 
-  if (itemId) {
-    let item = Item.load(itemId)
-    if (item != null) {
-      item.soldAt = timestamp
-      item.sales += 1
-      item.volume = item.volume.plus(price)
-      item.updatedAt = timestamp
-      item.save()
+  // update item
+  item.soldAt = timestamp
+  item.sales += 1
+  item.volume = item.volume.plus(price)
+  item.updatedAt = timestamp
+  item.save()
 
-      sale.searchItemId = item.blockchainId
-      sale.searchContractAddress = item.collection
-    } else {
-      log.warning('Undefined Item {} type {} hash {}', [itemId, type, txHash.toHexString()])
-    }
-  }
-
-  if (nftId) {
-    let nft = NFT.load(nftId)
-    if (nft != null) {
-      nft.soldAt = timestamp
-      nft.sales += 1
-      nft.volume = nft.volume.plus(price)
-      nft.updatedAt = timestamp
-      nft.save()
-
-      sale.searchTokenId = nft.tokenId
-      sale.searchContractAddress = nft.contractAddress
-    } else {
-      log.warning('Undefined NFT {} type {} hash {}', [nftId, type, txHash.toHexString()])
-    }
-  }
-
-  sale.save()
+  // update nft
+  nft.soldAt = timestamp
+  nft.sales += 1
+  nft.volume = nft.volume.plus(price)
+  nft.updatedAt = timestamp
+  nft.save()
 }
 
 export function trackSecondarySale(
   type: string,
   buyer: Address,
   seller: Address,
-  itemId: string | null,
-  nftId: string | null,
+  itemId: string,
+  nftId: string,
   price: BigInt,
   timestamp: BigInt,
   txHash: Bytes
@@ -98,8 +86,8 @@ export function trackPrimarySale(
   type: string,
   buyer: Address,
   seller: Address,
-  itemId: string | null,
-  nftId: string | null,
+  itemId: string,
+  nftId: string,
   price: BigInt,
   timestamp: BigInt,
   txHash: Bytes

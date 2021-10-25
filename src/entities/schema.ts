@@ -2202,38 +2202,22 @@ export class Sale extends Entity {
     this.set("price", Value.fromBigInt(value));
   }
 
-  get item(): string | null {
+  get item(): string {
     let value = this.get("item");
-    if (value === null || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
+    return value.toString();
   }
 
-  set item(value: string | null) {
-    if (value === null) {
-      this.unset("item");
-    } else {
-      this.set("item", Value.fromString(value as string));
-    }
+  set item(value: string) {
+    this.set("item", Value.fromString(value));
   }
 
-  get nft(): string | null {
+  get nft(): string {
     let value = this.get("nft");
-    if (value === null || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
+    return value.toString();
   }
 
-  set nft(value: string | null) {
-    if (value === null) {
-      this.unset("nft");
-    } else {
-      this.set("nft", Value.fromString(value as string));
-    }
+  set nft(value: string) {
+    this.set("nft", Value.fromString(value));
   }
 
   get timestamp(): BigInt {
@@ -2254,54 +2238,30 @@ export class Sale extends Entity {
     this.set("txHash", Value.fromBytes(value));
   }
 
-  get searchTokenId(): BigInt | null {
+  get searchTokenId(): BigInt {
     let value = this.get("searchTokenId");
-    if (value === null || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
+    return value.toBigInt();
   }
 
-  set searchTokenId(value: BigInt | null) {
-    if (value === null) {
-      this.unset("searchTokenId");
-    } else {
-      this.set("searchTokenId", Value.fromBigInt(value as BigInt));
-    }
+  set searchTokenId(value: BigInt) {
+    this.set("searchTokenId", Value.fromBigInt(value));
   }
 
-  get searchItemId(): BigInt | null {
+  get searchItemId(): BigInt {
     let value = this.get("searchItemId");
-    if (value === null || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
+    return value.toBigInt();
   }
 
-  set searchItemId(value: BigInt | null) {
-    if (value === null) {
-      this.unset("searchItemId");
-    } else {
-      this.set("searchItemId", Value.fromBigInt(value as BigInt));
-    }
+  set searchItemId(value: BigInt) {
+    this.set("searchItemId", Value.fromBigInt(value));
   }
 
-  get searchContractAddress(): string | null {
+  get searchContractAddress(): string {
     let value = this.get("searchContractAddress");
-    if (value === null || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
+    return value.toString();
   }
 
-  set searchContractAddress(value: string | null) {
-    if (value === null) {
-      this.unset("searchContractAddress");
-    } else {
-      this.set("searchContractAddress", Value.fromString(value as string));
-    }
+  set searchContractAddress(value: string) {
+    this.set("searchContractAddress", Value.fromString(value));
   }
 }

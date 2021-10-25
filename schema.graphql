@@ -303,22 +303,30 @@ type Curation @entity {
 }
 
 # ---------------------------------------------------------
-# Sales -----------------------------------------------
+# Sales ---------------------------------------------------
 # ---------------------------------------------------------
+
+# We only track sales from Decentraland's smart contracts
+
+enum SaleType @entity {
+  bid
+  order
+  mint
+}
 
 type Sale @entity {
   id: ID!
-  type: String!
+  type: SaleType!
   buyer: Bytes!
   seller: Bytes!
   price: BigInt!
-  item: Item
-  nft: NFT
+  item: Item!
+  nft: NFT!
   timestamp: BigInt!
   txHash: Bytes!
 
   # search
-  searchTokenId: BigInt
-  searchItemId: BigInt
-  searchContractAddress: String
+  searchTokenId: BigInt!
+  searchItemId: BigInt!
+  searchContractAddress: String!
 }
