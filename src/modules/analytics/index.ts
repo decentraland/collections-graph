@@ -3,7 +3,11 @@ import { Item, NFT, Sale } from '../../entities/schema'
 import { createOrLoadAccount } from '../Account'
 import { buildCountFromPrimarySale, buildCountFromSale, buildCountFromSecondarySale } from '../Count'
 
-function trackSale(
+export let BID_SALE_TYPE = 'bid'
+export let ORDER_SALE_TYPE = 'order'
+export let MINT_SALE_TYPE = 'mint'
+
+export function trackSale(
   type: string,
   buyer: Address,
   seller: Address,
@@ -62,40 +66,14 @@ function trackSale(
   nft.volume = nft.volume.plus(price)
   nft.updatedAt = timestamp
   nft.save()
-}
 
-export function trackSecondarySale(
-  type: string,
-  buyer: Address,
-  seller: Address,
-  itemId: string,
-  nftId: string,
-  price: BigInt,
-  timestamp: BigInt,
-  txHash: Bytes
-): void {
-  // track sale
-  trackSale(type, buyer, seller, itemId, nftId, price, timestamp, txHash)
-
-  // count secondary sale
-  let count = buildCountFromSecondarySale(price)
-  count.save()
-}
-
-export function trackPrimarySale(
-  type: string,
-  buyer: Address,
-  seller: Address,
-  itemId: string,
-  nftId: string,
-  price: BigInt,
-  timestamp: BigInt,
-  txHash: Bytes
-): void {
-  // track sale
-  trackSale(type, buyer, seller, itemId, nftId, price, timestamp, txHash)
-
-  // count secondary sale
-  let count = buildCountFromPrimarySale(price)
-  count.save()
+  // track primary sales
+  if (type == MINT_SALE_TYPE) {
+    let count = buildCountFromPrimarySale(price)
+    count.save()
+  } else {
+    // track secondary sale
+    let count = buildCountFromSecondarySale(price)
+    count.save()
+  }
 }

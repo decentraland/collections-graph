@@ -5,7 +5,7 @@ import { getNFTId } from '../modules/NFT'
 import * as status from '../modules/Order'
 import { getBidId } from '../modules/bid'
 import { buildCountFromBid } from '../modules/Count'
-import { trackSecondarySale } from '../modules/analytics'
+import { BID_SALE_TYPE, trackSale } from '../modules/analytics'
 
 export function handleBidCreated(event: BidCreated): void {
   let nftId = getNFTId(event.params._tokenAddress.toHexString(), event.params._tokenId.toString())
@@ -70,8 +70,8 @@ export function handleBidAccepted(event: BidAccepted): void {
   nft.save()
 
   // count secondary sale
-  trackSecondarySale(
-    'bid',
+  trackSale(
+    BID_SALE_TYPE,
     event.params._bidder,
     event.params._seller,
     nft.item,

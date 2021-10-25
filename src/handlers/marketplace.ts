@@ -4,7 +4,7 @@ import { Order, NFT } from '../entities/schema'
 import { getNFTId, updateNFTOrderProperties, cancelActiveOrder } from '../modules/NFT'
 import { buildCountFromOrder } from '../modules/Count'
 import * as status from '../modules/Order'
-import { trackSecondarySale } from '../modules/analytics'
+import { ORDER_SALE_TYPE, trackSale } from '../modules/analytics'
 
 export function handleOrderCreated(event: OrderCreated): void {
   let nftId = getNFTId(event.params.nftAddress.toHexString(), event.params.assetId.toString())
@@ -70,8 +70,8 @@ export function handleOrderSuccessful(event: OrderSuccessful): void {
   nft.save()
 
   // analytics
-  trackSecondarySale(
-    'order',
+  trackSale(
+    ORDER_SALE_TYPE,
     event.params.buyer,
     event.params.seller,
     nft.item,

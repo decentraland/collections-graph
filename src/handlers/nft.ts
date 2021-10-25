@@ -18,7 +18,7 @@ import { buildCountFromCollection, buildCountFromNFT, buildCountFromItem, buildC
 import { Issue, Transfer, CollectionV2 as CollectionContract } from '../entities/templates/CollectionV2/CollectionV2'
 import { Transfer as ERC721Transfer, AddWearable } from '../entities/templates/ERC721/ERC721'
 import { getStoreAddress } from '../modules/store'
-import { trackPrimarySale } from '../modules/analytics'
+import { MINT_SALE_TYPE, trackSale } from '../modules/analytics'
 
 /**
  * @notice mint an NFT by a collection v2 issue event
@@ -82,8 +82,8 @@ export function handleMintNFT(event: Issue, collectionAddress: string, item: Ite
   // count primary sale
   if (isStoreMinter) {
     mint.searchPrimarySalePrice = item.price
-    trackPrimarySale(
-      'mint',
+    trackSale(
+      MINT_SALE_TYPE,
       event.params._beneficiary,
       Address.fromString(item.creator),
       item.id,
