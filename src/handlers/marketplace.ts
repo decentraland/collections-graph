@@ -1,23 +1,13 @@
 import { log } from '@graphprotocol/graph-ts'
-import {
-  OrderCreated,
-  OrderSuccessful,
-  OrderCancelled
-} from '../entities/Marketplace/Marketplace'
+import { OrderCreated, OrderSuccessful, OrderCancelled } from '../entities/Marketplace/Marketplace'
 import { Order, NFT } from '../entities/schema'
-import {
-  getNFTId,
-  updateNFTOrderProperties,
-  cancelActiveOrder
-} from '../modules/NFT'
-import { buildCountFromOrder, buildCountFromSecondarySale } from '../modules/Count'
+import { getNFTId, updateNFTOrderProperties, cancelActiveOrder } from '../modules/NFT'
+import { buildCountFromOrder } from '../modules/Count'
 import * as status from '../modules/Order'
+import { ORDER_SALE_TYPE, trackSale } from '../modules/analytics'
 
 export function handleOrderCreated(event: OrderCreated): void {
-  let nftId = getNFTId(
-    event.params.nftAddress.toHexString(),
-    event.params.assetId.toString()
-  )
+  let nftId = getNFTId(event.params.nftAddress.toHexString(), event.params.assetId.toString())
 
   let orderId = event.params.id.toHex()
 
@@ -79,9 +69,17 @@ export function handleOrderSuccessful(event: OrderSuccessful): void {
   nft = updateNFTOrderProperties(nft!, order!)
   nft.save()
 
-  // count secondary sale
-  let count = buildCountFromSecondarySale(order.price)
-  count.save()
+  // analytics
+  trackSale(
+    ORDER_SALE_TYPE,
+    event.params.buyer,
+    event.params.seller,
+    nft.item,
+    nft.id,
+    order.price,
+    event.block.timestamp,
+    event.transaction.hash
+  )
 }
 
 export function handleOrderCancelled(event: OrderCancelled): void {

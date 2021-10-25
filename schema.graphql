@@ -43,7 +43,14 @@ type Item @entity {
   nfts: [NFT!] @derivedFrom(field: "item")
   createdAt: BigInt!
   updatedAt: BigInt!
+  "Last time the item was reviewed"
   reviewedAt: BigInt!
+  "Last time the Item was sold"
+  soldAt: BigInt
+
+  # analytics
+  sales: Int!
+  volume: BigInt!
 
   # Searcheable fields
   searchText: String
@@ -83,6 +90,11 @@ type NFT @entity {
 
   createdAt: BigInt!
   updatedAt: BigInt!
+  soldAt: BigInt
+
+  # analytics
+  sales: Int!
+  volume: BigInt!
 
   # Searcheable fields
   searchText: String
@@ -178,6 +190,12 @@ type Account @entity {
   nfts: [NFT!] @derivedFrom(field: "owner")
   isCommitteeMember: Boolean
   totalCurations: Int
+
+  # analytics
+  sales: Int!
+  purchases: Int!
+  spent: BigInt!
+  earned: BigInt!
 }
 
 # ---------------------------------------------------------
@@ -240,6 +258,8 @@ type Count @entity {
   collectionTotal: Int!
   itemTotal: Int!
   nftTotal: Int!
+  salesTotal: Int!
+  salesManaTotal: BigInt!
   primarySalesTotal: Int!
   primarySalesManaTotal: BigInt!
   secondarySalesTotal: Int!
@@ -282,4 +302,33 @@ type Curation @entity {
   item: Item
   isApproved: Boolean!
   timestamp: BigInt!
+}
+
+# ---------------------------------------------------------
+# Sales ---------------------------------------------------
+# ---------------------------------------------------------
+
+# We only track sales from Decentraland's smart contracts
+
+enum SaleType @entity {
+  bid
+  order
+  mint
+}
+
+type Sale @entity {
+  id: ID!
+  type: SaleType!
+  buyer: Bytes!
+  seller: Bytes!
+  price: BigInt!
+  item: Item!
+  nft: NFT!
+  timestamp: BigInt!
+  txHash: Bytes!
+
+  # search
+  searchTokenId: BigInt!
+  searchItemId: BigInt!
+  searchContractAddress: String!
 }

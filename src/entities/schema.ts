@@ -487,6 +487,41 @@ export class Item extends Entity {
     this.set("reviewedAt", Value.fromBigInt(value));
   }
 
+  get soldAt(): BigInt | null {
+    let value = this.get("soldAt");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set soldAt(value: BigInt | null) {
+    if (value === null) {
+      this.unset("soldAt");
+    } else {
+      this.set("soldAt", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get sales(): i32 {
+    let value = this.get("sales");
+    return value.toI32();
+  }
+
+  set sales(value: i32) {
+    this.set("sales", Value.fromI32(value));
+  }
+
+  get volume(): BigInt {
+    let value = this.get("volume");
+    return value.toBigInt();
+  }
+
+  set volume(value: BigInt) {
+    this.set("volume", Value.fromBigInt(value));
+  }
+
   get searchText(): string | null {
     let value = this.get("searchText");
     if (value === null || value.kind == ValueKind.NULL) {
@@ -865,6 +900,41 @@ export class NFT extends Entity {
 
   set updatedAt(value: BigInt) {
     this.set("updatedAt", Value.fromBigInt(value));
+  }
+
+  get soldAt(): BigInt | null {
+    let value = this.get("soldAt");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set soldAt(value: BigInt | null) {
+    if (value === null) {
+      this.unset("soldAt");
+    } else {
+      this.set("soldAt", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get sales(): i32 {
+    let value = this.get("sales");
+    return value.toI32();
+  }
+
+  set sales(value: i32) {
+    this.set("sales", Value.fromI32(value));
+  }
+
+  get volume(): BigInt {
+    let value = this.get("volume");
+    return value.toBigInt();
+  }
+
+  set volume(value: BigInt) {
+    this.set("volume", Value.fromBigInt(value));
   }
 
   get searchText(): string | null {
@@ -1323,6 +1393,42 @@ export class Account extends Entity {
   set totalCurations(value: i32) {
     this.set("totalCurations", Value.fromI32(value));
   }
+
+  get sales(): i32 {
+    let value = this.get("sales");
+    return value.toI32();
+  }
+
+  set sales(value: i32) {
+    this.set("sales", Value.fromI32(value));
+  }
+
+  get purchases(): i32 {
+    let value = this.get("purchases");
+    return value.toI32();
+  }
+
+  set purchases(value: i32) {
+    this.set("purchases", Value.fromI32(value));
+  }
+
+  get spent(): BigInt {
+    let value = this.get("spent");
+    return value.toBigInt();
+  }
+
+  set spent(value: BigInt) {
+    this.set("spent", Value.fromBigInt(value));
+  }
+
+  get earned(): BigInt {
+    let value = this.get("earned");
+    return value.toBigInt();
+  }
+
+  set earned(value: BigInt) {
+    this.set("earned", Value.fromBigInt(value));
+  }
 }
 
 export class Order extends Entity {
@@ -1718,6 +1824,24 @@ export class Count extends Entity {
     this.set("nftTotal", Value.fromI32(value));
   }
 
+  get salesTotal(): i32 {
+    let value = this.get("salesTotal");
+    return value.toI32();
+  }
+
+  set salesTotal(value: i32) {
+    this.set("salesTotal", Value.fromI32(value));
+  }
+
+  get salesManaTotal(): BigInt {
+    let value = this.get("salesManaTotal");
+    return value.toBigInt();
+  }
+
+  set salesManaTotal(value: BigInt) {
+    this.set("salesManaTotal", Value.fromBigInt(value));
+  }
+
   get primarySalesTotal(): i32 {
     let value = this.get("primarySalesTotal");
     return value.toI32();
@@ -2009,5 +2133,135 @@ export class Curation extends Entity {
 
   set timestamp(value: BigInt) {
     this.set("timestamp", Value.fromBigInt(value));
+  }
+}
+
+export class Sale extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save Sale entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save Sale entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("Sale", id.toString(), this);
+  }
+
+  static load(id: string): Sale | null {
+    return store.get("Sale", id) as Sale | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get type(): string {
+    let value = this.get("type");
+    return value.toString();
+  }
+
+  set type(value: string) {
+    this.set("type", Value.fromString(value));
+  }
+
+  get buyer(): Bytes {
+    let value = this.get("buyer");
+    return value.toBytes();
+  }
+
+  set buyer(value: Bytes) {
+    this.set("buyer", Value.fromBytes(value));
+  }
+
+  get seller(): Bytes {
+    let value = this.get("seller");
+    return value.toBytes();
+  }
+
+  set seller(value: Bytes) {
+    this.set("seller", Value.fromBytes(value));
+  }
+
+  get price(): BigInt {
+    let value = this.get("price");
+    return value.toBigInt();
+  }
+
+  set price(value: BigInt) {
+    this.set("price", Value.fromBigInt(value));
+  }
+
+  get item(): string {
+    let value = this.get("item");
+    return value.toString();
+  }
+
+  set item(value: string) {
+    this.set("item", Value.fromString(value));
+  }
+
+  get nft(): string {
+    let value = this.get("nft");
+    return value.toString();
+  }
+
+  set nft(value: string) {
+    this.set("nft", Value.fromString(value));
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
+  }
+
+  get txHash(): Bytes {
+    let value = this.get("txHash");
+    return value.toBytes();
+  }
+
+  set txHash(value: Bytes) {
+    this.set("txHash", Value.fromBytes(value));
+  }
+
+  get searchTokenId(): BigInt {
+    let value = this.get("searchTokenId");
+    return value.toBigInt();
+  }
+
+  set searchTokenId(value: BigInt) {
+    this.set("searchTokenId", Value.fromBigInt(value));
+  }
+
+  get searchItemId(): BigInt {
+    let value = this.get("searchItemId");
+    return value.toBigInt();
+  }
+
+  set searchItemId(value: BigInt) {
+    this.set("searchItemId", Value.fromBigInt(value));
+  }
+
+  get searchContractAddress(): string {
+    let value = this.get("searchContractAddress");
+    return value.toString();
+  }
+
+  set searchContractAddress(value: string) {
+    this.set("searchContractAddress", Value.fromString(value));
   }
 }

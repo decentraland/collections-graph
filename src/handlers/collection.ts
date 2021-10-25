@@ -1,20 +1,13 @@
 import { BigInt, Address } from '@graphprotocol/graph-ts'
 import { handleMintNFT, handleTransferNFT } from './nft'
 import { setItemSearchFields, buildItemMetadata } from '../modules/Metadata'
-import {
-  buildCount,
-  buildCountFromItem,
-  buildCountFromCollection,
-} from '../modules/Count'
+import { buildCount, buildCountFromItem, buildCountFromCollection } from '../modules/Count'
 import { getItemId, getItemImage, removeItemMinter } from '../modules/Item'
 import { createOrLoadAccount } from '../modules/Account'
 import { getCollectionsV1 } from '../data/wearablesV1/addresses'
 import { isMint } from '../modules/NFT'
 import { Collection, Curation, Item } from '../entities/schema'
-import {
-  ProxyCreated,
-  OwnershipTransferred,
-} from '../entities/CollectionFactory/CollectionFactory'
+import { ProxyCreated, OwnershipTransferred } from '../entities/CollectionFactory/CollectionFactory'
 import {
   SetGlobalMinter,
   SetItemMinter,
@@ -29,14 +22,11 @@ import {
   Complete,
   CreatorshipTransferred,
   CollectionV2 as CollectionContract,
-  Transfer,
+  Transfer
 } from '../entities/templates/CollectionV2/CollectionV2'
 import { ERC721 } from '../entities/templates'
 import { CollectionV2 } from '../entities/templates'
-import {
-  getURNForWearableV2,
-  getURNForCollectionV2,
-} from '../modules/Metadata/wearable'
+import { getURNForWearableV2, getURNForCollectionV2 } from '../modules/Metadata/wearable'
 import { getStoreAddress } from '../modules/store'
 import { getCurationId, getBlockWhereRescueItemsStarted } from '../modules/Curation'
 
@@ -46,7 +36,7 @@ export function handleInitializeWearablesV1(_: OwnershipTransferred): void {
   let collectionsV1 = getCollectionsV1()
 
   if (count.started == 0) {
-    collectionsV1.forEach((collectionAddress) => {
+    collectionsV1.forEach(collectionAddress => {
       // Create template bindings
       ERC721.create(Address.fromString(collectionAddress))
     })
@@ -126,13 +116,7 @@ export function handleAddItem(event: AddItem): void {
   item.contentHash = contractItem.contentHash
   item.rawMetadata = contractItem.metadata
   item.searchIsCollectionApproved = collectionContract.isApproved()
-  item.URI =
-    collectionContract.baseURI() +
-    collectionContract.getChainId().toString() +
-    '/' +
-    collectionAddress +
-    '/' +
-    itemId
+  item.URI = collectionContract.baseURI() + collectionContract.getChainId().toString() + '/' + collectionAddress + '/' + itemId
   item.urn = getURNForWearableV2(collectionAddress, itemId.toString())
   item.image = getItemImage(item)
   item.minters = []
@@ -141,6 +125,9 @@ export function handleAddItem(event: AddItem): void {
   item.createdAt = event.block.timestamp
   item.updatedAt = event.block.timestamp
   item.reviewedAt = event.block.timestamp
+  item.soldAt = null
+  item.sales = 0
+  item.volume = BigInt.fromI32(0)
 
   let metadata = buildItemMetadata(item)
 
@@ -258,10 +245,7 @@ export function handleIssue(event: Issue): void {
     return
   }
 
-  let amountOfMintsAvailable = collectionContract.itemMinters(
-    event.params._itemId,
-    event.params._caller
-  )
+  let amountOfMintsAvailable = collectionContract.itemMinters(event.params._itemId, event.params._caller)
 
   if (amountOfMintsAvailable.equals(BigInt.fromI32(0))) {
     let minterAddress = event.params._caller.toHexString()
@@ -436,11 +420,7 @@ export function handleSetApproved(event: SetApproved): void {
   let collectionContract = CollectionContract.bind(event.address)
   let itemsCount = collectionContract.itemsCount()
 
-  for (
-    let i = BigInt.fromI32(0);
-    i.lt(itemsCount);
-    i = i.plus(BigInt.fromI32(1))
-  ) {
+  for (let i = BigInt.fromI32(0); i.lt(itemsCount); i = i.plus(BigInt.fromI32(1))) {
     let id = getItemId(collectionAddress, i.toString())
     let item = Item.load(id)
 

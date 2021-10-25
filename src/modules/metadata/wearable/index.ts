@@ -46,12 +46,11 @@ import {
   rac_basics,
   winklevoss_capital,
   dg_atari_dillon_francis,
-  wearable_test,
+  wearable_test
 } from '../../../data/wearablesV1'
-import { getNetwork } from '../../Network'
+import { getNetwork } from '../../network'
 import { toLowerCase } from '../../../utils'
-import { getCatalystBase } from '../../Catalyst'
-
+import { getCatalystBase } from '../../catalyst'
 
 /**
  * @dev The item's rawMetadata for wearables should follow: version:item_type:name:description:category:bodyshapes
@@ -62,7 +61,6 @@ export function buildWearableItem(item: Item): Wearable | null {
   let id = item.id
   let data = item.rawMetadata.split(':')
   if ((data.length == 6 || data.length == 8) && isValidCategory(data[4]) && isValidBodyShape(data[5].split(','))) {
-
     let wearable = Wearable.load(id)
 
     if (wearable == null) {
@@ -84,7 +82,8 @@ export function buildWearableItem(item: Item): Wearable | null {
 }
 
 function isValidCategory(category: string): boolean {
-  if (category == 'eyebrows' ||
+  if (
+    category == 'eyebrows' ||
     category == 'eyes' ||
     category == 'facial_hair' ||
     category == 'hair' ||
@@ -98,7 +97,8 @@ function isValidCategory(category: string): boolean {
     category == 'helmet' ||
     category == 'mask' ||
     category == 'tiara' ||
-    category == 'top_head') {
+    category == 'top_head'
+  ) {
     return true
   }
 
@@ -110,8 +110,7 @@ function isValidCategory(category: string): boolean {
 function isValidBodyShape(bodyShapes: string[]): boolean {
   for (let i = 0; i++; i < bodyShapes.length) {
     let bodyShape = bodyShapes[i]
-    if (bodyShape != 'BaseFemale' &&
-      bodyShape != 'BaseMale') {
+    if (bodyShape != 'BaseFemale' && bodyShape != 'BaseMale') {
       log.error('Invalid BodyShape {}', [bodyShape])
       return false
     }
@@ -253,10 +252,7 @@ export function getWearableV1Representation(wearableId: string): WearableReprese
     }
   }
 
-  log.error(
-    'Coud not find a wearable for the id {}',
-    [wearableId]
-  )
+  log.error('Coud not find a wearable for the id {}', [wearableId])
   return null
 }
 
@@ -273,7 +269,6 @@ export function getWearableIdFromTokenURI(tokenURI: string): string {
 
   return ''
 }
-
 
 export function getIssuedIdFromTokenURI(tokenURI: string): number {
   let splitted = tokenURI.split('/')
