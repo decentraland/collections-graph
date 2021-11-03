@@ -9,7 +9,7 @@ export function getBlockWhereRescueItemsStarted(): BigInt {
   let network = getNetwork()
 
   if (network == 'matic') {
-    return BigInt.fromI32(13528668)
+    return BigInt.fromI32(20841775)
   }
 
   if (network == 'mumbai') {
