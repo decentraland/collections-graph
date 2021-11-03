@@ -9,7 +9,7 @@ export function getBlockWhereRescueItemsStarted(): BigInt {
   let network = getNetwork()
 
   if (network == 'matic') {
-    return BigInt.fromI32(I32.MAX_VALUE) // WEeneed to set the real blocknumber after we launch this on Polygon mainnet
+    return BigInt.fromI32(20841775)
   }
 
   if (network == 'mumbai') {
