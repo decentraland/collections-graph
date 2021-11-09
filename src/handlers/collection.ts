@@ -148,6 +148,7 @@ export function handleRescueItem(event: RescueItem): void {
   let id = getItemId(collectionAddress, itemId)
 
   let item = Item.load(id)
+  let isNewContent = item.contentHash != event.params._contentHash
 
   item.rawMetadata = event.params._metadata
   item.contentHash = event.params._contentHash
@@ -170,7 +171,7 @@ export function handleRescueItem(event: RescueItem): void {
   collection.save()
 
   let block = getBlockWhereRescueItemsStarted()
-  if (event.block.number.gt(block) || event.block.number.equals(block)) {
+  if (isNewContent && event.block.number.gt(block) || event.block.number.equals(block)) {
     // Create curation
     let txInput = event.transaction.input.toHexString()
     // forwardMetaTx(address _target, bytes calldata _data) selector
