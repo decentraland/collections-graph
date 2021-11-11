@@ -19,6 +19,7 @@ import { Issue, Transfer, CollectionV2 as CollectionContract } from '../entities
 import { Transfer as ERC721Transfer, AddWearable } from '../entities/templates/ERC721/ERC721'
 import { getStoreAddress } from '../modules/store'
 import { MINT_SALE_TYPE, trackSale } from '../modules/analytics'
+import { toLowerCase } from '../utils'
 
 /**
  * @notice mint an NFT by a collection v2 issue event
@@ -147,6 +148,7 @@ export function handleAddItemV1(event: AddWearable): void {
     collection.updatedAt = event.block.timestamp // Not going to be used
     collection.reviewedAt = event.block.timestamp // Not going to be used
     collection.searchIsStoreMinter = false
+    collection.searchText = toLowerCase(collection.name)
 
     collection.save()
 

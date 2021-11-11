@@ -18,6 +18,7 @@ type Collection @entity {
 
   # Searcheable fields
   searchIsStoreMinter: Boolean!
+  searchText: String!
 }
 
 type Item @entity {
