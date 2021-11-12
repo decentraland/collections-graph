@@ -29,6 +29,7 @@ import { CollectionV2 } from '../entities/templates'
 import { getURNForWearableV2, getURNForCollectionV2 } from '../modules/Metadata/wearable'
 import { getStoreAddress } from '../modules/store'
 import { getCurationId, getBlockWhereRescueItemsStarted } from '../modules/Curation'
+import { toLowerCase } from '../utils'
 
 export function handleInitializeWearablesV1(_: OwnershipTransferred): void {
   let count = buildCount()
@@ -75,6 +76,7 @@ export function handleCollectionCreation(event: ProxyCreated): void {
   collection.updatedAt = event.block.timestamp // to support old collections
   collection.reviewedAt = event.block.timestamp // to support old collections
   collection.searchIsStoreMinter = false
+  collection.searchText = toLowerCase(collection.name)
   collection.save()
 
   let metric = buildCountFromCollection()

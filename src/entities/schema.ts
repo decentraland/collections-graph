@@ -209,6 +209,15 @@ export class Collection extends Entity {
   set searchIsStoreMinter(value: boolean) {
     this.set("searchIsStoreMinter", Value.fromBoolean(value));
   }
+
+  get searchText(): string {
+    let value = this.get("searchText");
+    return value.toString();
+  }
+
+  set searchText(value: string) {
+    this.set("searchText", Value.fromString(value));
+  }
 }
 
 export class Item extends Entity {
