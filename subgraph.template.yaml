@@ -56,6 +56,36 @@ dataSources:
       abis:
         - name: Marketplace
           file: ./abis/Marketplace.json
+        - name: CollectionStore
+          file: ./abis/CollectionStore.json
+      eventHandlers:
+        - event: OrderCreated(bytes32,indexed uint256,indexed address,address,uint256,uint256)
+          handler: handleOrderCreated
+        - event: OrderSuccessful(bytes32,indexed uint256,indexed address,address,uint256,indexed address)
+          handler: handleOrderSuccessful
+        - event: OrderCancelled(bytes32,indexed uint256,indexed address,address)
+          handler: handleOrderCancelled
+  # ---------------------------------------------------------
+  # MARKETPLACE V2----------------------------------------------
+  # ---------------------------------------------------------
+  - kind: ethereum/contract
+    name: MarketplaceV2
+    network: {{network}}
+    source:
+      address: '{{address_marketplaceV2}}'
+      abi: MarketplaceV2
+      startBlock: {{startBlock_marketplaceV2}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      file: ./src/handlers/marketplaceV2.ts
+      entities:
+        - Order
+        - NFT
+      abis:
+        - name: MarketplaceV2
+          file: ./abis/MarketplaceV2.json
       eventHandlers:
         - event: OrderCreated(bytes32,indexed uint256,indexed address,address,uint256,uint256)
           handler: handleOrderCreated

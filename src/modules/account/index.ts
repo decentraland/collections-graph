@@ -14,6 +14,7 @@ export function createOrLoadAccount(id: Address): Account {
     account.purchases = 0
     account.earned = BigInt.fromI32(0)
     account.spent = BigInt.fromI32(0)
+    account.royalties = BigInt.fromI32(0)
   }
 
   account.save()

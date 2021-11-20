@@ -10,6 +10,8 @@
   "startBlock_committee": 14517370,
   "address_marketplace": "0x2a09a000224f5dbe0E17214cA95CDe506DA7CB74",
   "startBlock_marketplace": 14517370,
+  "address_marketplaceV2": "0x4e9c83F65dB67a6493d390f16C657e3e1dE37636",
+  "startBlock_marketplaceV2": 21716370,
   "address_bid": "0x250fa138c0a994799c7a49df3097dc71e37b3d6f",
   "startBlock_bid": 14517370,
   "address_rarity": "0x8eabF06f6cf667915bfF30138be70543bCE2901A",

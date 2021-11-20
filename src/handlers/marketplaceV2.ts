@@ -1,5 +1,5 @@
-import { log, BigInt } from '@graphprotocol/graph-ts'
-import { OrderCreated, OrderSuccessful, OrderCancelled, Marketplace } from '../entities/Marketplace/Marketplace'
+import { log } from '@graphprotocol/graph-ts'
+import { OrderCreated, OrderSuccessful, OrderCancelled, MarketplaceV2 } from '../entities/MarketplaceV2/MarketplaceV2'
 import { Order, NFT } from '../entities/schema'
 import { getNFTId, updateNFTOrderProperties, cancelActiveOrder } from '../modules/NFT'
 import { buildCountFromOrder } from '../modules/Count'
@@ -70,7 +70,7 @@ export function handleOrderSuccessful(event: OrderSuccessful): void {
   nft.save()
 
   // Bind contract
-  let marketplaceContract = Marketplace.bind(event.address)
+  let marketplaceContract = MarketplaceV2.bind(event.address)
 
   // analytics
   trackSale(
@@ -80,11 +80,11 @@ export function handleOrderSuccessful(event: OrderSuccessful): void {
     nft.item,
     nft.id,
     order.price,
-    marketplaceContract.ownerCutPerMillion(),
-    marketplaceContract.owner(),
-    BigInt.fromI32(0),
+    marketplaceContract.feesCollectorCutPerMillion(),
+    marketplaceContract.feesCollector(),
+    marketplaceContract.royaltiesCutPerMillion(),
     event.block.timestamp,
-    event.transaction.hash
+    event.transaction.hash,
   )
 }
 

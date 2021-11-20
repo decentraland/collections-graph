@@ -197,6 +197,7 @@ type Account @entity {
   purchases: Int!
   spent: BigInt!
   earned: BigInt!
+  royalties: BigInt!
 }
 
 # ---------------------------------------------------------
@@ -265,6 +266,7 @@ type Count @entity {
   primarySalesManaTotal: BigInt!
   secondarySalesTotal: Int!
   secondarySalesManaTotal: BigInt!
+  royaltiesManaTotal: BigInt!
   started: Int!
 }
 
@@ -323,6 +325,10 @@ type Sale @entity {
   buyer: Bytes!
   seller: Bytes!
   price: BigInt!
+  feesCollectorCut: BigInt!
+  feesCollector: Bytes!
+  royaltiesCut: BigInt!
+  royaltiesCollector: Bytes!
   item: Item!
   nft: NFT!
   timestamp: BigInt!

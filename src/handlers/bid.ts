@@ -1,5 +1,5 @@
 import { BigInt, Address, log } from '@graphprotocol/graph-ts'
-import { BidCreated, BidAccepted, BidCancelled } from '../entities/ERC721Bid/ERC721Bid'
+import { BidCreated, BidAccepted, BidCancelled, ERC721Bid } from '../entities/ERC721Bid/ERC721Bid'
 import { Bid, NFT, Item } from '../entities/schema'
 import { getNFTId } from '../modules/NFT'
 import * as status from '../modules/Order'
@@ -69,6 +69,9 @@ export function handleBidAccepted(event: BidAccepted): void {
   nft.updatedAt = event.block.timestamp
   nft.save()
 
+  // Bind contract
+  let bidContract = ERC721Bid.bind(event.address)
+
   // count secondary sale
   trackSale(
     BID_SALE_TYPE,
@@ -77,6 +80,9 @@ export function handleBidAccepted(event: BidAccepted): void {
     nft.item,
     nft.id,
     bid.price,
+    bidContract.ownerCutPerMillion(),
+    bidContract.owner(),
+    BigInt.fromI32(0),
     event.block.timestamp,
     event.transaction.hash
   )

@@ -1,7 +1,8 @@
 import { Address, BigInt, Bytes, log } from '@graphprotocol/graph-ts'
 import { Item, NFT, Sale } from '../../entities/schema'
-import { createOrLoadAccount } from '../Account'
+import { createOrLoadAccount, ZERO_ADDRESS } from '../Account'
 import { buildCountFromPrimarySale, buildCountFromSale, buildCountFromSecondarySale } from '../Count'
+import { ONE_MILLION } from '../Store'
 
 export let BID_SALE_TYPE = 'bid'
 export let ORDER_SALE_TYPE = 'order'
@@ -14,8 +15,11 @@ export function trackSale(
   itemId: string,
   nftId: string,
   price: BigInt,
+  feesCollectorCut: BigInt,
+  feesCollector: Address,
+  royaltiesCut: BigInt,
   timestamp: BigInt,
-  txHash: Bytes
+  txHash: Bytes,
 ): void {
   // ignore zero price sales
   if (price.isZero()) {
@@ -44,6 +48,23 @@ export function trackSale(
   sale.searchItemId = item.blockchainId
   sale.searchTokenId = nft.tokenId
   sale.searchContractAddress = nft.contractAddress
+
+  // update Fees
+  sale.feesCollector = feesCollector
+  sale.feesCollectorCut = feesCollectorCut.times(sale.price).div(ONE_MILLION)
+  sale.royaltiesCut = royaltiesCut.times(sale.price).div(ONE_MILLION)
+  sale.royaltiesCollector = Address.fromString(ZERO_ADDRESS)
+
+  if (royaltiesCut.gt(BigInt.fromI32(0))) {
+    if (item.beneficiary != ZERO_ADDRESS || item.creator != ZERO_ADDRESS) {
+      sale.royaltiesCollector = Address.fromString(item.beneficiary) || Address.fromString(item.creator)
+    } else {
+      // If there is not royalties receiver, all the fees goes to the fees collector
+      sale.feesCollectorCut = sale.feesCollectorCut.plus(sale.royaltiesCut)
+      sale.royaltiesCut = BigInt.fromI32(0)
+    }
+  }
+
   sale.save()
 
   // update buyer account
@@ -57,6 +78,16 @@ export function trackSale(
   sellerAccount.sales += 1
   sellerAccount.earned = sellerAccount.earned.plus(price)
   sellerAccount.save()
+
+  // update fees collector account
+  let feesCollectorAccount = createOrLoadAccount(feesCollector)
+  feesCollectorAccount.royalties = feesCollectorAccount.royalties.plus(sale.feesCollectorCut)
+  feesCollectorAccount.save()
+
+  // update royalties collector account
+  let royaltiesCollectorAccount = createOrLoadAccount(sale.royaltiesCollector as Address)
+  royaltiesCollectorAccount.royalties = royaltiesCollectorAccount.royalties.plus(sale.royaltiesCut)
+  royaltiesCollectorAccount.save()
 
   // update item
   item.soldAt = timestamp
