@@ -31,6 +31,8 @@ dataSources:
           file: ./abis/CollectionFactory.json
         - name: CollectionV2
           file: ./abis/CollectionV2.json
+        - name: CollectionStore
+          file: ./abis/CollectionStore.json
       eventHandlers:
         - event: ProxyCreated(indexed address,bytes32)
           handler: handleCollectionCreation
@@ -56,8 +58,6 @@ dataSources:
       abis:
         - name: Marketplace
           file: ./abis/Marketplace.json
-        - name: CollectionStore
-          file: ./abis/CollectionStore.json
       eventHandlers:
         - event: OrderCreated(bytes32,indexed uint256,indexed address,address,uint256,uint256)
           handler: handleOrderCreated
@@ -145,6 +145,8 @@ dataSources:
           file: ./abis/CollectionFactory.json
         - name: CollectionV2
           file: ./abis/CollectionV2.json
+        - name: CollectionStore
+          file: ./abis/CollectionStore.json
       eventHandlers:
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: handleInitializeWearablesV1
@@ -242,6 +244,8 @@ templates:
       abis:
         - name: CollectionV2
           file: ./abis/CollectionV2.json
+        - name: CollectionStore
+          file: ./abis/CollectionStore.json
       eventHandlers:
         - event: SetGlobalMinter(indexed address,bool)
           handler: handleSetGlobalMinter
@@ -301,3 +305,21 @@ templates:
           handler: handleTransferWearableV1
         - event: AddWearable(indexed bytes32,string,uint256)
           handler: handleAddItemV1
+# ---------------------------------------------------------
+  # Wearables V1 --------------------------------------------
+  # ---------------------------------------------------------
+  - name: CollectionStore
+    kind: ethereum/contract
+    network: {{network}}
+    source:
+      abi: CollectionStore
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      file: ./src/handlers/nft.ts
+      entities:
+        - NFT
+      abis:
+      - name: CollectionStore
+        file: ./abis/CollectionStore.json
