@@ -86,3 +86,9 @@ export function buildCountFromSale(price: BigInt): Count {
   count.salesManaTotal = count.salesManaTotal.plus(price)
   return count
 }
+
+export function buildCountFromRoyalties(royalties: BigInt): Count {
+  let count = buildCount()
+  count.royaltiesManaTotal = count.royaltiesManaTotal.plus(royalties)
+  return count
+}
