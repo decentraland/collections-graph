@@ -213,6 +213,7 @@ enum OrderStatus @entity {
 # we need from each NFT type to the Order, in order to search for them, prefixing them with search_[nft]_[prop]
 type Order @entity {
   id: ID!
+  marketplaceAddress: Bytes!
   nft: NFT
   nftAddress: Bytes!
   tokenId: BigInt!
@@ -233,6 +234,7 @@ type Order @entity {
 
 type Bid @entity {
   id: ID!
+  bidAddress: Bytes!
   nft: NFT
   nftAddress: Bytes!
   tokenId: BigInt!

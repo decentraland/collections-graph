@@ -21,6 +21,7 @@ export function handleBidCreated(event: BidCreated): void {
   }
 
   bid.status = status.OPEN
+  bid.bidAddress = event.address
   bid.nftAddress = event.params._tokenAddress
   bid.tokenId = event.params._tokenId
   bid.bidder = event.params._bidder

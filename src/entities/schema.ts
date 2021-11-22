@@ -1479,6 +1479,15 @@ export class Order extends Entity {
     this.set("id", Value.fromString(value));
   }
 
+  get marketplaceAddress(): Bytes {
+    let value = this.get("marketplaceAddress");
+    return value.toBytes();
+  }
+
+  set marketplaceAddress(value: Bytes) {
+    this.set("marketplaceAddress", Value.fromBytes(value));
+  }
+
   get nft(): string | null {
     let value = this.get("nft");
     if (value === null || value.kind == ValueKind.NULL) {
@@ -1632,6 +1641,15 @@ export class Bid extends Entity {
 
   set id(value: string) {
     this.set("id", Value.fromString(value));
+  }
+
+  get bidAddress(): Bytes {
+    let value = this.get("bidAddress");
+    return value.toBytes();
+  }
+
+  set bidAddress(value: Bytes) {
+    this.set("bidAddress", Value.fromBytes(value));
   }
 
   get nft(): string | null {
