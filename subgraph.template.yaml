@@ -332,8 +332,8 @@ templates:
           handler: handleTransferWearableV1
         - event: AddWearable(indexed bytes32,string,uint256)
           handler: handleAddItemV1
-# ---------------------------------------------------------
-  # Wearables V1 --------------------------------------------
+  # ---------------------------------------------------------
+  # Collection Store-----------------------------------------
   # ---------------------------------------------------------
   - name: CollectionStore
     kind: ethereum/contract
