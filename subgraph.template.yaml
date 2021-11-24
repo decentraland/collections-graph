@@ -72,9 +72,9 @@ dataSources:
     name: MarketplaceV2
     network: {{network}}
     source:
-      address: '{{address_marketplaceV2}}'
+      address: '{{address_marketplace_V2}}'
       abi: MarketplaceV2
-      startBlock: {{startBlock_marketplaceV2}}
+      startBlock: {{startBlock_marketplace_V2}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
@@ -113,6 +113,33 @@ dataSources:
       abis:
         - name: ERC721Bid
           file: ./abis/ERC721Bid.json
+      eventHandlers:
+        - event: BidCreated(bytes32,indexed address,indexed uint256,indexed address,uint256,uint256,bytes)
+          handler: handleBidCreated
+        - event: BidAccepted(bytes32,indexed address,indexed uint256,address,indexed address,uint256,uint256)
+          handler: handleBidAccepted
+        - event: BidCancelled(bytes32,indexed address,indexed uint256,indexed address)
+          handler: handleBidCancelled
+  # ---------------------------------------------------------
+  # BIDS V2--------------------------------------------------
+  # ---------------------------------------------------------
+  - kind: ethereum/contract
+    name: ERC721BidV2
+    network: {{network}}
+    source:
+      address: '{{address_bid_v2}}'
+      abi: ERC721BidV2
+      startBlock: {{startBlock_bid_v2}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      file: ./src/handlers/bid.ts
+      entities:
+        - Bid
+      abis:
+        - name: ERC721BidV2
+          file: ./abis/ERC721BidV2.json
       eventHandlers:
         - event: BidCreated(bytes32,indexed address,indexed uint256,indexed address,uint256,uint256,bytes)
           handler: handleBidCreated
