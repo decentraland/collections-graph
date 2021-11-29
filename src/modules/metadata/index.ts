@@ -27,6 +27,9 @@ export function buildItemMetadata(item: Item): Metadata {
     if (wearable != null && type == itemTypes.WEARABLE_TYPE_SHORT) {
       metadata.itemType = itemTypes.WEARABLE_V2
       metadata.wearable = wearable.id
+    } if (wearable != null && type == itemTypes.SMART_WEARABLE_TYPE_SHORT) {
+      metadata.itemType = itemTypes.SMART_WEARABLE_V2
+      metadata.wearable = wearable.id
     } else {
       metadata.itemType = itemTypes.UNDEFINED
     }
