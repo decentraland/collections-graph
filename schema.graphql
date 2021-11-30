@@ -125,6 +125,7 @@ enum ItemType @entity {
   undefined
   wearable_v1
   wearable_v2
+  smart_wearable_v1
 }
 
 type Wearable @entity {
