@@ -50,7 +50,6 @@ import {
 } from '../../../data/wearablesV1'
 import { getNetwork } from '../../network'
 import { toLowerCase } from '../../../utils'
-import { getCatalystBase } from '../../catalyst'
 
 /**
  * @dev The item's rawMetadata for wearables should follow: version:item_type:name:description:category:bodyshapes
@@ -184,13 +183,6 @@ export function isWearableAccessory(category: string): boolean {
     category == categories.TIARA ||
     category == categories.TOP_HEAD
   )
-}
-
-// Wearable V1 methods
-export function getWearableV1Image(item: Item): string {
-  let baseURI = getCatalystBase()
-
-  return baseURI + '/lambdas/collections/contents/' + item.urn + '/thumbnail'
 }
 
 export function getWearableV1Representation(wearableId: string): WearableRepresentation {
