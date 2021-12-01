@@ -1,14 +1,15 @@
 import { Item } from "../../entities/schema"
+import { getCatalystBase } from '../catalyst'
+
 
 export function getItemId(contractAddress: string, itemId: string): string {
   return contractAddress + '-' + itemId
 }
 
 export function getItemImage(item: Item): string {
-  let URI = item.URI.split('standard/')  // https://peer.decentraland.[org|zone]/collections/standard/...
-  let baseURI = URI[0]  // https://peer.decentraland.[org|zone]/collections
+  let baseURI = getCatalystBase()
 
-  return baseURI + 'contents/' + item.urn + '/thumbnail'
+  return baseURI + '/lambdas/collections/contents/' + item.urn + '/thumbnail'
 }
 
 export function removeItemMinter(item: Item, minter: string): Array<string> {

@@ -1,11 +1,10 @@
 import { BigInt, Address, log } from '@graphprotocol/graph-ts'
 
-import { getItemId } from '../modules/Item'
+import { getItemId, getItemImage } from '../modules/Item'
 import { createOrLoadAccount, ZERO_ADDRESS } from '../modules/Account'
 import { setItemSearchFields, setNFTSearchFields, buildWearableV1Metadata } from '../modules/Metadata'
 import * as itemTypes from '../modules/Metadata/itemTypes'
 import {
-  getWearableV1Image,
   getWearableIdFromTokenURI,
   getWearableV1Representation,
   getIssuedIdFromTokenURI,
@@ -179,7 +178,7 @@ export function handleAddItemV1(event: AddWearable): void {
   item.managers = [] // Not used for collections v1
   item.URI = collectionContract.baseURI() + event.params._wearableId
   item.urn = getURNForWearableV1(collection!, representation.id)
-  item.image = getWearableV1Image(item)
+  item.image = getItemImage(item)
   item.createdAt = event.block.timestamp // Not used for collections v1
   item.updatedAt = event.block.timestamp // Not used for collections v1
   item.reviewedAt = event.block.timestamp // Not used for collections v1

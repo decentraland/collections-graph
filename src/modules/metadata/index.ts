@@ -27,6 +27,9 @@ export function buildItemMetadata(item: Item): Metadata {
     if (wearable != null && type == itemTypes.WEARABLE_TYPE_SHORT) {
       metadata.itemType = itemTypes.WEARABLE_V2
       metadata.wearable = wearable.id
+    } else if (wearable != null && type == itemTypes.SMART_WEARABLE_TYPE_SHORT) {
+      metadata.itemType = itemTypes.SMART_WEARABLE_V1
+      metadata.wearable = wearable.id
     } else {
       metadata.itemType = itemTypes.UNDEFINED
     }
@@ -55,7 +58,11 @@ export function buildWearableV1Metadata(item: Item, representation: WearableRepr
 
 
 export function setItemSearchFields(item: Item): Item {
-  if (item.itemType == itemTypes.WEARABLE_V2 || item.itemType == itemTypes.WEARABLE_V1) {
+  if (
+    item.itemType == itemTypes.WEARABLE_V2 ||
+    item.itemType == itemTypes.WEARABLE_V1 ||
+    item.itemType == itemTypes.SMART_WEARABLE_V1
+  ) {
     return setItemWearableSearchFields(item)
   }
 
@@ -63,7 +70,11 @@ export function setItemSearchFields(item: Item): Item {
 }
 
 export function setNFTSearchFields(nft: NFT): NFT {
-  if (nft.itemType == itemTypes.WEARABLE_V2 || nft.itemType == itemTypes.WEARABLE_V1) {
+  if (
+    nft.itemType == itemTypes.WEARABLE_V2 ||
+    nft.itemType == itemTypes.WEARABLE_V1 ||
+    nft.itemType == itemTypes.SMART_WEARABLE_V1
+  ) {
     return setNFTWearableSearchFields(nft)
   }
 
