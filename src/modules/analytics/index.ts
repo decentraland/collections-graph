@@ -55,8 +55,10 @@ export function trackSale(
   sale.feesCollectorCut = feesCollectorCut.times(sale.price).div(ONE_MILLION)
   sale.royaltiesCut = royaltiesCut.times(sale.price).div(ONE_MILLION)
 
+  let totalFees = sale.feesCollectorCut.plus(sale.royaltiesCut)
+
   // count sale
-  count = buildCountFromRoyalties(sale.feesCollectorCut.plus(sale.royaltiesCut))
+  count = buildCountFromRoyalties(totalFees)
   count.save()
 
   if (royaltiesCut.gt(BigInt.fromI32(0))) {
@@ -85,7 +87,7 @@ export function trackSale(
   // update seller account
   let sellerAccount = createOrLoadAccount(seller)
   sellerAccount.sales += 1
-  sellerAccount.earned = sellerAccount.earned.plus(price)
+  sellerAccount.earned = sellerAccount.earned.plus(price.minus(totalFees))
   sellerAccount.save()
 
   // update fees collector account
