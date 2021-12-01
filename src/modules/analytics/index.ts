@@ -67,6 +67,7 @@ export function trackSale(
 
       // update royalties collector account
       let royaltiesCollectorAccount = createOrLoadAccount(sale.royaltiesCollector as Address)
+      royaltiesCollectorAccount.earned = royaltiesCollectorAccount.earned.plus(sale.royaltiesCut)
       royaltiesCollectorAccount.royalties = royaltiesCollectorAccount.royalties.plus(sale.royaltiesCut)
       royaltiesCollectorAccount.save()
     } else {
@@ -92,6 +93,7 @@ export function trackSale(
 
   // update fees collector account
   let feesCollectorAccount = createOrLoadAccount(feesCollector)
+  feesCollectorAccount.earned = feesCollectorAccount.earned.plus(sale.feesCollectorCut)
   feesCollectorAccount.royalties = feesCollectorAccount.royalties.plus(sale.feesCollectorCut)
   feesCollectorAccount.save()
 
