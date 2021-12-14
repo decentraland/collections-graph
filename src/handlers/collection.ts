@@ -105,18 +105,18 @@ export function handleAddItem(event: AddItem): void {
 
   let id = getItemId(collectionAddress, itemId.toString())
   let rarity = Rarity.load(contractItem.rarity)
-  let cost = BigInt.fromI32(0)
+  let creationFee = BigInt.fromI32(0)
   if (!rarity) {
     log.info('Undefined rarity {} for collection {} and item {}', [contractItem.rarity, collectionAddress, itemId.toString()])
   } else {
-    cost = rarity.price
+    creationFee = rarity.price
   }
 
   let item = new Item(id)
   item.creator = collection.creator
   item.blockchainId = event.params._itemId
   item.collection = collectionAddress
-  item.cost = cost
+  item.creationFee = creationFee
   item.rarity = contractItem.rarity
   item.available = contractItem.maxSupply
   item.totalSupply = contractItem.totalSupply

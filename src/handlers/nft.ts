@@ -178,7 +178,7 @@ export function handleAddItemV1(event: AddWearable): void {
   item.creator = owner
   item.blockchainId = BigInt.fromI32(collection.itemsCount)
   item.collection = collectionAddress
-  item.cost = BigInt.fromI32(0)
+  item.creationFee = BigInt.fromI32(0)
   item.rarity = representation.rarity
   item.available = event.params._maxIssuance
   item.totalSupply = BigInt.fromI32(0)
