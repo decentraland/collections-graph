@@ -313,6 +313,15 @@ export class Item extends Entity {
     this.set("rarity", Value.fromString(value));
   }
 
+  get cost(): BigInt {
+    let value = this.get("cost");
+    return value.toBigInt();
+  }
+
+  set cost(value: BigInt) {
+    this.set("cost", Value.fromBigInt(value));
+  }
+
   get available(): BigInt {
     let value = this.get("available");
     return value.toBigInt();

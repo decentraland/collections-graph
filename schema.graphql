@@ -30,6 +30,7 @@ type Item @entity {
   totalSupply: BigInt!
   maxSupply: BigInt!
   rarity: String!
+  cost: BigInt!
   available: BigInt!
   price: BigInt!
   beneficiary: String!

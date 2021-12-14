@@ -1,4 +1,4 @@
-import { BigInt, Address } from '@graphprotocol/graph-ts'
+import { BigInt, Address, log } from '@graphprotocol/graph-ts'
 import { handleMintNFT, handleTransferNFT } from './nft'
 import { setItemSearchFields, buildItemMetadata } from '../modules/Metadata'
 import { buildCount, buildCountFromItem, buildCountFromCollection } from '../modules/Count'
@@ -6,7 +6,7 @@ import { getItemId, getItemImage, removeItemMinter } from '../modules/Item'
 import { createOrLoadAccount } from '../modules/Account'
 import { getCollectionsV1 } from '../data/wearablesV1/addresses'
 import { isMint } from '../modules/NFT'
-import { Collection, Curation, Item } from '../entities/schema'
+import { Collection, Curation, Item, Rarity } from '../entities/schema'
 import { ProxyCreated, OwnershipTransferred } from '../entities/CollectionFactory/CollectionFactory'
 import {
   SetGlobalMinter,
@@ -104,11 +104,19 @@ export function handleAddItem(event: AddItem): void {
   let itemId = event.params._itemId.toString()
 
   let id = getItemId(collectionAddress, itemId.toString())
+  let rarity = Rarity.load(contractItem.rarity)
+  let cost = BigInt.fromI32(0)
+  if (!rarity) {
+    log.info('Undefined rarity {} for collection {} and item {}', [contractItem.rarity, collectionAddress, itemId.toString()])
+  } else {
+    cost = rarity.price
+  }
 
   let item = new Item(id)
   item.creator = collection.creator
   item.blockchainId = event.params._itemId
   item.collection = collectionAddress
+  item.cost = cost
   item.rarity = contractItem.rarity
   item.available = contractItem.maxSupply
   item.totalSupply = contractItem.totalSupply
