@@ -1438,6 +1438,15 @@ export class Account extends Entity {
   set earned(value: BigInt) {
     this.set("earned", Value.fromBigInt(value));
   }
+
+  get royalties(): BigInt {
+    let value = this.get("royalties");
+    return value.toBigInt();
+  }
+
+  set royalties(value: BigInt) {
+    this.set("royalties", Value.fromBigInt(value));
+  }
 }
 
 export class Order extends Entity {
@@ -1468,6 +1477,15 @@ export class Order extends Entity {
 
   set id(value: string) {
     this.set("id", Value.fromString(value));
+  }
+
+  get marketplaceAddress(): Bytes {
+    let value = this.get("marketplaceAddress");
+    return value.toBytes();
+  }
+
+  set marketplaceAddress(value: Bytes) {
+    this.set("marketplaceAddress", Value.fromBytes(value));
   }
 
   get nft(): string | null {
@@ -1623,6 +1641,15 @@ export class Bid extends Entity {
 
   set id(value: string) {
     this.set("id", Value.fromString(value));
+  }
+
+  get bidAddress(): Bytes {
+    let value = this.get("bidAddress");
+    return value.toBytes();
+  }
+
+  set bidAddress(value: Bytes) {
+    this.set("bidAddress", Value.fromBytes(value));
   }
 
   get nft(): string | null {
@@ -1885,6 +1912,15 @@ export class Count extends Entity {
 
   set secondarySalesManaTotal(value: BigInt) {
     this.set("secondarySalesManaTotal", Value.fromBigInt(value));
+  }
+
+  get royaltiesManaTotal(): BigInt {
+    let value = this.get("royaltiesManaTotal");
+    return value.toBigInt();
+  }
+
+  set royaltiesManaTotal(value: BigInt) {
+    this.set("royaltiesManaTotal", Value.fromBigInt(value));
   }
 
   get started(): i32 {
@@ -2209,6 +2245,42 @@ export class Sale extends Entity {
 
   set price(value: BigInt) {
     this.set("price", Value.fromBigInt(value));
+  }
+
+  get feesCollectorCut(): BigInt {
+    let value = this.get("feesCollectorCut");
+    return value.toBigInt();
+  }
+
+  set feesCollectorCut(value: BigInt) {
+    this.set("feesCollectorCut", Value.fromBigInt(value));
+  }
+
+  get feesCollector(): Bytes {
+    let value = this.get("feesCollector");
+    return value.toBytes();
+  }
+
+  set feesCollector(value: Bytes) {
+    this.set("feesCollector", Value.fromBytes(value));
+  }
+
+  get royaltiesCut(): BigInt {
+    let value = this.get("royaltiesCut");
+    return value.toBigInt();
+  }
+
+  set royaltiesCut(value: BigInt) {
+    this.set("royaltiesCut", Value.fromBigInt(value));
+  }
+
+  get royaltiesCollector(): Bytes {
+    let value = this.get("royaltiesCollector");
+    return value.toBytes();
+  }
+
+  set royaltiesCollector(value: Bytes) {
+    this.set("royaltiesCollector", Value.fromBytes(value));
   }
 
   get item(): string {

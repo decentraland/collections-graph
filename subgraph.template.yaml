@@ -1,8 +1,8 @@
 specVersion: 0.0.2
 description: Decentraland collections
 # graft:
-#  base: QmNyU8cAZKZXvK2u3sUXbZ7HyjkUk43GGpZtmKTHg5S6mr # Subgraph ID of base subgraph
-#  block: 19885000 # Block number
+  # base: QmYAk5szzmZTVdsLn3EVYMzfmQsfweMx9s9Av5Jbf39zg5 # Subgraph ID of base subgraph
+  # block: 22514800 # Block number
 repository: https://github.com/decentraland/collections-graph
 schema:
   file: ./schema.graphql
@@ -31,6 +31,8 @@ dataSources:
           file: ./abis/CollectionFactory.json
         - name: CollectionV2
           file: ./abis/CollectionV2.json
+        - name: CollectionStore
+          file: ./abis/CollectionStore.json
       eventHandlers:
         - event: ProxyCreated(indexed address,bytes32)
           handler: handleCollectionCreation
@@ -56,6 +58,34 @@ dataSources:
       abis:
         - name: Marketplace
           file: ./abis/Marketplace.json
+      eventHandlers:
+        - event: OrderCreated(bytes32,indexed uint256,indexed address,address,uint256,uint256)
+          handler: handleOrderCreated
+        - event: OrderSuccessful(bytes32,indexed uint256,indexed address,address,uint256,indexed address)
+          handler: handleOrderSuccessful
+        - event: OrderCancelled(bytes32,indexed uint256,indexed address,address)
+          handler: handleOrderCancelled
+  # ---------------------------------------------------------
+  # MARKETPLACE V2----------------------------------------------
+  # ---------------------------------------------------------
+  - kind: ethereum/contract
+    name: MarketplaceV2
+    network: {{network}}
+    source:
+      address: '{{address_marketplace_V2}}'
+      abi: MarketplaceV2
+      startBlock: {{startBlock_marketplace_V2}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      file: ./src/handlers/marketplaceV2.ts
+      entities:
+        - Order
+        - NFT
+      abis:
+        - name: MarketplaceV2
+          file: ./abis/MarketplaceV2.json
       eventHandlers:
         - event: OrderCreated(bytes32,indexed uint256,indexed address,address,uint256,uint256)
           handler: handleOrderCreated
@@ -91,6 +121,33 @@ dataSources:
         - event: BidCancelled(bytes32,indexed address,indexed uint256,indexed address)
           handler: handleBidCancelled
   # ---------------------------------------------------------
+  # BIDS V2--------------------------------------------------
+  # ---------------------------------------------------------
+  - kind: ethereum/contract
+    name: ERC721BidV2
+    network: {{network}}
+    source:
+      address: '{{address_bid_v2}}'
+      abi: ERC721BidV2
+      startBlock: {{startBlock_bid_v2}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      file: ./src/handlers/bid.ts
+      entities:
+        - Bid
+      abis:
+        - name: ERC721BidV2
+          file: ./abis/ERC721BidV2.json
+      eventHandlers:
+        - event: BidCreated(bytes32,indexed address,indexed uint256,indexed address,uint256,uint256,bytes)
+          handler: handleBidCreated
+        - event: BidAccepted(bytes32,indexed address,indexed uint256,address,indexed address,uint256,uint256)
+          handler: handleBidAccepted
+        - event: BidCancelled(bytes32,indexed address,indexed uint256,indexed address)
+          handler: handleBidCancelled
+  # ---------------------------------------------------------
   # Initialize Wearables v1 ---------------------------------
   # We are using the first event for the first collection of v1
   # https://etherscan.io/tx/0xfb963f45c44329edd32d92ea7e5d74b3282e9c747762fd50af12703d16aac921#eventlog
@@ -115,6 +172,8 @@ dataSources:
           file: ./abis/CollectionFactory.json
         - name: CollectionV2
           file: ./abis/CollectionV2.json
+        - name: CollectionStore
+          file: ./abis/CollectionStore.json
       eventHandlers:
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: handleInitializeWearablesV1
@@ -212,6 +271,8 @@ templates:
       abis:
         - name: CollectionV2
           file: ./abis/CollectionV2.json
+        - name: CollectionStore
+          file: ./abis/CollectionStore.json
       eventHandlers:
         - event: SetGlobalMinter(indexed address,bool)
           handler: handleSetGlobalMinter
@@ -271,3 +332,21 @@ templates:
           handler: handleTransferWearableV1
         - event: AddWearable(indexed bytes32,string,uint256)
           handler: handleAddItemV1
+  # ---------------------------------------------------------
+  # Collection Store-----------------------------------------
+  # ---------------------------------------------------------
+  - name: CollectionStore
+    kind: ethereum/contract
+    network: {{network}}
+    source:
+      abi: CollectionStore
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      file: ./src/handlers/nft.ts
+      entities:
+        - NFT
+      abis:
+      - name: CollectionStore
+        file: ./abis/CollectionStore.json

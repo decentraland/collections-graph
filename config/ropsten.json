@@ -10,8 +10,12 @@
   "startBlock_committee": 8787011,
   "address_marketplace": "0x5424912699dabaa5f2998750c1c66e73d67ad219",
   "startBlock_marketplace": 8619936,
+  "address_marketplace_V2": "0x0000000000000000000000000000000000000000",
+  "startBlock_marketplace_V2": 8619936,
   "address_bid": "0x250fa138c0a994799c7a49df3097dc71e37b3d6f",
   "startBlock_bid": 8619936,
+  "address_bid_v2": "0x0000000000000000000000000000000000000000",
+  "startBlock_bid_v2": 21834173,
   "address_rarity": "0xeF2d490521801CbC005FcB2f4ce0478FEEd95c89",
   "startBlock_rarity": 10621000
 }

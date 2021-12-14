@@ -15,6 +15,7 @@ import { getNFTId, getTokenURI, isMint, cancelActiveOrder, clearNFTOrderProperti
 import { NFT, Item, Collection, Mint } from '../entities/schema'
 import { buildCountFromCollection, buildCountFromNFT, buildCountFromItem, buildCountFromPrimarySale } from '../modules/Count'
 import { Issue, Transfer, CollectionV2 as CollectionContract } from '../entities/templates/CollectionV2/CollectionV2'
+import { CollectionStore } from '../entities/templates/CollectionStore/CollectionStore'
 import { Transfer as ERC721Transfer, AddWearable } from '../entities/templates/ERC721/ERC721'
 import { getStoreAddress } from '../modules/store'
 import { MINT_SALE_TYPE, trackSale } from '../modules/analytics'
@@ -81,14 +82,25 @@ export function handleMintNFT(event: Issue, collectionAddress: string, item: Ite
 
   // count primary sale
   if (isStoreMinter) {
+    // Bind contract
+    let storeContract = CollectionStore.bind(Address.fromString(minterAddress))
+
+    let seller = item.creator
+    if (item.beneficiary != ZERO_ADDRESS) {
+      seller = item.beneficiary
+    }
+
     mint.searchPrimarySalePrice = item.price
     trackSale(
       MINT_SALE_TYPE,
       event.params._beneficiary,
-      Address.fromString(item.creator),
+      Address.fromString(seller),
       item.id,
       nft.id,
       item.price,
+      storeContract.fee(),
+      storeContract.feeOwner(),
+      BigInt.fromI32(0),
       event.block.timestamp,
       event.transaction.hash
     )

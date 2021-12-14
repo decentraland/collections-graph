@@ -19,6 +19,7 @@ export function buildCount(): Count {
     count.primarySalesManaTotal = BigInt.fromI32(0)
     count.secondarySalesTotal = 0
     count.secondarySalesManaTotal = BigInt.fromI32(0)
+    count.royaltiesManaTotal = BigInt.fromI32(0)
     count.started = 0
   }
 
@@ -83,5 +84,11 @@ export function buildCountFromSale(price: BigInt): Count {
   let count = buildCount()
   count.salesTotal += 1
   count.salesManaTotal = count.salesManaTotal.plus(price)
+  return count
+}
+
+export function buildCountFromRoyalties(royalties: BigInt): Count {
+  let count = buildCount()
+  count.royaltiesManaTotal = count.royaltiesManaTotal.plus(royalties)
   return count
 }

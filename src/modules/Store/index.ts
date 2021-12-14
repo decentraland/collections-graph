@@ -1,4 +1,6 @@
-import { dataSource, log } from '@graphprotocol/graph-ts'
+import { dataSource, log, BigInt } from '@graphprotocol/graph-ts'
+
+export let ONE_MILLION = BigInt.fromI32(1000000)
 
 export function getStoreAddress(): string {
   let network = dataSource.network()
