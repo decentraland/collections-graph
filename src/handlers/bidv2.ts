@@ -45,7 +45,7 @@ export function handleBidCreated(event: BidCreated): void {
 }
 
 export function handleBidAccepted(event: BidAccepted): void {
-  let id = event.params._id.toHex()
+  let id = getBidId(event.params._tokenAddress.toHexString(), event.params._tokenId.toString(), event.params._bidder.toHexString())
 
   let bid = Bid.load(id)
 
@@ -90,7 +90,7 @@ export function handleBidAccepted(event: BidAccepted): void {
 }
 
 export function handleBidCancelled(event: BidCancelled): void {
-  let id = event.params._id.toHex()
+  let id = getBidId(event.params._tokenAddress.toHexString(), event.params._tokenId.toString(), event.params._bidder.toHexString())
 
   let bid = Bid.load(id)
 
