@@ -134,7 +134,7 @@ dataSources:
       kind: ethereum/events
       apiVersion: 0.0.3
       language: wasm/assemblyscript
-      file: ./src/handlers/bid.ts
+      file: ./src/handlers/bidv2.ts
       entities:
         - Bid
       abis:

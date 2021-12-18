@@ -1,6 +1,6 @@
 import { BigInt, Address, log } from '@graphprotocol/graph-ts'
 import { BidCreated, BidAccepted, BidCancelled, ERC721Bid } from '../entities/ERC721Bid/ERC721Bid'
-import { Bid, NFT, Item } from '../entities/schema'
+import { Bid, NFT } from '../entities/schema'
 import { getNFTId } from '../modules/NFT'
 import * as status from '../modules/Order'
 import { getBidId } from '../modules/bid'
