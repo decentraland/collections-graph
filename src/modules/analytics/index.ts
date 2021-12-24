@@ -63,7 +63,7 @@ export function trackSale(
 
   if (royaltiesCut.gt(BigInt.fromI32(0))) {
     if (item.beneficiary != ZERO_ADDRESS || item.creator != ZERO_ADDRESS) {
-      sale.royaltiesCollector = Address.fromString(item.beneficiary) || Address.fromString(item.creator)
+      sale.royaltiesCollector = item.beneficiary != ZERO_ADDRESS ? Address.fromString(item.beneficiary) : Address.fromString(item.creator)
 
       // update royalties collector account
       let royaltiesCollectorAccount = createOrLoadAccount(sale.royaltiesCollector as Address)
