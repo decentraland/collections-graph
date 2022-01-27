@@ -96,7 +96,8 @@ function isValidCategory(category: string): boolean {
     category == 'helmet' ||
     category == 'mask' ||
     category == 'tiara' ||
-    category == 'top_head'
+    category == 'top_head' ||
+    category == 'skin'
   ) {
     return true
   }
