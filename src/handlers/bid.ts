@@ -1,6 +1,6 @@
 import { BigInt, Address, log } from '@graphprotocol/graph-ts'
 import { BidCreated, BidAccepted, BidCancelled, ERC721Bid } from '../entities/ERC721Bid/ERC721Bid'
-import { Bid, NFT, Item } from '../entities/schema'
+import { Bid, NFT } from '../entities/schema'
 import { getNFTId } from '../modules/NFT'
 import * as status from '../modules/Order'
 import { getBidId } from '../modules/bid'
@@ -45,7 +45,7 @@ export function handleBidCreated(event: BidCreated): void {
 }
 
 export function handleBidAccepted(event: BidAccepted): void {
-  let id = event.params._id.toHex()
+  let id = getBidId(event.params._tokenAddress.toHexString(), event.params._tokenId.toString(), event.params._bidder.toHexString())
 
   let bid = Bid.load(id)
 
@@ -90,7 +90,7 @@ export function handleBidAccepted(event: BidAccepted): void {
 }
 
 export function handleBidCancelled(event: BidCancelled): void {
-  let id = event.params._id.toHex()
+  let id = getBidId(event.params._tokenAddress.toHexString(), event.params._tokenId.toString(), event.params._bidder.toHexString())
 
   let bid = Bid.load(id)
 

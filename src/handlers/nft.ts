@@ -160,6 +160,7 @@ export function handleAddItemV1(event: AddWearable): void {
     collection.reviewedAt = event.block.timestamp // Not going to be used
     collection.searchIsStoreMinter = false
     collection.searchText = toLowerCase(collection.name)
+    collection.isApproved = true
 
     collection.save()
 
