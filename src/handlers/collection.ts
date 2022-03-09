@@ -184,15 +184,22 @@ export function handleRescueItem(event: RescueItem): void {
   if (isNewContent && event.block.number.gt(block) || event.block.number.equals(block)) {
     // Create curation
     let txInput = event.transaction.input.toHexString()
-    // forwardMetaTx(address _target, bytes calldata _data) selector
-    if (txInput.startsWith('0x07bd3522')) {
-      // executeMetaTransaction(address,bytes,bytes32,bytes32,uint8) selector
-      let index = BigInt.fromI32(txInput.indexOf('0c53c51c'))
-
+    // forwardMetaTx(address _target, bytes calldata _data) or manageCollection(address,address,address,bytes[]) selector
+    if (txInput.startsWith('0x07bd3522') || txInput.startsWith('0x81c9308e')) {
       let curationId = getCurationId(collectionAddress, event.transaction.hash.toHexString(), event.logIndex.toString())
       let curation = new Curation(curationId)
-      // Sender is the first parameter of the executeMetaTransaction
-      let curator = '0x' + txInput.substr(index.plus(BigInt.fromI32(32)).toI32(), 40)
+      let curator = ''
+      if (txInput.startsWith('0x81c9308e')) {
+        // manageCollection(address,address,address,bytes[]) selector
+        curator = event.transaction.from.toHexString()
+      } else {
+        // executeMetaTransaction(address,bytes,bytes32,bytes32,uint8) selector
+        let index = BigInt.fromI32(txInput.indexOf('0c53c51c'))
+
+        // Sender is the first parameter of the executeMetaTransaction
+        curator = '0x' + txInput.substr(index.plus(BigInt.fromI32(32)).toI32(), 40)
+      }
+
       curation.curator = curator
       curation.collection = collectionAddress
       curation.item = itemId
@@ -448,15 +455,22 @@ export function handleSetApproved(event: SetApproved): void {
   if (event.block.number.lt(block)) {
     // Create curation
     let txInput = event.transaction.input.toHexString()
-    // forwardMetaTx(address _target, bytes calldata _data) selector
-    if (txInput.startsWith('0x07bd3522')) {
-      // executeMetaTransaction(address,bytes,bytes32,bytes32,uint8) selector
-      let index = BigInt.fromI32(txInput.indexOf('0c53c51c'))
-
+    // forwardMetaTx(address _target, bytes calldata _data) or manageCollection(address,address,address,bytes[]) selector
+    if (txInput.startsWith('0x07bd3522') || txInput.startsWith('0x81c9308e')) {
       let curationId = getCurationId(collectionAddress, event.transaction.hash.toHexString(), event.logIndex.toString())
       let curation = new Curation(curationId)
-      // Sender is the first parameter of the executeMetaTransaction
-      let curator = '0x' + txInput.substr(index.plus(BigInt.fromI32(32)).toI32(), 40)
+      let curator = ''
+      if (txInput.startsWith('0x81c9308e')) {
+        // manageCollection(address,address,address,bytes[]) selector
+        curator = event.transaction.from.toHexString()
+      } else {
+        // executeMetaTransaction(address,bytes,bytes32,bytes32,uint8) selector
+        let index = BigInt.fromI32(txInput.indexOf('0c53c51c'))
+
+        // Sender is the first parameter of the executeMetaTransaction
+        curator = '0x' + txInput.substr(index.plus(BigInt.fromI32(32)).toI32(), 40)
+      }
+
       curation.curator = curator
       curation.collection = collectionAddress
       curation.isApproved = event.params._newValue
