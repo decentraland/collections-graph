@@ -20,28 +20,20 @@ export function buildItemMetadata(item: Item): Metadata {
   if (data.length >= 2) {
     let type = data[1]
 
-    switch (type) {
-      case itemTypes.WEARABLE_TYPE_SHORT: {
-        let wearable = buildWearableItem(item)
-        metadata.itemType = itemTypes.WEARABLE_V2
-        metadata.wearable = wearable.id
-        break
-      }
-      case itemTypes.SMART_WEARABLE_TYPE_SHORT: {
-        let wearable = buildWearableItem(item)
-        metadata.itemType = itemTypes.SMART_WEARABLE_V1
-        metadata.wearable = wearable.id
-        break
-      }
-      case itemTypes.EMOTE_TYPE_SHORT: {
-        let emote = buildEmoteItem(item)
-        metadata.itemType = itemTypes.EMOTE_V1
-        metadata.emote = emote.id
-        break
-      }
-      default: {
-        metadata.itemType = itemTypes.UNDEFINED
-      }
+    if (type == itemTypes.WEARABLE_TYPE_SHORT) {
+      let wearable = buildWearableItem(item)
+      metadata.itemType = itemTypes.WEARABLE_V2
+      metadata.wearable = wearable.id
+    } else if (type == itemTypes.SMART_WEARABLE_TYPE_SHORT) {
+      let wearable = buildWearableItem(item)
+      metadata.itemType = itemTypes.SMART_WEARABLE_V1
+      metadata.wearable = wearable.id
+    } else if (type == itemTypes.EMOTE_TYPE_SHORT) {
+      let emote = buildEmoteItem(item)
+      metadata.itemType = itemTypes.EMOTE_V1
+      metadata.emote = emote.id
+    } else {
+      metadata.itemType = itemTypes.UNDEFINED
     }
   } else {
     metadata.itemType = itemTypes.UNDEFINED

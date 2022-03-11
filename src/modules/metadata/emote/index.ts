@@ -8,7 +8,7 @@ import { LOOP, SIMPLE } from './categories'
  * @dev The item's rawMetadata for emotes should follow: version:item_type:name:description:category:bodyshapes
  * @param item
  */
-export function buildEmoteItem(item: Item): Wearable | null {
+export function buildEmoteItem(item: Item): Emote | null {
   let id = item.id
   let data = item.rawMetadata.split(':')
   if ((data.length == 6 || data.length == 8) && isValidEmoteCategory(data[4]) && isValidBodyShape(data[5].split(','))) {
