@@ -70,7 +70,7 @@ type Item @entity {
   searchWearableBodyShapes: [WearableBodyShape!]
 
   ## Emote search fields
-  searchEmoteCategory: WearableCategory
+  searchEmoteCategory: EmoteCategory
   searchEmoteRarity: String # We're using String instead of WearableRarity here so we can later query this field via ()_in
   searchEmoteBodyShapes: [WearableBodyShape!]
 }
@@ -115,7 +115,7 @@ type NFT @entity {
   searchWearableBodyShapes: [WearableBodyShape!]
 
   ## Emote search fields
-  searchEmoteCategory: WearableCategory
+  searchEmoteCategory: EmoteCategory
   searchEmoteRarity: String # We're using String instead of WearableRarity here so we can later query this field via ()_in
   searchEmoteBodyShapes: [WearableBodyShape!]
 
@@ -156,7 +156,7 @@ type Emote @entity {
   name: String!
   description: String!
   collection: String!
-  category: WearableCategory!
+  category: EmoteCategory!
   rarity: WearableRarity!
   bodyShapes: [WearableBodyShape!]
 }
