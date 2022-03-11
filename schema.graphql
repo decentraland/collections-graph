@@ -68,6 +68,11 @@ type Item @entity {
   searchWearableCategory: WearableCategory
   searchWearableRarity: String # We're using String instead of WearableRarity here so we can later query this field via ()_in
   searchWearableBodyShapes: [WearableBodyShape!]
+
+  ## Emote search fields
+  searchEmoteCategory: WearableCategory
+  searchEmoteRarity: String # We're using String instead of WearableRarity here so we can later query this field via ()_in
+  searchEmoteBodyShapes: [WearableBodyShape!]
 }
 
 type NFT @entity {
@@ -109,6 +114,11 @@ type NFT @entity {
   searchWearableRarity: String # We're using String instead of WearableRarity here so we can later query this field via ()_in
   searchWearableBodyShapes: [WearableBodyShape!]
 
+  ## Emote search fields
+  searchEmoteCategory: WearableCategory
+  searchEmoteRarity: String # We're using String instead of WearableRarity here so we can later query this field via ()_in
+  searchEmoteBodyShapes: [WearableBodyShape!]
+
   ## Order search fields
   searchOrderStatus: OrderStatus
   searchOrderPrice: BigInt
@@ -120,6 +130,7 @@ type Metadata @entity {
   id: ID!
   itemType: ItemType!
   wearable: Wearable
+  emote: Emote
 }
 
 enum ItemType @entity {
@@ -127,9 +138,20 @@ enum ItemType @entity {
   wearable_v1
   wearable_v2
   smart_wearable_v1
+  emote_v1
 }
 
 type Wearable @entity {
+  id: ID!
+  name: String!
+  description: String!
+  collection: String!
+  category: WearableCategory!
+  rarity: WearableRarity!
+  bodyShapes: [WearableBodyShape!]
+}
+
+type Emote @entity {
   id: ID!
   name: String!
   description: String!
@@ -156,6 +178,11 @@ enum WearableCategory @entity {
   tiara
   top_head
   skin
+}
+
+enum EmoteCategory @entity {
+  simple
+  loop
 }
 
 enum WearableRarity @entity {
