@@ -22,16 +22,28 @@ export function buildItemMetadata(item: Item): Metadata {
 
     if (type == itemTypes.WEARABLE_TYPE_SHORT) {
       let wearable = buildWearableItem(item)
-      metadata.itemType = itemTypes.WEARABLE_V2
-      metadata.wearable = wearable.id
+      if (wearable != null) {
+        metadata.itemType = itemTypes.WEARABLE_V2
+        metadata.wearable = wearable.id
+      } else {
+        metadata.itemType = itemTypes.UNDEFINED
+      }
     } else if (type == itemTypes.SMART_WEARABLE_TYPE_SHORT) {
       let wearable = buildWearableItem(item)
-      metadata.itemType = itemTypes.SMART_WEARABLE_V1
-      metadata.wearable = wearable.id
+      if (wearable != null) {
+        metadata.itemType = itemTypes.SMART_WEARABLE_V1
+        metadata.wearable = wearable.id
+      } else {
+        metadata.itemType = itemTypes.UNDEFINED
+      }
     } else if (type == itemTypes.EMOTE_TYPE_SHORT) {
       let emote = buildEmoteItem(item)
-      metadata.itemType = itemTypes.EMOTE_V1
-      metadata.emote = emote.id
+      if (emote != null) {
+        metadata.itemType = itemTypes.EMOTE_V1
+        metadata.emote = emote.id
+      } else {
+        metadata.itemType = itemTypes.UNDEFINED
+      }
     } else {
       metadata.itemType = itemTypes.UNDEFINED
     }
