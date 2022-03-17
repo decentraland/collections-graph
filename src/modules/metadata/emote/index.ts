@@ -57,7 +57,7 @@ export function setItemEmoteSearchFields(item: Item): Item {
 
 export function setNFTEmoteSearchFields(nft: NFT): NFT {
   let metadata = Metadata.load(nft.metadata)
-  let emote = Wearable.load(metadata.emote)
+  let emote = Emote.load(metadata.emote)
 
   nft.searchText = toLowerCase(emote.name + ' ' + emote.description)
   nft.searchItemType = nft.itemType
