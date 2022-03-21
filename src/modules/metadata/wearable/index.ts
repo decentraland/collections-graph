@@ -1,7 +1,7 @@
 import { log } from '@graphprotocol/graph-ts'
 
 import * as categories from './categories'
-import { Collection, Item, NFT, Metadata, Wearable } from '../../../entities/schema'
+import { Collection, Item, NFT, Metadata, Wearable, Emote } from '../../../entities/schema'
 import {
   Wearable as WearableRepresentation,
   binance_us_collection,
@@ -50,6 +50,7 @@ import {
 } from '../../../data/wearablesV1'
 import { getNetwork } from '../../network'
 import { toLowerCase } from '../../../utils'
+import { isValidBodyShape } from '..'
 
 /**
  * @dev The item's rawMetadata for wearables should follow: version:item_type:name:description:category:bodyshapes
@@ -59,7 +60,7 @@ import { toLowerCase } from '../../../utils'
 export function buildWearableItem(item: Item): Wearable | null {
   let id = item.id
   let data = item.rawMetadata.split(':')
-  if ((data.length == 6 || data.length == 8) && isValidCategory(data[4]) && isValidBodyShape(data[5].split(','))) {
+  if ((data.length == 6 || data.length == 8) && isValidWearableCategory(data[4]) && isValidBodyShape(data[5].split(','))) {
     let wearable = Wearable.load(id)
 
     if (wearable == null) {
@@ -80,7 +81,7 @@ export function buildWearableItem(item: Item): Wearable | null {
   return null
 }
 
-function isValidCategory(category: string): boolean {
+function isValidWearableCategory(category: string): boolean {
   if (
     category == 'eyebrows' ||
     category == 'eyes' ||
@@ -105,18 +106,6 @@ function isValidCategory(category: string): boolean {
   log.error('Invalid Category {}', [category])
 
   return false
-}
-
-function isValidBodyShape(bodyShapes: string[]): boolean {
-  for (let i = 0; i++; i < bodyShapes.length) {
-    let bodyShape = bodyShapes[i]
-    if (bodyShape != 'BaseFemale' && bodyShape != 'BaseMale') {
-      log.error('Invalid BodyShape {}', [bodyShape])
-      return false
-    }
-  }
-
-  return true
 }
 
 export function buildWearableV1(item: Item, representation: WearableRepresentation): Wearable {

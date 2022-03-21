@@ -663,6 +663,60 @@ export class Item extends Entity {
       );
     }
   }
+
+  get searchEmoteCategory(): string | null {
+    let value = this.get("searchEmoteCategory");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set searchEmoteCategory(value: string | null) {
+    if (value === null) {
+      this.unset("searchEmoteCategory");
+    } else {
+      this.set("searchEmoteCategory", Value.fromString(value as string));
+    }
+  }
+
+  get searchEmoteRarity(): string | null {
+    let value = this.get("searchEmoteRarity");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set searchEmoteRarity(value: string | null) {
+    if (value === null) {
+      this.unset("searchEmoteRarity");
+    } else {
+      this.set("searchEmoteRarity", Value.fromString(value as string));
+    }
+  }
+
+  get searchEmoteBodyShapes(): Array<string> | null {
+    let value = this.get("searchEmoteBodyShapes");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set searchEmoteBodyShapes(value: Array<string> | null) {
+    if (value === null) {
+      this.unset("searchEmoteBodyShapes");
+    } else {
+      this.set(
+        "searchEmoteBodyShapes",
+        Value.fromStringArray(value as Array<string>)
+      );
+    }
+  }
 }
 
 export class NFT extends Entity {
@@ -1061,6 +1115,60 @@ export class NFT extends Entity {
     }
   }
 
+  get searchEmoteCategory(): string | null {
+    let value = this.get("searchEmoteCategory");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set searchEmoteCategory(value: string | null) {
+    if (value === null) {
+      this.unset("searchEmoteCategory");
+    } else {
+      this.set("searchEmoteCategory", Value.fromString(value as string));
+    }
+  }
+
+  get searchEmoteRarity(): string | null {
+    let value = this.get("searchEmoteRarity");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set searchEmoteRarity(value: string | null) {
+    if (value === null) {
+      this.unset("searchEmoteRarity");
+    } else {
+      this.set("searchEmoteRarity", Value.fromString(value as string));
+    }
+  }
+
+  get searchEmoteBodyShapes(): Array<string> | null {
+    let value = this.get("searchEmoteBodyShapes");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set searchEmoteBodyShapes(value: Array<string> | null) {
+    if (value === null) {
+      this.unset("searchEmoteBodyShapes");
+    } else {
+      this.set(
+        "searchEmoteBodyShapes",
+        Value.fromStringArray(value as Array<string>)
+      );
+    }
+  }
+
   get searchOrderStatus(): string | null {
     let value = this.get("searchOrderStatus");
     if (value === null || value.kind == ValueKind.NULL) {
@@ -1185,6 +1293,23 @@ export class Metadata extends Entity {
       this.set("wearable", Value.fromString(value as string));
     }
   }
+
+  get emote(): string | null {
+    let value = this.get("emote");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set emote(value: string | null) {
+    if (value === null) {
+      this.unset("emote");
+    } else {
+      this.set("emote", Value.fromString(value as string));
+    }
+  }
 }
 
 export class Wearable extends Entity {
@@ -1206,6 +1331,99 @@ export class Wearable extends Entity {
 
   static load(id: string): Wearable | null {
     return store.get("Wearable", id) as Wearable | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get name(): string {
+    let value = this.get("name");
+    return value.toString();
+  }
+
+  set name(value: string) {
+    this.set("name", Value.fromString(value));
+  }
+
+  get description(): string {
+    let value = this.get("description");
+    return value.toString();
+  }
+
+  set description(value: string) {
+    this.set("description", Value.fromString(value));
+  }
+
+  get collection(): string {
+    let value = this.get("collection");
+    return value.toString();
+  }
+
+  set collection(value: string) {
+    this.set("collection", Value.fromString(value));
+  }
+
+  get category(): string {
+    let value = this.get("category");
+    return value.toString();
+  }
+
+  set category(value: string) {
+    this.set("category", Value.fromString(value));
+  }
+
+  get rarity(): string {
+    let value = this.get("rarity");
+    return value.toString();
+  }
+
+  set rarity(value: string) {
+    this.set("rarity", Value.fromString(value));
+  }
+
+  get bodyShapes(): Array<string> | null {
+    let value = this.get("bodyShapes");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set bodyShapes(value: Array<string> | null) {
+    if (value === null) {
+      this.unset("bodyShapes");
+    } else {
+      this.set("bodyShapes", Value.fromStringArray(value as Array<string>));
+    }
+  }
+}
+
+export class Emote extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save Emote entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save Emote entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("Emote", id.toString(), this);
+  }
+
+  static load(id: string): Emote | null {
+    return store.get("Emote", id) as Emote | null;
   }
 
   get id(): string {
