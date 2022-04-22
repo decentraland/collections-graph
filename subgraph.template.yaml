@@ -38,6 +38,36 @@ dataSources:
           handler: handleCollectionCreation
       file: ./src/handlers/collection.ts
   # ---------------------------------------------------------
+  # Collection Factory V3 -----------------------------------
+  # ---------------------------------------------------------
+  - kind: ethereum/contract
+    name: CollectionFactoryV3
+    network: {{network}}
+    source:
+      abi: CollectionFactoryV3
+      startBlock: {{startBlock_factory_v3}}
+      address: '{{address_factory_v3}}'
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      entities:
+        - Collection
+        - Item
+        - NFT
+        - Account
+      abis:
+        - name: CollectionFactoryV3
+          file: ./abis/CollectionFactoryV3.json
+        - name: CollectionV2
+          file: ./abis/CollectionV2.json
+        - name: CollectionStore
+          file: ./abis/CollectionStore.json
+      eventHandlers:
+        - event: ProxyCreated(indexed address,bytes32)
+          handler: handleCollectionCreation
+      file: ./src/handlers/collectionWithFactoryV3.ts
+  # ---------------------------------------------------------
   # MARKETPLACE----------------------------------------------
   # ---------------------------------------------------------
   - kind: ethereum/contract

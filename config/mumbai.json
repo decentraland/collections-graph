@@ -4,6 +4,8 @@
   "startBock_first_collections_v1": 14517370,
   "address_factory": "0x2A72Ec4241Ac4fBc915ae98aC5a5b01AdE721f4B",
   "startBlock_factory": 14517370,
+  "address_factory_v3": "0xDDb3781Fff645325C8896AA1F067bAa381607ecc",
+  "startBlock_factory_v3": 26012021,
   "address_old_committee": "0x4bb5ACe5ceB3Dd51ea35fa01a8f9B5507c234270",
   "startBlock_old_committee": 14517370,
   "address_committee": "0xe18B1361d41afC44658216F3Dc27e48c2336e3c2",
