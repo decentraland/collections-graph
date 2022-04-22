@@ -10,16 +10,16 @@ import {
   BigInt
 } from "@graphprotocol/graph-ts";
 
-export class ImplementationSet extends ethereum.Event {
-  get params(): ImplementationSet__Params {
-    return new ImplementationSet__Params(this);
+export class ImplementationChanged extends ethereum.Event {
+  get params(): ImplementationChanged__Params {
+    return new ImplementationChanged__Params(this);
   }
 }
 
-export class ImplementationSet__Params {
-  _event: ImplementationSet;
+export class ImplementationChanged__Params {
+  _event: ImplementationChanged;
 
-  constructor(event: ImplementationSet) {
+  constructor(event: ImplementationChanged) {
     this._event = event;
   }
 
@@ -80,9 +80,9 @@ export class ProxyCreated__Params {
   }
 }
 
-export class CollectionFactoryV3 extends ethereum.SmartContract {
-  static bind(address: Address): CollectionFactoryV3 {
-    return new CollectionFactoryV3("CollectionFactoryV3", address);
+export class CollectionFactory extends ethereum.SmartContract {
+  static bind(address: Address): CollectionFactory {
+    return new CollectionFactory("CollectionFactory", address);
   }
 
   code(): Bytes {
@@ -115,50 +115,6 @@ export class CollectionFactoryV3 extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBytes());
   }
 
-  collections(param0: BigInt): Address {
-    let result = super.call("collections", "collections(uint256):(address)", [
-      ethereum.Value.fromUnsignedBigInt(param0)
-    ]);
-
-    return result[0].toAddress();
-  }
-
-  try_collections(param0: BigInt): ethereum.CallResult<Address> {
-    let result = super.tryCall(
-      "collections",
-      "collections(uint256):(address)",
-      [ethereum.Value.fromUnsignedBigInt(param0)]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
-  collectionsSize(): BigInt {
-    let result = super.call(
-      "collectionsSize",
-      "collectionsSize():(uint256)",
-      []
-    );
-
-    return result[0].toBigInt();
-  }
-
-  try_collectionsSize(): ethereum.CallResult<BigInt> {
-    let result = super.tryCall(
-      "collectionsSize",
-      "collectionsSize():(uint256)",
-      []
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
-  }
-
   createCollection(_salt: Bytes, _data: Bytes): Address {
     let result = super.call(
       "createCollection",
@@ -185,14 +141,36 @@ export class CollectionFactoryV3 extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
-  getAddress(_salt: Bytes, _address: Address, _data: Bytes): Address {
+  createProxy(_salt: Bytes, _data: Bytes): Address {
+    let result = super.call(
+      "createProxy",
+      "createProxy(bytes32,bytes):(address)",
+      [ethereum.Value.fromFixedBytes(_salt), ethereum.Value.fromBytes(_data)]
+    );
+
+    return result[0].toAddress();
+  }
+
+  try_createProxy(_salt: Bytes, _data: Bytes): ethereum.CallResult<Address> {
+    let result = super.tryCall(
+      "createProxy",
+      "createProxy(bytes32,bytes):(address)",
+      [ethereum.Value.fromFixedBytes(_salt), ethereum.Value.fromBytes(_data)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
+  getAddress(_salt: Bytes, _address: Address): Address {
     let result = super.call(
       "getAddress",
-      "getAddress(bytes32,address,bytes):(address)",
+      "getAddress(bytes32,address):(address)",
       [
         ethereum.Value.fromFixedBytes(_salt),
-        ethereum.Value.fromAddress(_address),
-        ethereum.Value.fromBytes(_data)
+        ethereum.Value.fromAddress(_address)
       ]
     );
 
@@ -201,16 +179,14 @@ export class CollectionFactoryV3 extends ethereum.SmartContract {
 
   try_getAddress(
     _salt: Bytes,
-    _address: Address,
-    _data: Bytes
+    _address: Address
   ): ethereum.CallResult<Address> {
     let result = super.tryCall(
       "getAddress",
-      "getAddress(bytes32,address,bytes):(address)",
+      "getAddress(bytes32,address):(address)",
       [
         ethereum.Value.fromFixedBytes(_salt),
-        ethereum.Value.fromAddress(_address),
-        ethereum.Value.fromBytes(_data)
+        ethereum.Value.fromAddress(_address)
       ]
     );
     if (result.reverted) {
@@ -237,29 +213,6 @@ export class CollectionFactoryV3 extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
-  isCollectionFromFactory(param0: Address): boolean {
-    let result = super.call(
-      "isCollectionFromFactory",
-      "isCollectionFromFactory(address):(bool)",
-      [ethereum.Value.fromAddress(param0)]
-    );
-
-    return result[0].toBoolean();
-  }
-
-  try_isCollectionFromFactory(param0: Address): ethereum.CallResult<boolean> {
-    let result = super.tryCall(
-      "isCollectionFromFactory",
-      "isCollectionFromFactory(address):(bool)",
-      [ethereum.Value.fromAddress(param0)]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBoolean());
   }
 
   owner(): Address {
@@ -295,11 +248,11 @@ export class ConstructorCall__Inputs {
     this._call = call;
   }
 
-  get _owner(): Address {
+  get _implementation(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
 
-  get _implementation(): Address {
+  get _owner(): Address {
     return this._call.inputValues[1].value.toAddress();
   }
 }
@@ -350,6 +303,44 @@ export class CreateCollectionCall__Outputs {
   }
 }
 
+export class CreateProxyCall extends ethereum.Call {
+  get inputs(): CreateProxyCall__Inputs {
+    return new CreateProxyCall__Inputs(this);
+  }
+
+  get outputs(): CreateProxyCall__Outputs {
+    return new CreateProxyCall__Outputs(this);
+  }
+}
+
+export class CreateProxyCall__Inputs {
+  _call: CreateProxyCall;
+
+  constructor(call: CreateProxyCall) {
+    this._call = call;
+  }
+
+  get _salt(): Bytes {
+    return this._call.inputValues[0].value.toBytes();
+  }
+
+  get _data(): Bytes {
+    return this._call.inputValues[1].value.toBytes();
+  }
+}
+
+export class CreateProxyCall__Outputs {
+  _call: CreateProxyCall;
+
+  constructor(call: CreateProxyCall) {
+    this._call = call;
+  }
+
+  get addr(): Address {
+    return this._call.outputValues[0].value.toAddress();
+  }
+}
+
 export class RenounceOwnershipCall extends ethereum.Call {
   get inputs(): RenounceOwnershipCall__Inputs {
     return new RenounceOwnershipCall__Inputs(this);
@@ -372,6 +363,36 @@ export class RenounceOwnershipCall__Outputs {
   _call: RenounceOwnershipCall;
 
   constructor(call: RenounceOwnershipCall) {
+    this._call = call;
+  }
+}
+
+export class SetImplementationCall extends ethereum.Call {
+  get inputs(): SetImplementationCall__Inputs {
+    return new SetImplementationCall__Inputs(this);
+  }
+
+  get outputs(): SetImplementationCall__Outputs {
+    return new SetImplementationCall__Outputs(this);
+  }
+}
+
+export class SetImplementationCall__Inputs {
+  _call: SetImplementationCall;
+
+  constructor(call: SetImplementationCall) {
+    this._call = call;
+  }
+
+  get _implementation(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class SetImplementationCall__Outputs {
+  _call: SetImplementationCall;
+
+  constructor(call: SetImplementationCall) {
     this._call = call;
   }
 }

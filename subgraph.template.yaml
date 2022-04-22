@@ -44,7 +44,7 @@ dataSources:
     name: CollectionFactoryV3
     network: {{network}}
     source:
-      abi: CollectionFactoryV3
+      abi: CollectionFactory
       startBlock: {{startBlock_factory_v3}}
       address: '{{address_factory_v3}}'
     mapping:
@@ -57,8 +57,8 @@ dataSources:
         - NFT
         - Account
       abis:
-        - name: CollectionFactoryV3
-          file: ./abis/CollectionFactoryV3.json
+        - name: CollectionFactory
+          file: ./abis/CollectionFactory.json
         - name: CollectionV2
           file: ./abis/CollectionV2.json
         - name: CollectionStore
@@ -66,7 +66,7 @@ dataSources:
       eventHandlers:
         - event: ProxyCreated(indexed address,bytes32)
           handler: handleCollectionCreation
-      file: ./src/handlers/collectionWithFactoryV3.ts
+      file: ./src/handlers/collection.ts
   # ---------------------------------------------------------
   # MARKETPLACE----------------------------------------------
   # ---------------------------------------------------------
