@@ -44,7 +44,7 @@ dataSources:
     name: CollectionFactoryV3
     network: {{network}}
     source:
-      abi: CollectionFactory
+      abi: CollectionFactoryV3
       startBlock: {{startBlock_factory_v3}}
       address: '{{address_factory_v3}}'
     mapping:
@@ -57,8 +57,8 @@ dataSources:
         - NFT
         - Account
       abis:
-        - name: CollectionFactory
-          file: ./abis/CollectionFactory.json
+        - name: CollectionFactoryV3
+          file: ./abis/CollectionFactoryV3.json
         - name: CollectionV2
           file: ./abis/CollectionV2.json
         - name: CollectionStore
