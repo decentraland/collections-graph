@@ -292,7 +292,7 @@ dataSources:
       kind: ethereum/events
       apiVersion: 0.0.3
       language: wasm/assemblyscript
-      file: ./src/handlers/rarity.ts
+      file: ./src/handlers/raritiesWithOracle.ts
       entities:
         - RaritiesWithOracle
       abis:
