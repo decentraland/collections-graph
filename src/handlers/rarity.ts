@@ -3,7 +3,7 @@ import { AddRarity, UpdatePrice } from '../entities/Rarity/Rarity'
 import { Rarity } from '../entities/schema'
 
 export function handleAddRarity(event: AddRarity): void {
-  const name = event.params._rarity.name
+  let name = event.params._rarity.name
 
   let rarity = new Rarity(name)
 
@@ -23,7 +23,7 @@ export function handleUpdatePrice(event: UpdatePrice): void {
   if (rarity.currency == 'USD') {
     log.warning("Updates made in the old contract will not be reflected in the graph", [])
     return
-  } 
+  }
 
   rarity.price = event.params._price
 

@@ -2,7 +2,7 @@ import { AddRarity, UpdatePrice } from '../entities/RaritiesWithOracle/RaritiesW
 import { Rarity } from '../entities/schema'
 
 export function handleAddRarity(event: AddRarity): void {
-  const name = event.params._rarity.name
+  let name = event.params._rarity.name
 
   let rarity = Rarity.load(name)
 
