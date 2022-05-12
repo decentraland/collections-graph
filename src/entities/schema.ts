@@ -1554,15 +1554,6 @@ export class Rarity extends Entity {
   set price(value: BigInt) {
     this.set("price", Value.fromBigInt(value));
   }
-
-  get currency(): string {
-    let value = this.get("currency");
-    return value.toString();
-  }
-
-  set currency(value: string) {
-    this.set("currency", Value.fromString(value));
-  }
 }
 
 export class Account extends Entity {
