@@ -280,6 +280,31 @@ dataSources:
           handler: handleAddRarity
         - event: UpdatePrice(string,uint256)
           handler: handleUpdatePrice
+  # ---------------------------------------------------------
+  # RaritiesWithOracle ---------------------------------------
+  # ---------------------------------------------------------
+  - kind: ethereum/contract
+    name: RaritiesWithOracle
+    network: {{network}}
+    source:
+      address: '{{address_rarities_with_oracle}}'
+      abi: RaritiesWithOracle
+      startBlock: {{startBlock_rarities_with_oracle}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      file: ./src/handlers/raritiesWithOracle.ts
+      entities:
+        - RaritiesWithOracle
+      abis:
+        - name: RaritiesWithOracle
+          file: ./abis/RaritiesWithOracle.json
+      eventHandlers:
+        - event: AddRarity((string,uint256,uint256))
+          handler: handleAddRarity
+        - event: UpdatePrice(string,uint256)
+          handler: handleUpdatePrice
 templates:
   # ---------------------------------------------------------
   # Items V2 ------------------------------------------------

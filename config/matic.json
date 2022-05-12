@@ -19,5 +19,7 @@
   "address_bid_v2": "0xb96697FA4A3361Ba35B774a42c58dACcaAd1B8E1",
   "startBlock_bid_v2": 22514900,
   "address_rarity": "0x17113b44fdd661A156cc01b5031E3aCF72c32EB3",
-  "startBlock_rarity": 15202000
+  "startBlock_rarity": 15202000,
+  "address_rarities_with_oracle": "0xA9158E22F89Bb3F69c5600338895Cb5FB81e5090",
+  "startBlock_rarities_with_oracle": 27327487
 }
