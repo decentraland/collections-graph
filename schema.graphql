@@ -209,12 +209,6 @@ type Rarity @entity {
   name: String!
   maxSupply: BigInt!
   price: BigInt!
-  currency: Currency!
-}
-
-enum Currency @entity {
-  MANA
-  USD
 }
 
 # ---------------------------------------------------------
