@@ -121,7 +121,7 @@ export function trackSale(
     count.save()
   }
 
-  let analyticsDayData = updateAnalyticsDayData(sale, timestamp)
+  let analyticsDayData = updateAnalyticsDayData(sale)
   analyticsDayData.save()
 }
 
@@ -142,13 +142,13 @@ export function getOrCreateAnalyticsDayData(blockTimestamp: BigInt): AnalyticsDa
   return analyticsDayData as AnalyticsDayData
 }
 
-export function updateAnalyticsDayData(sale: Sale, blockTimestamp: BigInt): AnalyticsDayData {
-  let analyticsDayData = getOrCreateAnalyticsDayData(blockTimestamp)
+export function updateAnalyticsDayData(sale: Sale): AnalyticsDayData {
+  let analyticsDayData = getOrCreateAnalyticsDayData(sale.timestamp)
   analyticsDayData.sales += 1
   analyticsDayData.volume = analyticsDayData.volume.plus(sale.price)
   analyticsDayData.creatorsEarnings =
     sale.type == MINT_SALE_TYPE
-      ? analyticsDayData.creatorsEarnings.plus(sale.price) // if it's a MINT, the creator earning is the sale price
+      ? analyticsDayData.creatorsEarnings.plus(sale.price.minus(sale.feesCollectorCut)) // if it's a MINT, the creator earning is the sale price
       : analyticsDayData.creatorsEarnings.plus(sale.royaltiesCut) // // if it's a secondary sale, the creator earning is the royaltiesCut (if it's set already)
   analyticsDayData.daoEarnings = analyticsDayData.daoEarnings.plus(sale.feesCollectorCut)
 
