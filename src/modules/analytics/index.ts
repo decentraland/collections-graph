@@ -1,5 +1,5 @@
 import { Address, BigInt, Bytes, log } from '@graphprotocol/graph-ts'
-import { Item, NFT, Sale } from '../../entities/schema'
+import { Item, NFT, Sale, VolumeDayData } from '../../entities/schema'
 import { createOrLoadAccount, ZERO_ADDRESS } from '../Account'
 import { buildCountFromPrimarySale, buildCountFromRoyalties, buildCountFromSale, buildCountFromSecondarySale } from '../Count'
 import { ONE_MILLION } from '../Store'
@@ -120,4 +120,37 @@ export function trackSale(
     let count = buildCountFromSecondarySale(price)
     count.save()
   }
+
+  let volumeDayData = updateVolumeDayData(sale, timestamp)
+  volumeDayData.save()
+}
+
+export function createOrGetVolumeDayData(blockTimestamp: BigInt): VolumeDayData {
+  let timestamp = blockTimestamp.toI32()
+  let dayID = timestamp / 86400 // unix timestamp for start of day / 86400 giving a unique day index
+  let dayStartTimestamp = dayID * 86400
+
+  let volumeDayData = VolumeDayData.load(dayID.toString())
+  if (volumeDayData === null) {
+    volumeDayData = new VolumeDayData(dayID.toString())
+    volumeDayData.date = dayStartTimestamp // unix timestamp for start of day
+    volumeDayData.dailySales = 0
+    volumeDayData.dailyVolumeMANA = BigInt.fromI32(0)
+    volumeDayData.dailyCreatorsEarnings = BigInt.fromI32(0)
+    volumeDayData.dailyDAOEarnings = BigInt.fromI32(0)
+  }
+  return volumeDayData as VolumeDayData
+}
+
+export function updateVolumeDayData(sale: Sale, blockTimestamp: BigInt): VolumeDayData {
+  let volumeDayData = createOrGetVolumeDayData(blockTimestamp)
+  volumeDayData.dailySales += 1
+  volumeDayData.dailyVolumeMANA = volumeDayData.dailyVolumeMANA.plus(sale.price)
+  volumeDayData.dailyCreatorsEarnings =
+    sale.type == MINT_SALE_TYPE
+      ? volumeDayData.dailyCreatorsEarnings.plus(sale.price) // if it's a MINT, the creator earning is the sale price
+      : volumeDayData.dailyCreatorsEarnings.plus(sale.royaltiesCut) // // if it's a secondary sale, the creator earning is the royaltiesCut (if it's set already)
+  volumeDayData.dailyDAOEarnings = volumeDayData.dailyDAOEarnings.plus(sale.feesCollectorCut)
+
+  return volumeDayData as VolumeDayData
 }

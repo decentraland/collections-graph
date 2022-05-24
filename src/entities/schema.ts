@@ -2573,3 +2573,79 @@ export class Sale extends Entity {
     this.set("searchContractAddress", Value.fromString(value));
   }
 }
+
+export class VolumeDayData extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save VolumeDayData entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save VolumeDayData entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("VolumeDayData", id.toString(), this);
+  }
+
+  static load(id: string): VolumeDayData | null {
+    return store.get("VolumeDayData", id) as VolumeDayData | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get date(): i32 {
+    let value = this.get("date");
+    return value.toI32();
+  }
+
+  set date(value: i32) {
+    this.set("date", Value.fromI32(value));
+  }
+
+  get dailySales(): i32 {
+    let value = this.get("dailySales");
+    return value.toI32();
+  }
+
+  set dailySales(value: i32) {
+    this.set("dailySales", Value.fromI32(value));
+  }
+
+  get dailyVolumeMANA(): BigInt {
+    let value = this.get("dailyVolumeMANA");
+    return value.toBigInt();
+  }
+
+  set dailyVolumeMANA(value: BigInt) {
+    this.set("dailyVolumeMANA", Value.fromBigInt(value));
+  }
+
+  get dailyCreatorsEarnings(): BigInt {
+    let value = this.get("dailyCreatorsEarnings");
+    return value.toBigInt();
+  }
+
+  set dailyCreatorsEarnings(value: BigInt) {
+    this.set("dailyCreatorsEarnings", Value.fromBigInt(value));
+  }
+
+  get dailyDAOEarnings(): BigInt {
+    let value = this.get("dailyDAOEarnings");
+    return value.toBigInt();
+  }
+
+  set dailyDAOEarnings(value: BigInt) {
+    this.set("dailyDAOEarnings", Value.fromBigInt(value));
+  }
+}

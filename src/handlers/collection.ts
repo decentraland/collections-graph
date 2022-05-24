@@ -28,6 +28,7 @@ import { ERC721 } from '../entities/templates'
 import { CollectionV2 } from '../entities/templates'
 import { getURNForWearableV2, getURNForCollectionV2 } from '../modules/Metadata/wearable'
 import { getStoreAddress } from '../modules/store'
+import { createOrGetVolumeDayData } from '../modules/analytics'
 import { getCurationId, getBlockWhereRescueItemsStarted } from '../modules/Curation'
 import { toLowerCase } from '../utils'
 
@@ -149,6 +150,11 @@ export function handleAddItem(event: AddItem): void {
 
   let metric = buildCountFromItem()
   metric.save()
+
+  // tracks the number of items created by the creator and fees to DAO
+  let volumeDayData = createOrGetVolumeDayData(event.block.timestamp)
+  volumeDayData.dailyDAOEarnings = volumeDayData.dailyDAOEarnings.plus(creationFee)
+  volumeDayData.save()
 }
 
 export function handleRescueItem(event: RescueItem): void {
