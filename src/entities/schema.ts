@@ -2574,7 +2574,7 @@ export class Sale extends Entity {
   }
 }
 
-export class VolumeDayData extends Entity {
+export class AnalyticsDayData extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
@@ -2582,17 +2582,17 @@ export class VolumeDayData extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id !== null, "Cannot save VolumeDayData entity without an ID");
+    assert(id !== null, "Cannot save AnalyticsDayData entity without an ID");
     assert(
       id.kind == ValueKind.STRING,
-      "Cannot save VolumeDayData entity with non-string ID. " +
+      "Cannot save AnalyticsDayData entity with non-string ID. " +
         'Considering using .toHex() to convert the "id" to a string.'
     );
-    store.set("VolumeDayData", id.toString(), this);
+    store.set("AnalyticsDayData", id.toString(), this);
   }
 
-  static load(id: string): VolumeDayData | null {
-    return store.get("VolumeDayData", id) as VolumeDayData | null;
+  static load(id: string): AnalyticsDayData | null {
+    return store.get("AnalyticsDayData", id) as AnalyticsDayData | null;
   }
 
   get id(): string {
@@ -2613,39 +2613,39 @@ export class VolumeDayData extends Entity {
     this.set("date", Value.fromI32(value));
   }
 
-  get dailySales(): i32 {
-    let value = this.get("dailySales");
+  get sales(): i32 {
+    let value = this.get("sales");
     return value.toI32();
   }
 
-  set dailySales(value: i32) {
-    this.set("dailySales", Value.fromI32(value));
+  set sales(value: i32) {
+    this.set("sales", Value.fromI32(value));
   }
 
-  get dailyVolumeMANA(): BigInt {
-    let value = this.get("dailyVolumeMANA");
+  get volume(): BigInt {
+    let value = this.get("volume");
     return value.toBigInt();
   }
 
-  set dailyVolumeMANA(value: BigInt) {
-    this.set("dailyVolumeMANA", Value.fromBigInt(value));
+  set volume(value: BigInt) {
+    this.set("volume", Value.fromBigInt(value));
   }
 
-  get dailyCreatorsEarnings(): BigInt {
-    let value = this.get("dailyCreatorsEarnings");
+  get creatorsEarnings(): BigInt {
+    let value = this.get("creatorsEarnings");
     return value.toBigInt();
   }
 
-  set dailyCreatorsEarnings(value: BigInt) {
-    this.set("dailyCreatorsEarnings", Value.fromBigInt(value));
+  set creatorsEarnings(value: BigInt) {
+    this.set("creatorsEarnings", Value.fromBigInt(value));
   }
 
-  get dailyDAOEarnings(): BigInt {
-    let value = this.get("dailyDAOEarnings");
+  get daoEarnings(): BigInt {
+    let value = this.get("daoEarnings");
     return value.toBigInt();
   }
 
-  set dailyDAOEarnings(value: BigInt) {
-    this.set("dailyDAOEarnings", Value.fromBigInt(value));
+  set daoEarnings(value: BigInt) {
+    this.set("daoEarnings", Value.fromBigInt(value));
   }
 }
