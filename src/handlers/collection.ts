@@ -28,7 +28,7 @@ import { ERC721 } from '../entities/templates'
 import { CollectionV2 } from '../entities/templates'
 import { getURNForWearableV2, getURNForCollectionV2 } from '../modules/Metadata/wearable'
 import { getStoreAddress } from '../modules/store'
-import { createOrGetAnalyticsDayData } from '../modules/analytics'
+import { getOrCreateAnalyticsDayData } from '../modules/analytics'
 import { getCurationId, getBlockWhereRescueItemsStarted } from '../modules/Curation'
 import { toLowerCase } from '../utils'
 
@@ -152,7 +152,7 @@ export function handleAddItem(event: AddItem): void {
   metric.save()
 
   // tracks the number of items created by the creator and fees to DAO
-  let analyticsDayData = createOrGetAnalyticsDayData(event.block.timestamp)
+  let analyticsDayData = getOrCreateAnalyticsDayData(event.block.timestamp)
   analyticsDayData.daoEarnings = analyticsDayData.daoEarnings.plus(creationFee)
   analyticsDayData.save()
 }
