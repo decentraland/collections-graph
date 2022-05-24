@@ -19,7 +19,7 @@ export function trackSale(
   feesCollector: Address,
   royaltiesCut: BigInt,
   timestamp: BigInt,
-  txHash: Bytes,
+  txHash: Bytes
 ): void {
   // ignore zero price sales
   if (price.isZero()) {
@@ -125,7 +125,7 @@ export function trackSale(
   analyticsDayData.save()
 }
 
-export function createOrGetAnalyticsDayData(blockTimestamp: BigInt): AnalyticsDayData {
+export function getOrCreateAnalyticsDayData(blockTimestamp: BigInt): AnalyticsDayData {
   let timestamp = blockTimestamp.toI32()
   let dayID = timestamp / 86400 // unix timestamp for start of day / 86400 giving a unique day index
   let dayStartTimestamp = dayID * 86400
@@ -143,7 +143,7 @@ export function createOrGetAnalyticsDayData(blockTimestamp: BigInt): AnalyticsDa
 }
 
 export function updateAnalyticsDayData(sale: Sale, blockTimestamp: BigInt): AnalyticsDayData {
-  let analyticsDayData = createOrGetAnalyticsDayData(blockTimestamp)
+  let analyticsDayData = getOrCreateAnalyticsDayData(blockTimestamp)
   analyticsDayData.sales += 1
   analyticsDayData.volume = analyticsDayData.volume.plus(sale.price)
   analyticsDayData.creatorsEarnings =
