@@ -149,7 +149,7 @@ export function updateAnalyticsDayData(sale: Sale): AnalyticsDayData {
   analyticsDayData.creatorsEarnings =
     sale.type == MINT_SALE_TYPE
       ? analyticsDayData.creatorsEarnings.plus(sale.price.minus(sale.feesCollectorCut)) // if it's a MINT, the creator earning is the sale price
-      : analyticsDayData.creatorsEarnings.plus(sale.royaltiesCut) // // if it's a secondary sale, the creator earning is the royaltiesCut (if it's set already)
+      : analyticsDayData.creatorsEarnings.plus(sale.royaltiesCut) // if it's a secondary sale, the creator earning is the royaltiesCut (if it's set already)
   analyticsDayData.daoEarnings = analyticsDayData.daoEarnings.plus(sale.feesCollectorCut)
 
   return analyticsDayData as AnalyticsDayData
