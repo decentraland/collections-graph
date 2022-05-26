@@ -300,6 +300,8 @@ type Count @entity {
   secondarySalesManaTotal: BigInt!
   royaltiesManaTotal: BigInt!
   started: Int!
+  creatorEarningsManaTotal: BigInt!
+  daoEarningsManaTotal: BigInt!
 }
 
 # ---------------------------------------------------------

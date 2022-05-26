@@ -2158,6 +2158,24 @@ export class Count extends Entity {
   set started(value: i32) {
     this.set("started", Value.fromI32(value));
   }
+
+  get creatorEarningsManaTotal(): BigInt {
+    let value = this.get("creatorEarningsManaTotal");
+    return value.toBigInt();
+  }
+
+  set creatorEarningsManaTotal(value: BigInt) {
+    this.set("creatorEarningsManaTotal", Value.fromBigInt(value));
+  }
+
+  get daoEarningsManaTotal(): BigInt {
+    let value = this.get("daoEarningsManaTotal");
+    return value.toBigInt();
+  }
+
+  set daoEarningsManaTotal(value: BigInt) {
+    this.set("daoEarningsManaTotal", Value.fromBigInt(value));
+  }
 }
 
 export class Mint extends Entity {

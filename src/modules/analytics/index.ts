@@ -1,7 +1,13 @@
 import { Address, BigInt, Bytes, log } from '@graphprotocol/graph-ts'
 import { Item, NFT, Sale, AnalyticsDayData } from '../../entities/schema'
 import { createOrLoadAccount, ZERO_ADDRESS } from '../Account'
-import { buildCountFromPrimarySale, buildCountFromRoyalties, buildCountFromSale, buildCountFromSecondarySale } from '../Count'
+import {
+  buildCountFromEarnings,
+  buildCountFromPrimarySale,
+  buildCountFromRoyalties,
+  buildCountFromSale,
+  buildCountFromSecondarySale
+} from '../Count'
 import { ONE_MILLION } from '../Store'
 
 export let BID_SALE_TYPE = 'bid'
@@ -76,6 +82,13 @@ export function trackSale(
       sale.royaltiesCut = BigInt.fromI32(0)
     }
   }
+
+  // we update the count here because the sale has the updated values based on the royalties reciever
+  count = buildCountFromEarnings(
+    sale.type == MINT_SALE_TYPE ? sale.price : sale.royaltiesCut,
+    sale.type == MINT_SALE_TYPE ? sale.feesCollectorCut : BigInt.fromI32(0)
+  )
+  count.save()
 
   sale.save()
 
