@@ -85,7 +85,7 @@ export function trackSale(
 
   // we update the count here because the sale has the updated values based on the royalties reciever
   count = buildCountFromEarnings(
-    sale.type == MINT_SALE_TYPE ? sale.price : sale.royaltiesCut,
+    sale.type == MINT_SALE_TYPE ? sale.price.minus(sale.feesCollectorCut) : sale.royaltiesCut,
     sale.type == MINT_SALE_TYPE ? sale.feesCollectorCut : BigInt.fromI32(0)
   )
   count.save()
