@@ -1,7 +1,13 @@
 import { Address, BigInt, Bytes, log } from '@graphprotocol/graph-ts'
-import { Item, NFT, Sale } from '../../entities/schema'
+import { Item, NFT, Sale, AnalyticsDayData } from '../../entities/schema'
 import { createOrLoadAccount, ZERO_ADDRESS } from '../Account'
-import { buildCountFromPrimarySale, buildCountFromRoyalties, buildCountFromSale, buildCountFromSecondarySale } from '../Count'
+import {
+  buildCountFromEarnings,
+  buildCountFromPrimarySale,
+  buildCountFromRoyalties,
+  buildCountFromSale,
+  buildCountFromSecondarySale
+} from '../Count'
 import { ONE_MILLION } from '../Store'
 
 export let BID_SALE_TYPE = 'bid'
@@ -19,7 +25,7 @@ export function trackSale(
   feesCollector: Address,
   royaltiesCut: BigInt,
   timestamp: BigInt,
-  txHash: Bytes,
+  txHash: Bytes
 ): void {
   // ignore zero price sales
   if (price.isZero()) {
@@ -77,6 +83,13 @@ export function trackSale(
     }
   }
 
+  // we update the count here because the sale has the updated values based on the royalties reciever
+  count = buildCountFromEarnings(
+    sale.type == MINT_SALE_TYPE ? sale.price.minus(sale.feesCollectorCut) : sale.royaltiesCut,
+    sale.type == MINT_SALE_TYPE ? sale.feesCollectorCut : BigInt.fromI32(0)
+  )
+  count.save()
+
   sale.save()
 
   // update buyer account
@@ -120,4 +133,37 @@ export function trackSale(
     let count = buildCountFromSecondarySale(price)
     count.save()
   }
+
+  let analyticsDayData = updateAnalyticsDayData(sale)
+  analyticsDayData.save()
+}
+
+export function getOrCreateAnalyticsDayData(blockTimestamp: BigInt): AnalyticsDayData {
+  let timestamp = blockTimestamp.toI32()
+  let dayID = timestamp / 86400 // unix timestamp for start of day / 86400 giving a unique day index
+  let dayStartTimestamp = dayID * 86400
+
+  let analyticsDayData = AnalyticsDayData.load(dayID.toString())
+  if (analyticsDayData === null) {
+    analyticsDayData = new AnalyticsDayData(dayID.toString())
+    analyticsDayData.date = dayStartTimestamp // unix timestamp for start of day
+    analyticsDayData.sales = 0
+    analyticsDayData.volume = BigInt.fromI32(0)
+    analyticsDayData.creatorsEarnings = BigInt.fromI32(0)
+    analyticsDayData.daoEarnings = BigInt.fromI32(0)
+  }
+  return analyticsDayData as AnalyticsDayData
+}
+
+export function updateAnalyticsDayData(sale: Sale): AnalyticsDayData {
+  let analyticsDayData = getOrCreateAnalyticsDayData(sale.timestamp)
+  analyticsDayData.sales += 1
+  analyticsDayData.volume = analyticsDayData.volume.plus(sale.price)
+  analyticsDayData.creatorsEarnings =
+    sale.type == MINT_SALE_TYPE
+      ? analyticsDayData.creatorsEarnings.plus(sale.price.minus(sale.feesCollectorCut)) // if it's a MINT, the creator earning is the sale price
+      : analyticsDayData.creatorsEarnings.plus(sale.royaltiesCut) // if it's a secondary sale, the creator earning is the royaltiesCut (if it's set already)
+  analyticsDayData.daoEarnings = analyticsDayData.daoEarnings.plus(sale.feesCollectorCut)
+
+  return analyticsDayData as AnalyticsDayData
 }
