@@ -2667,3 +2667,112 @@ export class AnalyticsDayData extends Entity {
     this.set("daoEarnings", Value.fromBigInt(value));
   }
 }
+
+export class ItemsDayData extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save ItemsDayData entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save ItemsDayData entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("ItemsDayData", id.toString(), this);
+  }
+
+  static load(id: string): ItemsDayData | null {
+    return store.get("ItemsDayData", id) as ItemsDayData | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get date(): i32 {
+    let value = this.get("date");
+    return value.toI32();
+  }
+
+  set date(value: i32) {
+    this.set("date", Value.fromI32(value));
+  }
+
+  get sales(): i32 {
+    let value = this.get("sales");
+    return value.toI32();
+  }
+
+  set sales(value: i32) {
+    this.set("sales", Value.fromI32(value));
+  }
+
+  get volume(): BigInt {
+    let value = this.get("volume");
+    return value.toBigInt();
+  }
+
+  set volume(value: BigInt) {
+    this.set("volume", Value.fromBigInt(value));
+  }
+
+  get searchEmoteCategory(): string | null {
+    let value = this.get("searchEmoteCategory");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set searchEmoteCategory(value: string | null) {
+    if (value === null) {
+      this.unset("searchEmoteCategory");
+    } else {
+      this.set("searchEmoteCategory", Value.fromString(value as string));
+    }
+  }
+
+  get searchWearableCategory(): string | null {
+    let value = this.get("searchWearableCategory");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set searchWearableCategory(value: string | null) {
+    if (value === null) {
+      this.unset("searchWearableCategory");
+    } else {
+      this.set("searchWearableCategory", Value.fromString(value as string));
+    }
+  }
+
+  get searchRarity(): string | null {
+    let value = this.get("searchRarity");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set searchRarity(value: string | null) {
+    if (value === null) {
+      this.unset("searchRarity");
+    } else {
+      this.set("searchRarity", Value.fromString(value as string));
+    }
+  }
+}

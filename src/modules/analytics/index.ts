@@ -1,5 +1,5 @@
 import { Address, BigInt, Bytes, log } from '@graphprotocol/graph-ts'
-import { Item, NFT, Sale, AnalyticsDayData } from '../../entities/schema'
+import { Item, NFT, Sale, AnalyticsDayData, ItemsDayData } from '../../entities/schema'
 import { createOrLoadAccount, ZERO_ADDRESS } from '../Account'
 import {
   buildCountFromEarnings,
@@ -136,8 +136,44 @@ export function trackSale(
 
   let analyticsDayData = updateAnalyticsDayData(sale)
   analyticsDayData.save()
+
+  let itemDayData = updateItemDayData(sale, item)
+  itemDayData.save()
 }
 
+// ItemsDayData
+export function getOrCreateItemDayData(blockTimestamp: BigInt, itemId: string): ItemsDayData {
+  let timestamp = blockTimestamp.toI32()
+  let dayID = timestamp / 86400 // unix timestamp for start of day / 86400 giving a unique day index
+  let dayStartTimestamp = dayID * 86400
+
+  let itemDayDataId = dayID.toString() + '-' + itemId
+
+  let itemDayData = ItemsDayData.load(itemDayDataId)
+  if (itemDayData === null) {
+    itemDayData = new ItemsDayData(itemDayDataId)
+    itemDayData.date = dayStartTimestamp // unix timestamp for start of day
+    itemDayData.sales = 0
+    itemDayData.volume = BigInt.fromI32(0)
+  }
+
+  return itemDayData as ItemsDayData
+}
+
+export function updateItemDayData(sale: Sale, item: Item | null): ItemsDayData {
+  let itemDayData = getOrCreateItemDayData(sale.timestamp, sale.item)
+  itemDayData.sales += 1
+  itemDayData.volume = itemDayData.volume.plus(sale.price)
+  if (item != null) {
+    itemDayData.searchWearableCategory = item.searchWearableCategory
+    itemDayData.searchEmoteCategory = item.searchEmoteCategory
+    itemDayData.searchRarity = item.rarity
+  }
+
+  return itemDayData as ItemsDayData
+}
+
+// AnalyticsDayData
 export function getOrCreateAnalyticsDayData(blockTimestamp: BigInt): AnalyticsDayData {
   let timestamp = blockTimestamp.toI32()
   let dayID = timestamp / 86400 // unix timestamp for start of day / 86400 giving a unique day index
