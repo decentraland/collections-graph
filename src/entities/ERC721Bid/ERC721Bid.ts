@@ -266,6 +266,26 @@ export class ERC721Bid__getBidByBidderResult {
     map.set("value4", ethereum.Value.fromUnsignedBigInt(this.value4));
     return map;
   }
+
+  getBidIndex(): BigInt {
+    return this.value0;
+  }
+
+  getBidId(): Bytes {
+    return this.value1;
+  }
+
+  getBidder(): Address {
+    return this.value2;
+  }
+
+  getPrice(): BigInt {
+    return this.value3;
+  }
+
+  getExpiresAt(): BigInt {
+    return this.value4;
+  }
 }
 
 export class ERC721Bid__getBidByTokenResult {
@@ -288,6 +308,22 @@ export class ERC721Bid__getBidByTokenResult {
     map.set("value2", ethereum.Value.fromUnsignedBigInt(this.value2));
     map.set("value3", ethereum.Value.fromUnsignedBigInt(this.value3));
     return map;
+  }
+
+  getValue0(): Bytes {
+    return this.value0;
+  }
+
+  getValue1(): Address {
+    return this.value1;
+  }
+
+  getValue2(): BigInt {
+    return this.value2;
+  }
+
+  getValue3(): BigInt {
+    return this.value3;
   }
 }
 

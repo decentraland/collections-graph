@@ -8,8 +8,8 @@ type Collection @entity {
   isCompleted: Boolean
   isApproved: Boolean
   isEditable: Boolean
-  minters: [String!]
-  managers: [String!]
+  minters: [String!]!
+  managers: [String!]!
   urn: String!
   itemsCount: Int!
   createdAt: BigInt!
@@ -37,8 +37,8 @@ type Item @entity {
   contentHash: String
   URI: String!
   image: String
-  minters: [String!]
-  managers: [String!]
+  minters: [String!]!
+  managers: [String!]!
   metadata: Metadata
   rawMetadata: String!
   urn: String!
@@ -228,6 +228,10 @@ type Account @entity {
   spent: BigInt!
   earned: BigInt!
   royalties: BigInt!
+  uniqueItems: [ID!]!
+  collections: Int!
+  creatorsSupported: [String!]!
+  uniqueCollectors: [String!]!
 }
 
 # ---------------------------------------------------------
@@ -393,4 +397,24 @@ type ItemsDayData @entity {
   searchEmoteCategory: EmoteCategory
   searchWearableCategory: WearableCategory
   searchRarity: String # We're using String instead of WearableRarity here so we can later query this field via ()_in
+}
+
+# Data accumulated and condensed into day stats for a creator address
+type CreatorsDayData @entity {
+  id: ID! # timestamp rounded to current day by dividing by 86400 + ${creator_address}
+  date: Int!
+  sales: Int!
+  volume: BigInt!
+  collections: Int!
+  uniqueCollectors: [String!]!
+}
+
+# Data accumulated and condensed into day stats for a collectors address
+type CollectorsDayData @entity {
+  id: ID! # timestamp rounded to current day by dividing by 86400 + ${creator_address}
+  date: Int!
+  purchases: Int!
+  volume: BigInt!
+  uniqueItems: [ID!]!
+  creatorsSupported: [String!]!
 }

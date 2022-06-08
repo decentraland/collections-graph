@@ -30,6 +30,7 @@ import { getURNForWearableV2, getURNForCollectionV2 } from '../modules/Metadata/
 import { getStoreAddress } from '../modules/store'
 import { getOrCreateAnalyticsDayData } from '../modules/analytics'
 import { getCurationId, getBlockWhereRescueItemsStarted } from '../modules/Curation'
+import { buildCreatorsDayDataFromCollection } from '../modules/analytics/creatorsDayData'
 import { toLowerCase } from '../utils'
 
 export function handleInitializeWearablesV1(_: OwnershipTransferred): void {
@@ -82,6 +83,13 @@ export function handleCollectionCreation(event: ProxyCreated): void {
 
   let metric = buildCountFromCollection()
   metric.save()
+
+  let creatorAccount = createOrLoadAccount(Address.fromString(collection.owner))
+  creatorAccount.collections += 1
+  creatorAccount.save()
+
+  let creatorsDayData = buildCreatorsDayDataFromCollection(event.block.timestamp, collection.creator)
+  creatorsDayData.save()
 }
 
 export function handleAddItem(event: AddItem): void {
@@ -164,30 +172,35 @@ export function handleRescueItem(event: RescueItem): void {
   let id = getItemId(collectionAddress, itemId)
 
   let item = Item.load(id)
-  let isNewContent = item.contentHash != event.params._contentHash
+  let isNewContent: boolean
+  if (item !== null) {
+    isNewContent = item.contentHash != event.params._contentHash
 
-  item.rawMetadata = event.params._metadata
-  item.contentHash = event.params._contentHash
+    item.rawMetadata = event.params._metadata
+    item.contentHash = event.params._contentHash
 
-  let metadata = buildItemMetadata(item!)
+    let metadata = buildItemMetadata(item)
 
-  item.metadata = metadata.id
-  item.itemType = metadata.itemType
+    item.metadata = metadata.id
+    item.itemType = metadata.itemType
 
-  item = setItemSearchFields(item!)
+    item = setItemSearchFields(item)
 
-  item.updatedAt = event.block.timestamp
+    item.updatedAt = event.block.timestamp
 
-  item.save()
+    item.save()
+  }
 
   let collection = Collection.load(collectionAddress)
-  collection.updatedAt = event.block.timestamp
-  collection.reviewedAt = event.block.timestamp
 
-  collection.save()
+  if (collection !== null) {
+    collection.updatedAt = event.block.timestamp
+    collection.reviewedAt = event.block.timestamp
+    collection.save()
+  }
 
   let block = getBlockWhereRescueItemsStarted()
-  if (isNewContent && event.block.number.gt(block) || event.block.number.equals(block)) {
+  if ((isNewContent && event.block.number.gt(block)) || event.block.number.equals(block)) {
     // Create curation
     let txInput = event.transaction.input.toHexString()
     // forwardMetaTx(address _target, bytes calldata _data) or manageCollection(address,address,address,bytes[]) selector
@@ -231,20 +244,20 @@ export function handleUpdateItemData(event: UpdateItemData): void {
   let id = getItemId(collectionAddress, itemId)
 
   let item = Item.load(id)
+  if (item !== null) {
+    item.price = event.params._price
+    item.beneficiary = event.params._beneficiary.toHexString()
+    item.rawMetadata = event.params._metadata
 
-  item.price = event.params._price
-  item.beneficiary = event.params._beneficiary.toHexString()
-  item.rawMetadata = event.params._metadata
+    let metadata = buildItemMetadata(item)
 
-  let metadata = buildItemMetadata(item!)
+    item.metadata = metadata.id
+    item.itemType = metadata.itemType
+    item = setItemSearchFields(item)
 
-  item.metadata = metadata.id
-  item.itemType = metadata.itemType
-  item = setItemSearchFields(item!)
-
-  item.updatedAt = event.block.timestamp
-
-  item.save()
+    item.updatedAt = event.block.timestamp
+    item.save()
+  }
 }
 
 export function handleIssue(event: Issue): void {
@@ -254,12 +267,13 @@ export function handleIssue(event: Issue): void {
 
   let item = Item.load(id)
 
-  item.available = item.available.minus(BigInt.fromI32(1))
-  item.totalSupply = item.totalSupply.plus(BigInt.fromI32(1))
+  if (item !== null) {
+    item.available = item.available.minus(BigInt.fromI32(1))
+    item.totalSupply = item.totalSupply.plus(BigInt.fromI32(1))
 
-  item.save()
-
-  handleMintNFT(event, collectionAddress, item!)
+    item.save()
+    handleMintNFT(event, collectionAddress, item)
+  }
 
   // Bind contract
   let collectionContract = CollectionContract.bind(event.address)
@@ -271,9 +285,9 @@ export function handleIssue(event: Issue): void {
 
   let amountOfMintsAvailable = collectionContract.itemMinters(event.params._itemId, event.params._caller)
 
-  if (amountOfMintsAvailable.equals(BigInt.fromI32(0))) {
+  if (amountOfMintsAvailable.equals(BigInt.fromI32(0)) && item !== null) {
     let minterAddress = event.params._caller.toHexString()
-    item.minters = removeItemMinter(item!, minterAddress)
+    item.minters = removeItemMinter(item, minterAddress)
     // unset flag if minter is store
     if (minterAddress == getStoreAddress()) {
       item.searchIsStoreMinter = false
@@ -293,11 +307,11 @@ export function handleSetGlobalMinter(event: SetGlobalMinter): void {
   let collectionAddress = event.address.toHexString()
   let storeAddress = getStoreAddress()
   let minterAddress = event.params._minter.toHexString()
-  let collection = Collection.load(collectionAddress)
+  let collection = Collection.load(collectionAddress) as Collection
 
   let minters = collection.minters
 
-  if (event.params._value == true) {
+  if (event.params._value == true && minters != null) {
     minters.push(event.params._minter.toHexString())
     collection.minters = minters
 
@@ -319,8 +333,8 @@ export function handleSetGlobalMinter(event: SetGlobalMinter): void {
     let newMinters = new Array<string>(0)
 
     for (let i = 0; i < minters.length; i++) {
-      if (minters![i] != event.params._minter.toHexString()) {
-        newMinters.push(minters![i])
+      if (minters[i] != event.params._minter.toHexString()) {
+        newMinters.push(minters[i])
       }
     }
 
@@ -337,7 +351,7 @@ export function handleSetGlobalMinter(event: SetGlobalMinter): void {
           let isStoreItemMinter = false
           let itemMinters = item.minters
           for (let j = 0; j < item.minters.length; j++) {
-            if (storeAddress == itemMinters![i]) {
+            if (storeAddress == itemMinters[i]) {
               isStoreItemMinter = true
             }
           }
@@ -355,19 +369,19 @@ export function handleSetGlobalMinter(event: SetGlobalMinter): void {
 }
 
 export function handleSetGlobalManager(event: SetGlobalManager): void {
-  let collection = Collection.load(event.address.toHexString())
+  let collection = Collection.load(event.address.toHexString()) as Collection
 
   let managers = collection.managers
 
-  if (event.params._value == true) {
+  if (event.params._value == true && managers != null) {
     managers.push(event.params._manager.toHexString())
     collection.managers = managers
   } else {
     let newManagers = new Array<string>(0)
 
     for (let i = 0; i < managers.length; i++) {
-      if (managers![i] != event.params._manager.toHexString()) {
-        newManagers.push(managers![i])
+      if (managers[i] != event.params._manager.toHexString()) {
+        newManagers.push(managers[i])
       }
     }
 
@@ -385,6 +399,9 @@ export function handleSetItemMinter(event: SetItemMinter): void {
   let id = getItemId(collectionAddress, itemId)
 
   let item = Item.load(id)
+  if (item === null) {
+    return
+  }
 
   let minters = item.minters
 
@@ -396,10 +413,10 @@ export function handleSetItemMinter(event: SetItemMinter): void {
       item.searchIsStoreMinter = true
     }
   } else {
-    item.minters = removeItemMinter(item!, minterAddress)
+    item.minters = removeItemMinter(item, minterAddress)
     // if minter is store address, unset flag, but only if store is not global minter
     let collection = Collection.load(item.collection)
-    if (!collection.searchIsStoreMinter && minterAddress == storeAddress) {
+    if (collection && !collection.searchIsStoreMinter && minterAddress == storeAddress) {
       item.searchIsStoreMinter = false
     }
   }
@@ -413,18 +430,21 @@ export function handleSetItemManager(event: SetItemManager): void {
   let id = getItemId(collectionAddress, itemId)
 
   let item = Item.load(id)
+  if (!item) {
+    return
+  }
 
   let managers = item.managers
 
-  if (event.params._value == true) {
+  if (event.params._value == true && managers != null) {
     managers.push(event.params._manager.toHexString())
     item.managers = managers
   } else {
     let newManagers = new Array<string>(0)
 
     for (let i = 0; i < managers.length; i++) {
-      if (managers![i] != event.params._manager.toHexString()) {
-        newManagers.push(managers![i])
+      if (managers[i] != event.params._manager.toHexString()) {
+        newManagers.push(managers[i])
       }
     }
 
@@ -438,6 +458,10 @@ export function handleSetApproved(event: SetApproved): void {
   let collectionAddress = event.address.toHexString()
   let collection = Collection.load(collectionAddress)
 
+  if (!collection) {
+    return null
+  }
+
   collection.isApproved = event.params._newValue
 
   // Bind contract
@@ -447,10 +471,11 @@ export function handleSetApproved(event: SetApproved): void {
   for (let i = BigInt.fromI32(0); i.lt(itemsCount); i = i.plus(BigInt.fromI32(1))) {
     let id = getItemId(collectionAddress, i.toString())
     let item = Item.load(id)
-
-    item.searchIsCollectionApproved = event.params._newValue
-    item.reviewedAt = event.block.timestamp
-    item.save()
+    if (item) {
+      item.searchIsCollectionApproved = event.params._newValue
+      item.reviewedAt = event.block.timestamp
+      item.save()
+    }
   }
 
   collection.updatedAt = event.block.timestamp // to support old collections
@@ -497,32 +522,32 @@ export function handleSetApproved(event: SetApproved): void {
 
 export function handleSetEditable(event: SetEditable): void {
   let collection = Collection.load(event.address.toHexString())
-
-  collection.isEditable = event.params._newValue
-
-  collection.save()
+  if (collection) {
+    collection.isEditable = event.params._newValue
+    collection.save()
+  }
 }
 
 export function handleCompleteCollection(event: Complete): void {
   let collection = Collection.load(event.address.toHexString())
-
-  collection.isCompleted = true
-
-  collection.save()
+  if (collection) {
+    collection.isCompleted = true
+    collection.save()
+  }
 }
 
 export function handleTransferCreatorship(event: CreatorshipTransferred): void {
   let collection = Collection.load(event.address.toHexString())
-
-  collection.creator = event.params._newCreator.toHexString()
-
-  collection.save()
+  if (collection) {
+    collection.creator = event.params._newCreator.toHexString()
+    collection.save()
+  }
 }
 
 export function handleTransferOwnership(event: OwnershipTransferred): void {
   let collection = Collection.load(event.address.toHexString())
-
-  collection.owner = event.params.newOwner.toHexString()
-
-  collection.save()
+  if (collection) {
+    collection.owner = event.params.newOwner.toHexString()
+    collection.save()
+  }
 }

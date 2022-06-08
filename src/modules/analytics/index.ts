@@ -1,4 +1,4 @@
-import { Address, BigInt, Bytes, log } from '@graphprotocol/graph-ts'
+import { Address, BigInt, Bytes } from '@graphprotocol/graph-ts'
 import { Item, NFT, Sale, AnalyticsDayData, ItemsDayData } from '../../entities/schema'
 import { createOrLoadAccount, ZERO_ADDRESS } from '../Account'
 import {
@@ -9,6 +9,8 @@ import {
   buildCountFromSecondarySale
 } from '../Count'
 import { ONE_MILLION } from '../Store'
+import { updateCollectorsDayData } from './collectorsDayData'
+import { updateCreatorsDayData } from './creatorsDayData'
 
 export let BID_SALE_TYPE = 'bid'
 export let ORDER_SALE_TYPE = 'order'
@@ -39,6 +41,9 @@ export function trackSale(
   // load entities
   let item = Item.load(itemId)
   let nft = NFT.load(nftId)
+  if (item === null || nft === null) {
+    return
+  }
 
   // save sale
   let saleId = BigInt.fromI32(count.salesTotal).toString()
@@ -69,10 +74,12 @@ export function trackSale(
 
   if (royaltiesCut.gt(BigInt.fromI32(0))) {
     if (item.beneficiary != ZERO_ADDRESS || item.creator != ZERO_ADDRESS) {
-      sale.royaltiesCollector = item.beneficiary != ZERO_ADDRESS ? Address.fromString(item.beneficiary) : Address.fromString(item.creator)
+      let royaltiesCollectorAddress =
+        item.beneficiary != ZERO_ADDRESS ? Address.fromString(item.beneficiary) : Address.fromString(item.creator)
 
+      sale.royaltiesCollector = royaltiesCollectorAddress
       // update royalties collector account
-      let royaltiesCollectorAccount = createOrLoadAccount(sale.royaltiesCollector as Address)
+      let royaltiesCollectorAccount = createOrLoadAccount(royaltiesCollectorAddress)
       royaltiesCollectorAccount.earned = royaltiesCollectorAccount.earned.plus(sale.royaltiesCut)
       royaltiesCollectorAccount.royalties = royaltiesCollectorAccount.royalties.plus(sale.royaltiesCut)
       royaltiesCollectorAccount.save()
@@ -96,12 +103,46 @@ export function trackSale(
   let buyerAccount = createOrLoadAccount(buyer)
   buyerAccount.purchases += 1
   buyerAccount.spent = buyerAccount.spent.plus(price)
+
+  if (item.rarity == 'unique') {
+    let uniqueItems = new Set<string>()
+    for (let i = 0; i < buyerAccount.uniqueItems.length; i++) {
+      uniqueItems.add(buyerAccount.uniqueItems[i])
+    }
+    uniqueItems.add(item.id)
+    // @ts-ignore - mythicItems.values() returns an Array<string> and not an IterableIterator<string> as the IDE suggests
+    buyerAccount.uniqueItems = uniqueItems.values()
+  }
+
+  // track the creators supported in the buyers account
+  if (sale.type == MINT_SALE_TYPE) {
+    let uniqueCreatorsSupported = new Set<string>()
+    for (let i = 0; i < buyerAccount.uniqueCollectors.length; i++) {
+      uniqueCreatorsSupported.add(buyerAccount.uniqueCollectors[i])
+    }
+    uniqueCreatorsSupported.add(sale.seller.toHex())
+    // @ts-ignore - uniqueCreatorsSupported.values() returns an Array<string> and not an IterableIterator<string> as the IDE suggests
+    buyerAccount.creatorsSupported = uniqueCreatorsSupported.values()
+  }
+
   buyerAccount.save()
 
   // update seller account
   let sellerAccount = createOrLoadAccount(seller)
   sellerAccount.sales += 1
   sellerAccount.earned = sellerAccount.earned.plus(price.minus(totalFees))
+
+  // track the uniqueCollectors in the sellers account
+  if (sale.type == MINT_SALE_TYPE) {
+    let uniqueCollectors = new Set<string>()
+    for (let i = 0; i < sellerAccount.uniqueCollectors.length; i++) {
+      uniqueCollectors.add(sellerAccount.uniqueCollectors[i])
+    }
+    uniqueCollectors.add(sale.buyer.toHex())
+    // @ts-ignore - uniqueCollectors.values() returns an Array<string> and not an IterableIterator<string> as it expects
+    sellerAccount.uniqueCollectors = uniqueCollectors.values()
+  }
+
   sellerAccount.save()
 
   // update fees collector account
@@ -139,6 +180,12 @@ export function trackSale(
 
   let itemDayData = updateItemDayData(sale, item)
   itemDayData.save()
+
+  let creatorsDayData = updateCreatorsDayData(sale)
+  creatorsDayData.save()
+
+  let collectorsDayData = updateCollectorsDayData(sale, item)
+  collectorsDayData.save()
 }
 
 // ItemsDayData

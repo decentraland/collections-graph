@@ -1,8 +1,10 @@
 specVersion: 0.0.2
 description: Decentraland collections
+# features:
+#   - grafting
 # graft:
-  # base: QmYAk5szzmZTVdsLn3EVYMzfmQsfweMx9s9Av5Jbf39zg5 # Subgraph ID of base subgraph
-  # block: 22514800 # Block number
+#   base: QmYexkD2Si3TqoVJFUjj1bgvQF2xb7tpoVSQvm4aXC8ohG # Subgraph ID of base subgraph
+#   block: 26515077 # Block number
 repository: https://github.com/decentraland/collections-graph
 schema:
   file: ./schema.graphql
@@ -19,7 +21,7 @@ dataSources:
       address: '{{address_factory}}'
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.3
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       entities:
         - Collection
@@ -49,7 +51,7 @@ dataSources:
       address: '{{address_factory_v3}}'
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.3
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       entities:
         - Collection
@@ -79,7 +81,7 @@ dataSources:
       startBlock: {{startBlock_marketplace}}
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.3
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ./src/handlers/marketplace.ts
       entities:
@@ -107,7 +109,7 @@ dataSources:
       startBlock: {{startBlock_marketplace_V2}}
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.3
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ./src/handlers/marketplaceV2.ts
       entities:
@@ -135,7 +137,7 @@ dataSources:
       startBlock: {{startBlock_bid}}
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.3
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ./src/handlers/bid.ts
       entities:
@@ -162,7 +164,7 @@ dataSources:
       startBlock: {{startBlock_bid_v2}}
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.3
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ./src/handlers/bidv2.ts
       entities:
@@ -192,7 +194,7 @@ dataSources:
       startBlock: {{startBock_first_collections_v1}}
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.3
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ./src/handlers/collection.ts
       entities:
@@ -219,7 +221,7 @@ dataSources:
       startBlock: {{startBlock_old_committee}}
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.3
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ./src/handlers/committee.ts
       entities:
@@ -242,7 +244,7 @@ dataSources:
       startBlock: {{startBlock_committee}}
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.3
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ./src/handlers/committee.ts
       entities:
@@ -265,7 +267,7 @@ dataSources:
       startBlock: {{startBlock_rarity}}
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.3
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ./src/handlers/rarity.ts
       entities:
@@ -289,7 +291,7 @@ templates:
       abi: CollectionV2
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.3
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ./src/handlers/collection.ts
       entities:
@@ -342,7 +344,7 @@ templates:
       abi: ERC721
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.3
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ./src/handlers/nft.ts
       entities:
@@ -372,7 +374,7 @@ templates:
       abi: CollectionStore
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.3
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ./src/handlers/nft.ts
       entities:
