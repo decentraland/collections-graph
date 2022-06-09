@@ -9,8 +9,6 @@ import {
   buildCountFromSecondarySale
 } from '../Count'
 import { ONE_MILLION } from '../Store'
-import { updateCollectorsDayData } from './collectorsDayData'
-import { updateCreatorsDayData } from './creatorsDayData'
 
 export let BID_SALE_TYPE = 'bid'
 export let ORDER_SALE_TYPE = 'order'

@@ -30,7 +30,6 @@ import { getURNForWearableV2, getURNForCollectionV2 } from '../modules/Metadata/
 import { getStoreAddress } from '../modules/store'
 import { getOrCreateAnalyticsDayData } from '../modules/analytics'
 import { getCurationId, getBlockWhereRescueItemsStarted } from '../modules/Curation'
-import { buildCreatorsDayDataFromCollection } from '../modules/analytics/creatorsDayData'
 import { toLowerCase } from '../utils'
 
 export function handleInitializeWearablesV1(_: OwnershipTransferred): void {
@@ -87,9 +86,6 @@ export function handleCollectionCreation(event: ProxyCreated): void {
   let creatorAccount = createOrLoadAccount(Address.fromString(collection.owner))
   creatorAccount.collections += 1
   creatorAccount.save()
-
-  let creatorsDayData = buildCreatorsDayDataFromCollection(event.block.timestamp, collection.creator)
-  creatorsDayData.save()
 }
 
 export function handleAddItem(event: AddItem): void {
