@@ -228,10 +228,6 @@ type Account @entity {
   spent: BigInt!
   earned: BigInt!
   royalties: BigInt!
-  uniqueItems: [ID!]!
-  collections: Int!
-  creatorsSupported: [String!]!
-  uniqueCollectors: [String!]!
 }
 
 # ---------------------------------------------------------
