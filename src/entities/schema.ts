@@ -1649,42 +1649,6 @@ export class Account extends Entity {
   set royalties(value: BigInt) {
     this.set("royalties", Value.fromBigInt(value));
   }
-
-  get uniqueItems(): Array<string> {
-    let value = this.get("uniqueItems");
-    return value!.toStringArray();
-  }
-
-  set uniqueItems(value: Array<string>) {
-    this.set("uniqueItems", Value.fromStringArray(value));
-  }
-
-  get collections(): i32 {
-    let value = this.get("collections");
-    return value!.toI32();
-  }
-
-  set collections(value: i32) {
-    this.set("collections", Value.fromI32(value));
-  }
-
-  get creatorsSupported(): Array<string> {
-    let value = this.get("creatorsSupported");
-    return value!.toStringArray();
-  }
-
-  set creatorsSupported(value: Array<string>) {
-    this.set("creatorsSupported", Value.fromStringArray(value));
-  }
-
-  get uniqueCollectors(): Array<string> {
-    let value = this.get("uniqueCollectors");
-    return value!.toStringArray();
-  }
-
-  set uniqueCollectors(value: Array<string>) {
-    this.set("uniqueCollectors", Value.fromStringArray(value));
-  }
 }
 
 export class Order extends Entity {
