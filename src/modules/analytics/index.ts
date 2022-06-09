@@ -9,6 +9,8 @@ import {
   buildCountFromSecondarySale
 } from '../Count'
 import { ONE_MILLION } from '../Store'
+import { updateCollectorsDayData } from './collectorsDayData'
+import { updateCreatorsDayData } from './creatorsDayData'
 
 export let BID_SALE_TYPE = 'bid'
 export let ORDER_SALE_TYPE = 'order'
@@ -39,6 +41,9 @@ export function trackSale(
   // load entities
   let item = Item.load(itemId)
   let nft = NFT.load(nftId)
+  if (item === null || nft === null) {
+    return
+  }
 
   // save sale
   let saleId = BigInt.fromI32(count.salesTotal).toString()
@@ -69,10 +74,12 @@ export function trackSale(
 
   if (royaltiesCut.gt(BigInt.fromI32(0))) {
     if (item.beneficiary != ZERO_ADDRESS || item.creator != ZERO_ADDRESS) {
-      sale.royaltiesCollector = item.beneficiary != ZERO_ADDRESS ? Address.fromString(item.beneficiary) : Address.fromString(item.creator)
+      let royaltiesCollectorAddress =
+        item.beneficiary != ZERO_ADDRESS ? Address.fromString(item.beneficiary) : Address.fromString(item.creator)
 
+      sale.royaltiesCollector = royaltiesCollectorAddress
       // update royalties collector account
-      let royaltiesCollectorAccount = createOrLoadAccount(sale.royaltiesCollector as Address)
+      let royaltiesCollectorAccount = createOrLoadAccount(royaltiesCollectorAddress)
       royaltiesCollectorAccount.earned = royaltiesCollectorAccount.earned.plus(sale.royaltiesCut)
       royaltiesCollectorAccount.royalties = royaltiesCollectorAccount.royalties.plus(sale.royaltiesCut)
       royaltiesCollectorAccount.save()
@@ -96,12 +103,14 @@ export function trackSale(
   let buyerAccount = createOrLoadAccount(buyer)
   buyerAccount.purchases += 1
   buyerAccount.spent = buyerAccount.spent.plus(price)
+
   buyerAccount.save()
 
   // update seller account
   let sellerAccount = createOrLoadAccount(seller)
   sellerAccount.sales += 1
   sellerAccount.earned = sellerAccount.earned.plus(price.minus(totalFees))
+
   sellerAccount.save()
 
   // update fees collector account

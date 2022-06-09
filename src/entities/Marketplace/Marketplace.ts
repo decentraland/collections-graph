@@ -357,6 +357,22 @@ export class Marketplace__auctionByAssetIdResult {
     map.set("value3", ethereum.Value.fromUnsignedBigInt(this.value3));
     return map;
   }
+
+  getValue0(): Bytes {
+    return this.value0;
+  }
+
+  getValue1(): Address {
+    return this.value1;
+  }
+
+  getValue2(): BigInt {
+    return this.value2;
+  }
+
+  getValue3(): BigInt {
+    return this.value3;
+  }
 }
 
 export class Marketplace__orderByAssetIdResult {
@@ -388,6 +404,26 @@ export class Marketplace__orderByAssetIdResult {
     map.set("value3", ethereum.Value.fromUnsignedBigInt(this.value3));
     map.set("value4", ethereum.Value.fromUnsignedBigInt(this.value4));
     return map;
+  }
+
+  getId(): Bytes {
+    return this.value0;
+  }
+
+  getSeller(): Address {
+    return this.value1;
+  }
+
+  getNftAddress(): Address {
+    return this.value2;
+  }
+
+  getPrice(): BigInt {
+    return this.value3;
+  }
+
+  getExpiresAt(): BigInt {
+    return this.value4;
   }
 }
 

@@ -28,7 +28,9 @@ export class AddItem__Params {
   }
 
   get _item(): AddItem_itemStruct {
-    return this._event.parameters[1].value.toTuple() as AddItem_itemStruct;
+    return changetype<AddItem_itemStruct>(
+      this._event.parameters[1].value.toTuple()
+    );
   }
 }
 
@@ -491,6 +493,14 @@ export class CollectionV2__decodeTokenIdResult {
     map.set("value1", ethereum.Value.fromUnsignedBigInt(this.value1));
     return map;
   }
+
+  getItemId(): BigInt {
+    return this.value0;
+  }
+
+  getIssuedId(): BigInt {
+    return this.value1;
+  }
 }
 
 export class CollectionV2__itemsResult {
@@ -530,6 +540,34 @@ export class CollectionV2__itemsResult {
     map.set("value5", ethereum.Value.fromString(this.value5));
     map.set("value6", ethereum.Value.fromString(this.value6));
     return map;
+  }
+
+  getRarity(): string {
+    return this.value0;
+  }
+
+  getMaxSupply(): BigInt {
+    return this.value1;
+  }
+
+  getTotalSupply(): BigInt {
+    return this.value2;
+  }
+
+  getPrice(): BigInt {
+    return this.value3;
+  }
+
+  getBeneficiary(): Address {
+    return this.value4;
+  }
+
+  getMetadata(): string {
+    return this.value5;
+  }
+
+  getContentHash(): string {
+    return this.value6;
   }
 }
 

@@ -328,6 +328,26 @@ export class MarketplaceV2__orderByAssetIdResult {
     map.set("value4", ethereum.Value.fromUnsignedBigInt(this.value4));
     return map;
   }
+
+  getId(): Bytes {
+    return this.value0;
+  }
+
+  getSeller(): Address {
+    return this.value1;
+  }
+
+  getNftAddress(): Address {
+    return this.value2;
+  }
+
+  getPrice(): BigInt {
+    return this.value3;
+  }
+
+  getExpiresAt(): BigInt {
+    return this.value4;
+  }
 }
 
 export class MarketplaceV2 extends ethereum.SmartContract {

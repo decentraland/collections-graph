@@ -124,31 +124,44 @@ export function buildWearableV1(item: Item, representation: WearableRepresentati
 }
 
 export function setItemWearableSearchFields(item: Item): Item {
-  let metadata = Metadata.load(item.metadata)
-  let wearable = Wearable.load(metadata.wearable)
-
-  item.searchText = toLowerCase(wearable.name + ' ' + wearable.description)
-  item.searchItemType = item.itemType
-  item.searchIsWearableHead = isWearableHead(wearable.category)
-  item.searchIsWearableAccessory = isWearableAccessory(wearable.category)
-  item.searchWearableCategory = wearable.category
-  item.searchWearableBodyShapes = wearable.bodyShapes
-  item.searchWearableRarity = wearable.rarity
+  if (item.metadata === null) {
+    return item
+  }
+  let metadata = Metadata.load(item.metadata!)
+  if (metadata !== null && metadata.wearable !== null) {
+    let wearable = Wearable.load(metadata.wearable!)
+    if (wearable !== null) {
+      item.searchText = toLowerCase(wearable.name + ' ' + wearable.description)
+      item.searchIsWearableHead = isWearableHead(wearable.category)
+      item.searchIsWearableAccessory = isWearableAccessory(wearable.category)
+      item.searchWearableCategory = wearable.category
+      item.searchWearableBodyShapes = wearable.bodyShapes
+      item.searchWearableRarity = wearable.rarity
+    }
+    item.searchItemType = item.itemType
+  }
 
   return item
 }
 
 export function setNFTWearableSearchFields(nft: NFT): NFT {
-  let metadata = Metadata.load(nft.metadata)
-  let wearable = Wearable.load(metadata.wearable)
+  if (nft.metadata === null) {
+    return nft
+  }
+  let metadata = Metadata.load(nft.metadata!)
+  if (metadata !== null && metadata.wearable !== null) {
+    let wearable = Wearable.load(metadata.wearable!)
 
-  nft.searchText = toLowerCase(wearable.name + ' ' + wearable.description)
-  nft.searchItemType = nft.itemType
-  nft.searchIsWearableHead = isWearableHead(wearable.category)
-  nft.searchIsWearableAccessory = isWearableAccessory(wearable.category)
-  nft.searchWearableCategory = wearable.category
-  nft.searchWearableBodyShapes = wearable.bodyShapes
-  nft.searchWearableRarity = wearable.rarity
+    if (wearable) {
+      nft.searchText = toLowerCase(wearable.name + ' ' + wearable.description)
+      nft.searchItemType = nft.itemType
+      nft.searchIsWearableHead = isWearableHead(wearable.category)
+      nft.searchIsWearableAccessory = isWearableAccessory(wearable.category)
+      nft.searchWearableCategory = wearable.category
+      nft.searchWearableBodyShapes = wearable.bodyShapes
+      nft.searchWearableRarity = wearable.rarity
+    }
+  }
 
   return nft
 }
@@ -175,7 +188,7 @@ export function isWearableAccessory(category: string): boolean {
   )
 }
 
-export function getWearableV1Representation(wearableId: string): WearableRepresentation {
+export function getWearableV1Representation(wearableId: string): WearableRepresentation | null {
   if (wearableId == '') {
     log.error('Coud not get a wearable id', [])
     return null
@@ -229,7 +242,7 @@ export function getWearableV1Representation(wearableId: string): WearableReprese
 
   for (let i = 0; i < allCollections.length; i++) {
     let wearable = findWearable(wearableId, allCollections[i])
-    if (wearable.id == wearableId) {
+    if (wearable !== null && wearable.id == wearableId) {
       return wearable
     }
   }
@@ -285,7 +298,7 @@ export function getURNForWearableV2(collectionAddress: string, itemId: string): 
   return getURNForCollectionV2(collectionAddress) + ':' + itemId
 }
 
-function findWearable(id: string, collection: WearableRepresentation[]): WearableRepresentation {
+function findWearable(id: string, collection: WearableRepresentation[]): WearableRepresentation | null {
   for (let i = 0; i < collection.length; i++) {
     let wearable = collection[i]
     if (id == wearable.id) {

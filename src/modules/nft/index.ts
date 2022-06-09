@@ -1,4 +1,3 @@
-
 import { BigInt, log, Address } from '@graphprotocol/graph-ts'
 
 import * as status from '../order'
@@ -43,7 +42,10 @@ export function clearNFTOrderProperties(nft: NFT): NFT {
 }
 
 export function cancelActiveOrder(nft: NFT, now: BigInt): boolean {
-  let oldOrder = Order.load(nft.activeOrder)
+  if (nft.activeOrder === null) {
+    return false
+  }
+  let oldOrder = Order.load(nft.activeOrder!)
   if (oldOrder != null && oldOrder.status == status.OPEN) {
     // Here we are setting old orders as cancelled, because the smart contract allows new orders to be created
     // and they just overwrite them in place. But the subgraph stores all orders ever
@@ -64,10 +66,7 @@ export function getTokenURI(collectionAddress: Address, tokenId: BigInt): string
   let tokenURI = ''
 
   if (tokenURICallResult.reverted) {
-    log.warning('tokenURI reverted for tokenID: {} contract: {}', [
-      tokenId.toString(),
-      collectionAddress.toHexString()
-    ])
+    log.warning('tokenURI reverted for tokenID: {} contract: {}', [tokenId.toString(), collectionAddress.toHexString()])
   } else {
     tokenURI = tokenURICallResult.value
   }

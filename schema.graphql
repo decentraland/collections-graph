@@ -8,8 +8,8 @@ type Collection @entity {
   isCompleted: Boolean
   isApproved: Boolean
   isEditable: Boolean
-  minters: [String!]
-  managers: [String!]
+  minters: [String!]!
+  managers: [String!]!
   urn: String!
   itemsCount: Int!
   createdAt: BigInt!
@@ -37,8 +37,8 @@ type Item @entity {
   contentHash: String
   URI: String!
   image: String
-  minters: [String!]
-  managers: [String!]
+  minters: [String!]!
+  managers: [String!]!
   metadata: Metadata
   rawMetadata: String!
   urn: String!
@@ -228,6 +228,10 @@ type Account @entity {
   spent: BigInt!
   earned: BigInt!
   royalties: BigInt!
+  uniqueItems: [ID!]!
+  collections: Int!
+  creatorsSupported: [String!]!
+  uniqueCollectors: [String!]!
 }
 
 # ---------------------------------------------------------
