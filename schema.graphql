@@ -228,6 +228,10 @@ type Account @entity {
   spent: BigInt!
   earned: BigInt!
   royalties: BigInt!
+  uniqueAndMythicItems: [ID!]!
+  collections: Int!
+  creatorsSupported: [String!]!
+  uniqueCollectors: [String!]!
 }
 
 # ---------------------------------------------------------
@@ -382,4 +386,28 @@ type AnalyticsDayData @entity {
   volume: BigInt!
   creatorsEarnings: BigInt!
   daoEarnings: BigInt!
+}
+
+# Data accumulated and condensed into day stats for an item
+type ItemsDayData @entity {
+  id: ID! # timestamp rounded to current day by dividing by 86400 + ${Collection address}_${item Id}
+  date: Int!
+  sales: Int!
+  volume: BigInt!
+  searchEmoteCategory: EmoteCategory
+  searchWearableCategory: WearableCategory
+  searchRarity: String # We're using String instead of WearableRarity here so we can later query this field via ()_in
+}
+
+# Data accumulated and condensed into day stats for an account address
+type AccountsDayData @entity {
+  id: ID! # timestamp rounded to current day by dividing by 86400 + ${creator_address}
+  date: Int!
+  sales: Int!
+  purchases: Int!
+  volume: BigInt!
+  collections: Int!
+  uniqueCollectors: [String!]!
+  uniqueAndMythicItems: [ID!]!
+  creatorsSupported: [String!]!
 }

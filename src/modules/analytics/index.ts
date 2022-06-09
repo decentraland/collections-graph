@@ -1,5 +1,5 @@
 import { Address, BigInt, Bytes, log } from '@graphprotocol/graph-ts'
-import { Item, NFT, Sale, AnalyticsDayData } from '../../entities/schema'
+import { Item, NFT, Sale, AnalyticsDayData, ItemsDayData } from '../../entities/schema'
 import { createOrLoadAccount, ZERO_ADDRESS } from '../Account'
 import {
   buildCountFromEarnings,
@@ -9,6 +9,13 @@ import {
   buildCountFromSecondarySale
 } from '../Count'
 import { ONE_MILLION } from '../Store'
+import {
+  updateBuyerAccountsDayData,
+  updateCreatorsSupportedSet,
+  updateSellerAccountsDayData,
+  updateUniqueAndMythicItemsSet,
+  updateUniqueCollectorsSet
+} from './accountsDayData'
 
 export let BID_SALE_TYPE = 'bid'
 export let ORDER_SALE_TYPE = 'order'
@@ -101,6 +108,10 @@ export function trackSale(
   let buyerAccount = createOrLoadAccount(buyer)
   buyerAccount.purchases += 1
   buyerAccount.spent = buyerAccount.spent.plus(price)
+  if (item.rarity == 'unique' || item.rarity == 'mythic') {
+    buyerAccount.uniqueAndMythicItems = updateUniqueAndMythicItemsSet(buyerAccount.uniqueAndMythicItems, item)
+  }
+  buyerAccount.creatorsSupported = updateCreatorsSupportedSet(buyerAccount.creatorsSupported, sale.seller)
 
   buyerAccount.save()
 
@@ -108,6 +119,7 @@ export function trackSale(
   let sellerAccount = createOrLoadAccount(seller)
   sellerAccount.sales += 1
   sellerAccount.earned = sellerAccount.earned.plus(price.minus(totalFees))
+  sellerAccount.uniqueCollectors = updateUniqueCollectorsSet(sellerAccount.uniqueCollectors, buyer)
 
   sellerAccount.save()
 
@@ -143,6 +155,47 @@ export function trackSale(
 
   let analyticsDayData = updateAnalyticsDayData(sale)
   analyticsDayData.save()
+
+  let itemDayData = updateItemDayData(sale, item)
+  itemDayData.save()
+
+  let buyerAccountsDayData = updateBuyerAccountsDayData(sale, item)
+  buyerAccountsDayData.save()
+
+  let sellersAccountsDayData = updateSellerAccountsDayData(sale)
+  sellersAccountsDayData.save()
+}
+
+// ItemsDayData
+export function getOrCreateItemDayData(blockTimestamp: BigInt, itemId: string): ItemsDayData {
+  let timestamp = blockTimestamp.toI32()
+  let dayID = timestamp / 86400 // unix timestamp for start of day / 86400 giving a unique day index
+  let dayStartTimestamp = dayID * 86400
+
+  let itemDayDataId = dayID.toString() + '-' + itemId
+
+  let itemDayData = ItemsDayData.load(itemDayDataId)
+  if (itemDayData === null) {
+    itemDayData = new ItemsDayData(itemDayDataId)
+    itemDayData.date = dayStartTimestamp // unix timestamp for start of day
+    itemDayData.sales = 0
+    itemDayData.volume = BigInt.fromI32(0)
+  }
+
+  return itemDayData as ItemsDayData
+}
+
+export function updateItemDayData(sale: Sale, item: Item | null): ItemsDayData {
+  let itemDayData = getOrCreateItemDayData(sale.timestamp, sale.item)
+  itemDayData.sales += 1
+  itemDayData.volume = itemDayData.volume.plus(sale.price)
+  if (item != null) {
+    itemDayData.searchWearableCategory = item.searchWearableCategory
+    itemDayData.searchEmoteCategory = item.searchEmoteCategory
+    itemDayData.searchRarity = item.rarity
+  }
+
+  return itemDayData as ItemsDayData
 }
 
 export function getOrCreateAnalyticsDayData(blockTimestamp: BigInt): AnalyticsDayData {
