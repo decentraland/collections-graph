@@ -82,10 +82,6 @@ export function handleCollectionCreation(event: ProxyCreated): void {
 
   let metric = buildCountFromCollection()
   metric.save()
-
-  let creatorAccount = createOrLoadAccount(Address.fromString(collection.owner))
-  creatorAccount.collections += 1
-  creatorAccount.save()
 }
 
 export function handleAddItem(event: AddItem): void {
@@ -196,7 +192,7 @@ export function handleRescueItem(event: RescueItem): void {
   }
 
   let block = getBlockWhereRescueItemsStarted()
-  if ((isNewContent && event.block.number.gt(block)) || event.block.number.equals(block)) {
+  if (isNewContent && event.block.number.gt(block) || event.block.number.equals(block)) {
     // Create curation
     let txInput = event.transaction.input.toHexString()
     // forwardMetaTx(address _target, bytes calldata _data) or manageCollection(address,address,address,bytes[]) selector
