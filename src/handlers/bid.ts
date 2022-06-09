@@ -51,7 +51,7 @@ export function handleBidAccepted(event: BidAccepted): void {
 
   // Omit events of a bid accepted/cancelled from a bid that was not indexed. Orders and bids are being indexed from the beginning of collections.
   // Not from the Bid contract creation.
-  if (bid == null || bid.nft === null) {
+  if (bid == null || bid.nft == null) {
     return
   }
 

@@ -124,7 +124,7 @@ export function buildWearableV1(item: Item, representation: WearableRepresentati
 }
 
 export function setItemWearableSearchFields(item: Item): Item {
-  if (item.metadata === null) {
+  if (!item.metadata) {
     return item
   }
   let metadata = Metadata.load(item.metadata!)
@@ -145,7 +145,7 @@ export function setItemWearableSearchFields(item: Item): Item {
 }
 
 export function setNFTWearableSearchFields(nft: NFT): NFT {
-  if (nft.metadata === null) {
+  if (!nft.metadata) {
     return nft
   }
   let metadata = Metadata.load(nft.metadata!)

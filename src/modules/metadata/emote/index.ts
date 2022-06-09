@@ -43,7 +43,7 @@ function isValidEmoteCategory(category: string): boolean {
 }
 
 export function setItemEmoteSearchFields(item: Item): Item {
-  if (item.metadata === null) {
+  if (!item.metadata) {
     return item
   }
   let metadata = Metadata.load(item.metadata!)
@@ -62,7 +62,7 @@ export function setItemEmoteSearchFields(item: Item): Item {
 }
 
 export function setNFTEmoteSearchFields(nft: NFT): NFT {
-  if (nft.metadata === null) {
+  if (!nft.metadata) {
     return nft
   }
   let metadata = Metadata.load(nft.metadata!) as Metadata

@@ -42,7 +42,7 @@ export function clearNFTOrderProperties(nft: NFT): NFT {
 }
 
 export function cancelActiveOrder(nft: NFT, now: BigInt): boolean {
-  if (nft.activeOrder === null) {
+  if (!nft.activeOrder) {
     return false
   }
   let oldOrder = Order.load(nft.activeOrder!)

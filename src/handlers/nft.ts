@@ -34,7 +34,7 @@ export function handleMintNFT(event: Issue, collectionAddress: string, item: Ite
   let issuedId = event.params._issuedId
 
   let collection = Collection.load(collectionAddress)
-  if (collection === null) {
+  if (!collection) {
     return
   }
   nft.collection = collection.id
@@ -121,7 +121,7 @@ export function handleTransferNFT(event: Transfer): void {
   let id = getNFTId(collectionAddress, event.params.tokenId.toString())
 
   let nft = NFT.load(id)
-  if (nft === null) {
+  if (!nft) {
     return
   }
 

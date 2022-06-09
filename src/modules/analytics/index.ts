@@ -39,7 +39,7 @@ export function trackSale(
   // load entities
   let item = Item.load(itemId)
   let nft = NFT.load(nftId)
-  if (item === null || nft === null) {
+  if (!item || !nft) {
     return
   }
 

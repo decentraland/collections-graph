@@ -61,12 +61,12 @@ export function handleOrderSuccessful(event: OrderSuccessful): void {
   order.updatedAt = event.block.timestamp
   order.save()
 
-  if (order.nft == null) {
+  if (!order.nft) {
     return
   }
 
   let nft = NFT.load(order.nft!)
-  if (nft == null) {
+  if (!nft) {
     log.info('Undefined NFT {} for order {} and address {}', [order.nft!, orderId, event.params.nftAddress.toHexString()])
     return
   }
@@ -107,7 +107,7 @@ export function handleOrderCancelled(event: OrderCancelled): void {
 
   if (order.nft !== null) {
     let nft = NFT.load(order.nft!)
-    if (nft == null) {
+    if (!nft) {
       log.info('Undefined NFT {} for order {} and address {}', [order.nft!, orderId, event.params.nftAddress.toHexString()])
       return
     }

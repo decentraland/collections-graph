@@ -192,7 +192,7 @@ export function handleRescueItem(event: RescueItem): void {
   }
 
   let block = getBlockWhereRescueItemsStarted()
-  if (isNewContent && event.block.number.gt(block) || event.block.number.equals(block)) {
+  if ((isNewContent && event.block.number.gt(block)) || event.block.number.equals(block)) {
     // Create curation
     let txInput = event.transaction.input.toHexString()
     // forwardMetaTx(address _target, bytes calldata _data) or manageCollection(address,address,address,bytes[]) selector
@@ -299,7 +299,11 @@ export function handleSetGlobalMinter(event: SetGlobalMinter): void {
   let collectionAddress = event.address.toHexString()
   let storeAddress = getStoreAddress()
   let minterAddress = event.params._minter.toHexString()
-  let collection = Collection.load(collectionAddress) as Collection
+  let collection = Collection.load(collectionAddress)
+
+  if (!collection) {
+    return
+  }
 
   let minters = collection.minters
 
@@ -361,11 +365,15 @@ export function handleSetGlobalMinter(event: SetGlobalMinter): void {
 }
 
 export function handleSetGlobalManager(event: SetGlobalManager): void {
-  let collection = Collection.load(event.address.toHexString()) as Collection
+  let collection = Collection.load(event.address.toHexString())
+
+  if (!collection) {
+    return
+  }
 
   let managers = collection.managers
 
-  if (event.params._value == true && managers != null) {
+  if (event.params._value == true && managers !== null) {
     managers.push(event.params._manager.toHexString())
     collection.managers = managers
   } else {
@@ -391,7 +399,7 @@ export function handleSetItemMinter(event: SetItemMinter): void {
   let id = getItemId(collectionAddress, itemId)
 
   let item = Item.load(id)
-  if (item === null) {
+  if (!item) {
     return
   }
 
@@ -408,7 +416,7 @@ export function handleSetItemMinter(event: SetItemMinter): void {
     item.minters = removeItemMinter(item, minterAddress)
     // if minter is store address, unset flag, but only if store is not global minter
     let collection = Collection.load(item.collection)
-    if (collection && !collection.searchIsStoreMinter && minterAddress == storeAddress) {
+    if (collection !== null && !collection.searchIsStoreMinter && minterAddress == storeAddress) {
       item.searchIsStoreMinter = false
     }
   }
@@ -428,7 +436,7 @@ export function handleSetItemManager(event: SetItemManager): void {
 
   let managers = item.managers
 
-  if (event.params._value == true && managers != null) {
+  if (event.params._value == true && managers !== null) {
     managers.push(event.params._manager.toHexString())
     item.managers = managers
   } else {
@@ -514,7 +522,7 @@ export function handleSetApproved(event: SetApproved): void {
 
 export function handleSetEditable(event: SetEditable): void {
   let collection = Collection.load(event.address.toHexString())
-  if (collection) {
+  if (collection !== null) {
     collection.isEditable = event.params._newValue
     collection.save()
   }
@@ -522,7 +530,7 @@ export function handleSetEditable(event: SetEditable): void {
 
 export function handleCompleteCollection(event: Complete): void {
   let collection = Collection.load(event.address.toHexString())
-  if (collection) {
+  if (collection !== null) {
     collection.isCompleted = true
     collection.save()
   }
@@ -530,7 +538,7 @@ export function handleCompleteCollection(event: Complete): void {
 
 export function handleTransferCreatorship(event: CreatorshipTransferred): void {
   let collection = Collection.load(event.address.toHexString())
-  if (collection) {
+  if (collection !== null) {
     collection.creator = event.params._newCreator.toHexString()
     collection.save()
   }
@@ -538,7 +546,7 @@ export function handleTransferCreatorship(event: CreatorshipTransferred): void {
 
 export function handleTransferOwnership(event: OwnershipTransferred): void {
   let collection = Collection.load(event.address.toHexString())
-  if (collection) {
+  if (collection !== null) {
     collection.owner = event.params.newOwner.toHexString()
     collection.save()
   }
