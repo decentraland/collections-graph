@@ -686,6 +686,24 @@ export class Item extends Entity {
       );
     }
   }
+
+  get uniqueCollectors(): Array<string> {
+    let value = this.get("uniqueCollectors");
+    return value!.toStringArray();
+  }
+
+  set uniqueCollectors(value: Array<string>) {
+    this.set("uniqueCollectors", Value.fromStringArray(value));
+  }
+
+  get uniqueCollectorsTotal(): i32 {
+    let value = this.get("uniqueCollectorsTotal");
+    return value!.toI32();
+  }
+
+  set uniqueCollectorsTotal(value: i32) {
+    this.set("uniqueCollectorsTotal", Value.fromI32(value));
+  }
 }
 
 export class NFT extends Entity {
@@ -1677,6 +1695,15 @@ export class Account extends Entity {
     this.set("creatorsSupported", Value.fromStringArray(value));
   }
 
+  get creatorsSupportedTotal(): i32 {
+    let value = this.get("creatorsSupportedTotal");
+    return value!.toI32();
+  }
+
+  set creatorsSupportedTotal(value: i32) {
+    this.set("creatorsSupportedTotal", Value.fromI32(value));
+  }
+
   get uniqueCollectors(): Array<string> {
     let value = this.get("uniqueCollectors");
     return value!.toStringArray();
@@ -1684,6 +1711,15 @@ export class Account extends Entity {
 
   set uniqueCollectors(value: Array<string>) {
     this.set("uniqueCollectors", Value.fromStringArray(value));
+  }
+
+  get uniqueCollectorsTotal(): i32 {
+    let value = this.get("uniqueCollectorsTotal");
+    return value!.toI32();
+  }
+
+  set uniqueCollectorsTotal(value: i32) {
+    this.set("uniqueCollectorsTotal", Value.fromI32(value));
   }
 }
 
@@ -2856,13 +2892,22 @@ export class AccountsDayData extends Entity {
     this.set("purchases", Value.fromI32(value));
   }
 
-  get volume(): BigInt {
-    let value = this.get("volume");
+  get earned(): BigInt {
+    let value = this.get("earned");
     return value!.toBigInt();
   }
 
-  set volume(value: BigInt) {
-    this.set("volume", Value.fromBigInt(value));
+  set earned(value: BigInt) {
+    this.set("earned", Value.fromBigInt(value));
+  }
+
+  get spent(): BigInt {
+    let value = this.get("spent");
+    return value!.toBigInt();
+  }
+
+  set spent(value: BigInt) {
+    this.set("spent", Value.fromBigInt(value));
   }
 
   get collections(): i32 {
@@ -2883,6 +2928,15 @@ export class AccountsDayData extends Entity {
     this.set("uniqueCollectors", Value.fromStringArray(value));
   }
 
+  get uniqueCollectorsTotal(): i32 {
+    let value = this.get("uniqueCollectorsTotal");
+    return value!.toI32();
+  }
+
+  set uniqueCollectorsTotal(value: i32) {
+    this.set("uniqueCollectorsTotal", Value.fromI32(value));
+  }
+
   get uniqueAndMythicItems(): Array<string> {
     let value = this.get("uniqueAndMythicItems");
     return value!.toStringArray();
@@ -2899,5 +2953,14 @@ export class AccountsDayData extends Entity {
 
   set creatorsSupported(value: Array<string>) {
     this.set("creatorsSupported", Value.fromStringArray(value));
+  }
+
+  get creatorsSupportedTotal(): i32 {
+    let value = this.get("creatorsSupportedTotal");
+    return value!.toI32();
+  }
+
+  set creatorsSupportedTotal(value: i32) {
+    this.set("creatorsSupportedTotal", Value.fromI32(value));
   }
 }

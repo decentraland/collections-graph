@@ -12,14 +12,17 @@ export function getOrCreateAccountsDayData(timestamp: BigInt, address: string): 
   if (accountsDayData === null) {
     accountsDayData = new AccountsDayData(accountsDayDataId)
     accountsDayData.date = dayStartTimestamp // unix timestamp for start of day
-    accountsDayData.volume = BigInt.fromI32(0)
+    accountsDayData.earned = BigInt.fromI32(0)
+    accountsDayData.spent = BigInt.fromI32(0)
     // for creators
     accountsDayData.sales = 0
     accountsDayData.collections = 0
     accountsDayData.uniqueCollectors = []
+    accountsDayData.uniqueCollectorsTotal = 0
     // for collectors
     accountsDayData.purchases = 0
     accountsDayData.creatorsSupported = []
+    accountsDayData.creatorsSupportedTotal = 0
     accountsDayData.uniqueAndMythicItems = []
   }
 
@@ -31,7 +34,7 @@ export function updateBuyerAccountsDayData(sale: Sale, item: Item): AccountsDayD
 
   // update buyer/collector day data
   buyerAccountsDayData.purchases += 1
-  buyerAccountsDayData.volume = buyerAccountsDayData.volume.plus(sale.price)
+  buyerAccountsDayData.earned = buyerAccountsDayData.earned.plus(sale.price)
 
   // track unique and mythic items
   if (item.rarity == 'unique' || item.rarity == 'mythic') {
@@ -39,6 +42,7 @@ export function updateBuyerAccountsDayData(sale: Sale, item: Item): AccountsDayD
   }
   // track creators supported
   buyerAccountsDayData.creatorsSupported = updateCreatorsSupportedSet(buyerAccountsDayData.creatorsSupported, sale.seller)
+  buyerAccountsDayData.creatorsSupportedTotal = buyerAccountsDayData.creatorsSupported.length
 
   return buyerAccountsDayData as AccountsDayData
 }
@@ -48,10 +52,11 @@ export function updateSellerAccountsDayData(sale: Sale): AccountsDayData {
 
   // update seller/creator day data
   sellerAccountsDayData.sales += 1
-  sellerAccountsDayData.volume = sellerAccountsDayData.volume.plus(sale.price)
+  sellerAccountsDayData.spent = sellerAccountsDayData.spent.plus(sale.price)
   // for mints, track the number of unique collectors
   if (sale.type == MINT_SALE_TYPE) {
     sellerAccountsDayData.uniqueCollectors = updateUniqueCollectorsSet(sellerAccountsDayData.uniqueCollectors, sale.buyer)
+    sellerAccountsDayData.uniqueCollectorsTotal = sellerAccountsDayData.uniqueCollectors.length
   }
 
   return sellerAccountsDayData as AccountsDayData

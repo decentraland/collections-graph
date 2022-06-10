@@ -73,6 +73,10 @@ type Item @entity {
   searchEmoteCategory: EmoteCategory
   searchEmoteRarity: String # We're using String instead of WearableRarity here so we can later query this field via ()_in
   searchEmoteBodyShapes: [WearableBodyShape!]
+
+  ## Unique collectors
+  uniqueCollectors: [String!]!
+  uniqueCollectorsTotal: Int!
 }
 
 type NFT @entity {
@@ -231,7 +235,9 @@ type Account @entity {
   uniqueAndMythicItems: [ID!]!
   collections: Int!
   creatorsSupported: [String!]!
+  creatorsSupportedTotal: Int!
   uniqueCollectors: [String!]!
+  uniqueCollectorsTotal: Int!
 }
 
 # ---------------------------------------------------------
@@ -405,9 +411,12 @@ type AccountsDayData @entity {
   date: Int!
   sales: Int!
   purchases: Int!
-  volume: BigInt!
+  earned: BigInt!
+  spent: BigInt!
   collections: Int!
   uniqueCollectors: [String!]!
+  uniqueCollectorsTotal: Int!
   uniqueAndMythicItems: [ID!]!
   creatorsSupported: [String!]!
+  creatorsSupportedTotal: Int!
 }

@@ -18,7 +18,9 @@ export function createOrLoadAccount(id: Address): Account {
     account.collections = 0
     account.uniqueAndMythicItems = []
     account.creatorsSupported = []
+    account.creatorsSupportedTotal = 0
     account.uniqueCollectors = []
+    account.uniqueCollectorsTotal = 0
   }
 
   account.save()

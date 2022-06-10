@@ -112,6 +112,7 @@ export function trackSale(
     buyerAccount.uniqueAndMythicItems = updateUniqueAndMythicItemsSet(buyerAccount.uniqueAndMythicItems, item)
   }
   buyerAccount.creatorsSupported = updateCreatorsSupportedSet(buyerAccount.creatorsSupported, sale.seller)
+  buyerAccount.creatorsSupportedTotal = buyerAccount.creatorsSupported.length
 
   buyerAccount.save()
 
@@ -120,6 +121,7 @@ export function trackSale(
   sellerAccount.sales += 1
   sellerAccount.earned = sellerAccount.earned.plus(price.minus(totalFees))
   sellerAccount.uniqueCollectors = updateUniqueCollectorsSet(sellerAccount.uniqueCollectors, buyer)
+  sellerAccount.uniqueCollectorsTotal = sellerAccount.uniqueCollectors.length
 
   sellerAccount.save()
 
@@ -134,6 +136,9 @@ export function trackSale(
   item.sales += 1
   item.volume = item.volume.plus(price)
   item.updatedAt = timestamp
+  item.uniqueCollectors = updateUniqueCollectorsSet(item.uniqueCollectors, buyer)
+  item.uniqueCollectorsTotal = item.uniqueCollectors.length
+
   item.save()
 
   // update nft
