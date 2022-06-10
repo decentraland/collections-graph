@@ -1677,6 +1677,15 @@ export class Account extends Entity {
     this.set("uniqueAndMythicItems", Value.fromStringArray(value));
   }
 
+  get uniqueAndMythicItemsTotal(): i32 {
+    let value = this.get("uniqueAndMythicItemsTotal");
+    return value!.toI32();
+  }
+
+  set uniqueAndMythicItemsTotal(value: i32) {
+    this.set("uniqueAndMythicItemsTotal", Value.fromI32(value));
+  }
+
   get collections(): i32 {
     let value = this.get("collections");
     return value!.toI32();
@@ -2944,6 +2953,15 @@ export class AccountsDayData extends Entity {
 
   set uniqueAndMythicItems(value: Array<string>) {
     this.set("uniqueAndMythicItems", Value.fromStringArray(value));
+  }
+
+  get uniqueAndMythicItemsTotal(): i32 {
+    let value = this.get("uniqueAndMythicItemsTotal");
+    return value!.toI32();
+  }
+
+  set uniqueAndMythicItemsTotal(value: i32) {
+    this.set("uniqueAndMythicItemsTotal", Value.fromI32(value));
   }
 
   get creatorsSupported(): Array<string> {

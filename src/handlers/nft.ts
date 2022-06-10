@@ -206,6 +206,8 @@ export function handleAddItemV1(event: AddWearable): void {
   item.soldAt = null
   item.sales = 0
   item.volume = BigInt.fromI32(0)
+  item.uniqueCollectors = []
+  item.uniqueCollectorsTotal = 0
 
   let metadata = buildWearableV1Metadata(item, representation!)
   item.metadata = metadata.id

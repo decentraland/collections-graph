@@ -24,6 +24,7 @@ export function getOrCreateAccountsDayData(timestamp: BigInt, address: string): 
     accountsDayData.creatorsSupported = []
     accountsDayData.creatorsSupportedTotal = 0
     accountsDayData.uniqueAndMythicItems = []
+    accountsDayData.uniqueAndMythicItemsTotal = 0
   }
 
   return accountsDayData as AccountsDayData
@@ -34,11 +35,12 @@ export function updateBuyerAccountsDayData(sale: Sale, item: Item): AccountsDayD
 
   // update buyer/collector day data
   buyerAccountsDayData.purchases += 1
-  buyerAccountsDayData.earned = buyerAccountsDayData.earned.plus(sale.price)
+  buyerAccountsDayData.spent = buyerAccountsDayData.spent.plus(sale.price)
 
   // track unique and mythic items
   if (item.rarity == 'unique' || item.rarity == 'mythic') {
     buyerAccountsDayData.uniqueAndMythicItems = updateUniqueAndMythicItemsSet(buyerAccountsDayData.uniqueAndMythicItems, item)
+    buyerAccountsDayData.uniqueAndMythicItemsTotal = buyerAccountsDayData.uniqueAndMythicItems.length
   }
   // track creators supported
   buyerAccountsDayData.creatorsSupported = updateCreatorsSupportedSet(buyerAccountsDayData.creatorsSupported, sale.seller)
@@ -47,12 +49,12 @@ export function updateBuyerAccountsDayData(sale: Sale, item: Item): AccountsDayD
   return buyerAccountsDayData as AccountsDayData
 }
 
-export function updateSellerAccountsDayData(sale: Sale): AccountsDayData {
+export function updateSellerAccountsDayData(sale: Sale, earned: BigInt): AccountsDayData {
   let sellerAccountsDayData = getOrCreateAccountsDayData(sale.timestamp, sale.seller.toHex())
 
   // update seller/creator day data
   sellerAccountsDayData.sales += 1
-  sellerAccountsDayData.spent = sellerAccountsDayData.spent.plus(sale.price)
+  sellerAccountsDayData.earned = sellerAccountsDayData.earned.plus(earned)
   // for mints, track the number of unique collectors
   if (sale.type == MINT_SALE_TYPE) {
     sellerAccountsDayData.uniqueCollectors = updateUniqueCollectorsSet(sellerAccountsDayData.uniqueCollectors, sale.buyer)

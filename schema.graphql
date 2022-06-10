@@ -233,6 +233,7 @@ type Account @entity {
   earned: BigInt!
   royalties: BigInt!
   uniqueAndMythicItems: [ID!]!
+  uniqueAndMythicItemsTotal: Int!
   collections: Int!
   creatorsSupported: [String!]!
   creatorsSupportedTotal: Int!
@@ -417,6 +418,7 @@ type AccountsDayData @entity {
   uniqueCollectors: [String!]!
   uniqueCollectorsTotal: Int!
   uniqueAndMythicItems: [ID!]!
+  uniqueAndMythicItemsTotal: Int!
   creatorsSupported: [String!]!
   creatorsSupportedTotal: Int!
 }

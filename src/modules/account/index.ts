@@ -17,6 +17,7 @@ export function createOrLoadAccount(id: Address): Account {
     account.royalties = BigInt.fromI32(0)
     account.collections = 0
     account.uniqueAndMythicItems = []
+    account.uniqueAndMythicItemsTotal = 0
     account.creatorsSupported = []
     account.creatorsSupportedTotal = 0
     account.uniqueCollectors = []

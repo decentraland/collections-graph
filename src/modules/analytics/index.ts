@@ -110,6 +110,7 @@ export function trackSale(
   buyerAccount.spent = buyerAccount.spent.plus(price)
   if (item.rarity == 'unique' || item.rarity == 'mythic') {
     buyerAccount.uniqueAndMythicItems = updateUniqueAndMythicItemsSet(buyerAccount.uniqueAndMythicItems, item)
+    buyerAccount.uniqueAndMythicItemsTotal = buyerAccount.uniqueAndMythicItems.length
   }
   buyerAccount.creatorsSupported = updateCreatorsSupportedSet(buyerAccount.creatorsSupported, sale.seller)
   buyerAccount.creatorsSupportedTotal = buyerAccount.creatorsSupported.length
@@ -167,7 +168,7 @@ export function trackSale(
   let buyerAccountsDayData = updateBuyerAccountsDayData(sale, item)
   buyerAccountsDayData.save()
 
-  let sellersAccountsDayData = updateSellerAccountsDayData(sale)
+  let sellersAccountsDayData = updateSellerAccountsDayData(sale, price.minus(totalFees))
   sellersAccountsDayData.save()
 }
 
