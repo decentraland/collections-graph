@@ -15,6 +15,13 @@ export function createOrLoadAccount(id: Address): Account {
     account.earned = BigInt.fromI32(0)
     account.spent = BigInt.fromI32(0)
     account.royalties = BigInt.fromI32(0)
+    account.collections = 0
+    account.uniqueAndMythicItems = []
+    account.uniqueAndMythicItemsTotal = 0
+    account.creatorsSupported = []
+    account.creatorsSupportedTotal = 0
+    account.uniqueCollectors = []
+    account.uniqueCollectorsTotal = 0
   }
 
   account.save()

@@ -686,6 +686,24 @@ export class Item extends Entity {
       );
     }
   }
+
+  get uniqueCollectors(): Array<string> {
+    let value = this.get("uniqueCollectors");
+    return value!.toStringArray();
+  }
+
+  set uniqueCollectors(value: Array<string>) {
+    this.set("uniqueCollectors", Value.fromStringArray(value));
+  }
+
+  get uniqueCollectorsTotal(): i32 {
+    let value = this.get("uniqueCollectorsTotal");
+    return value!.toI32();
+  }
+
+  set uniqueCollectorsTotal(value: i32) {
+    this.set("uniqueCollectorsTotal", Value.fromI32(value));
+  }
 }
 
 export class NFT extends Entity {
@@ -1648,6 +1666,69 @@ export class Account extends Entity {
 
   set royalties(value: BigInt) {
     this.set("royalties", Value.fromBigInt(value));
+  }
+
+  get uniqueAndMythicItems(): Array<string> {
+    let value = this.get("uniqueAndMythicItems");
+    return value!.toStringArray();
+  }
+
+  set uniqueAndMythicItems(value: Array<string>) {
+    this.set("uniqueAndMythicItems", Value.fromStringArray(value));
+  }
+
+  get uniqueAndMythicItemsTotal(): i32 {
+    let value = this.get("uniqueAndMythicItemsTotal");
+    return value!.toI32();
+  }
+
+  set uniqueAndMythicItemsTotal(value: i32) {
+    this.set("uniqueAndMythicItemsTotal", Value.fromI32(value));
+  }
+
+  get collections(): i32 {
+    let value = this.get("collections");
+    return value!.toI32();
+  }
+
+  set collections(value: i32) {
+    this.set("collections", Value.fromI32(value));
+  }
+
+  get creatorsSupported(): Array<string> {
+    let value = this.get("creatorsSupported");
+    return value!.toStringArray();
+  }
+
+  set creatorsSupported(value: Array<string>) {
+    this.set("creatorsSupported", Value.fromStringArray(value));
+  }
+
+  get creatorsSupportedTotal(): i32 {
+    let value = this.get("creatorsSupportedTotal");
+    return value!.toI32();
+  }
+
+  set creatorsSupportedTotal(value: i32) {
+    this.set("creatorsSupportedTotal", Value.fromI32(value));
+  }
+
+  get uniqueCollectors(): Array<string> {
+    let value = this.get("uniqueCollectors");
+    return value!.toStringArray();
+  }
+
+  set uniqueCollectors(value: Array<string>) {
+    this.set("uniqueCollectors", Value.fromStringArray(value));
+  }
+
+  get uniqueCollectorsTotal(): i32 {
+    let value = this.get("uniqueCollectorsTotal");
+    return value!.toI32();
+  }
+
+  set uniqueCollectorsTotal(value: i32) {
+    this.set("uniqueCollectorsTotal", Value.fromI32(value));
   }
 }
 
@@ -2649,5 +2730,255 @@ export class AnalyticsDayData extends Entity {
 
   set daoEarnings(value: BigInt) {
     this.set("daoEarnings", Value.fromBigInt(value));
+  }
+}
+
+export class ItemsDayData extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save ItemsDayData entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type ItemsDayData must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("ItemsDayData", id.toString(), this);
+    }
+  }
+
+  static load(id: string): ItemsDayData | null {
+    return changetype<ItemsDayData | null>(store.get("ItemsDayData", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get date(): i32 {
+    let value = this.get("date");
+    return value!.toI32();
+  }
+
+  set date(value: i32) {
+    this.set("date", Value.fromI32(value));
+  }
+
+  get sales(): i32 {
+    let value = this.get("sales");
+    return value!.toI32();
+  }
+
+  set sales(value: i32) {
+    this.set("sales", Value.fromI32(value));
+  }
+
+  get volume(): BigInt {
+    let value = this.get("volume");
+    return value!.toBigInt();
+  }
+
+  set volume(value: BigInt) {
+    this.set("volume", Value.fromBigInt(value));
+  }
+
+  get searchEmoteCategory(): string | null {
+    let value = this.get("searchEmoteCategory");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set searchEmoteCategory(value: string | null) {
+    if (!value) {
+      this.unset("searchEmoteCategory");
+    } else {
+      this.set("searchEmoteCategory", Value.fromString(<string>value));
+    }
+  }
+
+  get searchWearableCategory(): string | null {
+    let value = this.get("searchWearableCategory");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set searchWearableCategory(value: string | null) {
+    if (!value) {
+      this.unset("searchWearableCategory");
+    } else {
+      this.set("searchWearableCategory", Value.fromString(<string>value));
+    }
+  }
+
+  get searchRarity(): string | null {
+    let value = this.get("searchRarity");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set searchRarity(value: string | null) {
+    if (!value) {
+      this.unset("searchRarity");
+    } else {
+      this.set("searchRarity", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class AccountsDayData extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save AccountsDayData entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type AccountsDayData must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("AccountsDayData", id.toString(), this);
+    }
+  }
+
+  static load(id: string): AccountsDayData | null {
+    return changetype<AccountsDayData | null>(store.get("AccountsDayData", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get date(): i32 {
+    let value = this.get("date");
+    return value!.toI32();
+  }
+
+  set date(value: i32) {
+    this.set("date", Value.fromI32(value));
+  }
+
+  get sales(): i32 {
+    let value = this.get("sales");
+    return value!.toI32();
+  }
+
+  set sales(value: i32) {
+    this.set("sales", Value.fromI32(value));
+  }
+
+  get purchases(): i32 {
+    let value = this.get("purchases");
+    return value!.toI32();
+  }
+
+  set purchases(value: i32) {
+    this.set("purchases", Value.fromI32(value));
+  }
+
+  get earned(): BigInt {
+    let value = this.get("earned");
+    return value!.toBigInt();
+  }
+
+  set earned(value: BigInt) {
+    this.set("earned", Value.fromBigInt(value));
+  }
+
+  get spent(): BigInt {
+    let value = this.get("spent");
+    return value!.toBigInt();
+  }
+
+  set spent(value: BigInt) {
+    this.set("spent", Value.fromBigInt(value));
+  }
+
+  get collections(): i32 {
+    let value = this.get("collections");
+    return value!.toI32();
+  }
+
+  set collections(value: i32) {
+    this.set("collections", Value.fromI32(value));
+  }
+
+  get uniqueCollectors(): Array<string> {
+    let value = this.get("uniqueCollectors");
+    return value!.toStringArray();
+  }
+
+  set uniqueCollectors(value: Array<string>) {
+    this.set("uniqueCollectors", Value.fromStringArray(value));
+  }
+
+  get uniqueCollectorsTotal(): i32 {
+    let value = this.get("uniqueCollectorsTotal");
+    return value!.toI32();
+  }
+
+  set uniqueCollectorsTotal(value: i32) {
+    this.set("uniqueCollectorsTotal", Value.fromI32(value));
+  }
+
+  get uniqueAndMythicItems(): Array<string> {
+    let value = this.get("uniqueAndMythicItems");
+    return value!.toStringArray();
+  }
+
+  set uniqueAndMythicItems(value: Array<string>) {
+    this.set("uniqueAndMythicItems", Value.fromStringArray(value));
+  }
+
+  get uniqueAndMythicItemsTotal(): i32 {
+    let value = this.get("uniqueAndMythicItemsTotal");
+    return value!.toI32();
+  }
+
+  set uniqueAndMythicItemsTotal(value: i32) {
+    this.set("uniqueAndMythicItemsTotal", Value.fromI32(value));
+  }
+
+  get creatorsSupported(): Array<string> {
+    let value = this.get("creatorsSupported");
+    return value!.toStringArray();
+  }
+
+  set creatorsSupported(value: Array<string>) {
+    this.set("creatorsSupported", Value.fromStringArray(value));
+  }
+
+  get creatorsSupportedTotal(): i32 {
+    let value = this.get("creatorsSupportedTotal");
+    return value!.toI32();
+  }
+
+  set creatorsSupportedTotal(value: i32) {
+    this.set("creatorsSupportedTotal", Value.fromI32(value));
   }
 }
