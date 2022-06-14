@@ -128,9 +128,9 @@ export function setItemWearableSearchFields(item: Item): Item {
     return item
   }
   let metadata = Metadata.load(item.metadata!)
-  if (metadata !== null && metadata.wearable !== null) {
+  if (metadata != null && metadata.wearable != null) {
     let wearable = Wearable.load(metadata.wearable!)
-    if (wearable !== null) {
+    if (wearable != null) {
       item.searchText = toLowerCase(wearable.name + ' ' + wearable.description)
       item.searchIsWearableHead = isWearableHead(wearable.category)
       item.searchIsWearableAccessory = isWearableAccessory(wearable.category)
@@ -149,7 +149,7 @@ export function setNFTWearableSearchFields(nft: NFT): NFT {
     return nft
   }
   let metadata = Metadata.load(nft.metadata!)
-  if (metadata !== null && metadata.wearable !== null) {
+  if (metadata != null && metadata.wearable != null) {
     let wearable = Wearable.load(metadata.wearable!)
 
     if (wearable) {
@@ -242,7 +242,7 @@ export function getWearableV1Representation(wearableId: string): WearableReprese
 
   for (let i = 0; i < allCollections.length; i++) {
     let wearable = findWearable(wearableId, allCollections[i])
-    if (wearable !== null && wearable.id == wearableId) {
+    if (wearable != null && wearable.id == wearableId) {
       return wearable
     }
   }

@@ -47,9 +47,9 @@ export function setItemEmoteSearchFields(item: Item): Item {
     return item
   }
   let metadata = Metadata.load(item.metadata!)
-  if (metadata !== null) {
+  if (metadata != null) {
     let emote = Emote.load(metadata.emote!)
-    if (emote !== null) {
+    if (emote != null) {
       item.searchText = toLowerCase(emote.name + ' ' + emote.description)
       item.searchEmoteCategory = emote.category
       item.searchEmoteBodyShapes = emote.bodyShapes
@@ -66,7 +66,7 @@ export function setNFTEmoteSearchFields(nft: NFT): NFT {
     return nft
   }
   let metadata = Metadata.load(nft.metadata!) as Metadata
-  if (metadata !== null) {
+  if (metadata != null) {
     let emote = Emote.load(metadata.emote!) as Emote
     if (emote) {
       nft.searchText = toLowerCase(emote.name + ' ' + emote.description)
