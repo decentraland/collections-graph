@@ -33,10 +33,12 @@ export function handleOrderCreated(event: OrderCreated): void {
 
   order.save()
 
-  cancelActiveOrder(nft!, event.block.timestamp)
+  if (nft.activeOrder != null) {
+    cancelActiveOrder(nft, event.block.timestamp)
+  }
 
   nft.updatedAt = event.block.timestamp
-  nft = updateNFTOrderProperties(nft!, order)
+  nft = updateNFTOrderProperties(nft, order)
   nft.save()
 
   let count = buildCountFromOrder()
@@ -59,15 +61,19 @@ export function handleOrderSuccessful(event: OrderSuccessful): void {
   order.updatedAt = event.block.timestamp
   order.save()
 
-  let nft = NFT.load(order.nft)
-  if (nft == null) {
-    log.info('Undefined NFT {} for order {} and address {}', [order.nft, orderId, event.params.nftAddress.toHexString()])
+  if (!order.nft) {
+    return
+  }
+
+  let nft = NFT.load(order.nft!)
+  if (!nft) {
+    log.info('Undefined NFT {} for order {} and address {}', [order.nft!, orderId, event.params.nftAddress.toHexString()])
     return
   }
 
   nft.owner = event.params.buyer.toHex()
   nft.updatedAt = event.block.timestamp
-  nft = updateNFTOrderProperties(nft!, order!)
+  nft = updateNFTOrderProperties(nft, order)
   nft.save()
 
   // Bind contract
@@ -80,7 +86,7 @@ export function handleOrderSuccessful(event: OrderSuccessful): void {
     ORDER_SALE_TYPE,
     event.params.buyer,
     event.params.seller,
-    nft.item,
+    nft.item!,
     nft.id,
     order.price,
     ownerCutPerMillion.reverted ? BigInt.fromI32(0) : ownerCutPerMillion.value,
@@ -99,18 +105,20 @@ export function handleOrderCancelled(event: OrderCancelled): void {
     return
   }
 
-  let nft = NFT.load(order.nft)
-  if (nft == null) {
-    log.info('Undefined NFT {} for order {} and address {}', [order.nft, orderId, event.params.nftAddress.toHexString()])
-    return
+  if (order.nft != null) {
+    let nft = NFT.load(order.nft!)
+    if (!nft) {
+      log.info('Undefined NFT {} for order {} and address {}', [order.nft!, orderId, event.params.nftAddress.toHexString()])
+      return
+    }
+
+    order.status = status.CANCELLED
+    order.blockNumber = event.block.number
+    order.updatedAt = event.block.timestamp
+    order.save()
+
+    nft.updatedAt = event.block.timestamp
+    nft = updateNFTOrderProperties(nft, order)
+    nft.save()
   }
-
-  order.status = status.CANCELLED
-  order.blockNumber = event.block.number
-  order.updatedAt = event.block.timestamp
-  order.save()
-
-  nft.updatedAt = event.block.timestamp
-  nft = updateNFTOrderProperties(nft!, order!)
-  nft.save()
 }

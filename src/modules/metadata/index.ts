@@ -53,7 +53,7 @@ export function buildItemMetadata(item: Item): Metadata {
 
   metadata.save()
 
-  return metadata!
+  return metadata
 }
 
 export function buildWearableV1Metadata(item: Item, representation: WearableRepresentation): Metadata {
@@ -66,7 +66,7 @@ export function buildWearableV1Metadata(item: Item, representation: WearableRepr
 
   metadata.save()
 
-  return metadata!
+  return metadata
 }
 
 export function setItemSearchFields(item: Item): Item {

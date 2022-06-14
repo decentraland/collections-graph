@@ -43,27 +43,39 @@ function isValidEmoteCategory(category: string): boolean {
 }
 
 export function setItemEmoteSearchFields(item: Item): Item {
-  let metadata = Metadata.load(item.metadata)
-  let emote = Emote.load(metadata.emote)
-
-  item.searchText = toLowerCase(emote.name + ' ' + emote.description)
-  item.searchItemType = item.itemType
-  item.searchEmoteCategory = emote.category
-  item.searchEmoteBodyShapes = emote.bodyShapes
-  item.searchEmoteRarity = emote.rarity
+  if (!item.metadata) {
+    return item
+  }
+  let metadata = Metadata.load(item.metadata!)
+  if (metadata != null) {
+    let emote = Emote.load(metadata.emote!)
+    if (emote != null) {
+      item.searchText = toLowerCase(emote.name + ' ' + emote.description)
+      item.searchEmoteCategory = emote.category
+      item.searchEmoteBodyShapes = emote.bodyShapes
+      item.searchEmoteRarity = emote.rarity
+    }
+    item.searchItemType = item.itemType
+  }
 
   return item
 }
 
 export function setNFTEmoteSearchFields(nft: NFT): NFT {
-  let metadata = Metadata.load(nft.metadata)
-  let emote = Emote.load(metadata.emote)
-
-  nft.searchText = toLowerCase(emote.name + ' ' + emote.description)
-  nft.searchItemType = nft.itemType
-  nft.searchEmoteCategory = emote.category
-  nft.searchEmoteBodyShapes = emote.bodyShapes
-  nft.searchEmoteRarity = emote.rarity
+  if (!nft.metadata) {
+    return nft
+  }
+  let metadata = Metadata.load(nft.metadata!) as Metadata
+  if (metadata != null) {
+    let emote = Emote.load(metadata.emote!) as Emote
+    if (emote) {
+      nft.searchText = toLowerCase(emote.name + ' ' + emote.description)
+      nft.searchEmoteCategory = emote.category
+      nft.searchEmoteBodyShapes = emote.bodyShapes
+      nft.searchEmoteRarity = emote.rarity
+    }
+    nft.searchItemType = nft.itemType
+  }
 
   return nft
 }

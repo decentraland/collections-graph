@@ -51,13 +51,13 @@ export function handleBidAccepted(event: BidAccepted): void {
 
   // Omit events of a bid accepted/cancelled from a bid that was not indexed. Orders and bids are being indexed from the beginning of collections.
   // Not from the Bid contract creation.
-  if (bid == null) {
+  if (bid == null || bid.nft == null) {
     return
   }
 
-  let nft = NFT.load(bid.nft)
+  let nft = NFT.load(bid.nft!)
   if (nft == null) {
-    log.info('Undefined NFT {} for bid {} and address {}', [bid.nft, id, event.params._tokenAddress.toHexString()])
+    log.info('Undefined NFT {} for bid {} and address {}', [bid.nft!, id, event.params._tokenAddress.toHexString()])
     return
   }
 
@@ -78,7 +78,7 @@ export function handleBidAccepted(event: BidAccepted): void {
     BID_SALE_TYPE,
     event.params._bidder,
     event.params._seller,
-    nft.item,
+    nft.item!,
     nft.id,
     bid.price,
     bidContract.feesCollectorCutPerMillion(),
@@ -100,9 +100,9 @@ export function handleBidCancelled(event: BidCancelled): void {
     return
   }
 
-  let nft = NFT.load(bid.nft)
+  let nft = NFT.load(bid.nft!)
   if (nft == null) {
-    log.info('Undefined NFT {} for bid {} and address {}', [bid.nft, id, event.params._tokenAddress.toHexString()])
+    log.info('Undefined NFT {} for bid {} and address {}', [bid.nft!, id, event.params._tokenAddress.toHexString()])
     return
   }
 

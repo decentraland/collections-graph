@@ -34,6 +34,9 @@ export function handleMintNFT(event: Issue, collectionAddress: string, item: Ite
   let issuedId = event.params._issuedId
 
   let collection = Collection.load(collectionAddress)
+  if (!collection) {
+    return
+  }
   nft.collection = collection.id
   nft.tokenId = event.params._tokenId
   nft.contractAddress = collectionAddress
@@ -118,12 +121,15 @@ export function handleTransferNFT(event: Transfer): void {
   let id = getNFTId(collectionAddress, event.params.tokenId.toString())
 
   let nft = NFT.load(id)
+  if (!nft) {
+    return
+  }
 
   nft.owner = event.params.to.toHex()
   nft.updatedAt = event.block.timestamp
 
-  if (cancelActiveOrder(nft!, event.block.timestamp)) {
-    nft = clearNFTOrderProperties(nft!)
+  if (cancelActiveOrder(nft, event.block.timestamp)) {
+    nft = clearNFTOrderProperties(nft)
   }
 
   createOrLoadAccount(event.params.to)
@@ -154,7 +160,7 @@ export function handleAddItemV1(event: AddWearable): void {
     collection.minters = []
     collection.managers = []
     collection.itemsCount = 0
-    collection.urn = getURNForCollectionV1(collection!)
+    collection.urn = getURNForCollectionV1(collection)
     collection.createdAt = event.block.timestamp // Not going to be used
     collection.updatedAt = event.block.timestamp // Not going to be used
     collection.reviewedAt = event.block.timestamp // Not going to be used
@@ -180,7 +186,7 @@ export function handleAddItemV1(event: AddWearable): void {
   item.blockchainId = BigInt.fromI32(collection.itemsCount)
   item.collection = collectionAddress
   item.creationFee = BigInt.fromI32(0)
-  item.rarity = representation.rarity
+  item.rarity = representation!.rarity
   item.available = event.params._maxIssuance
   item.totalSupply = BigInt.fromI32(0)
   item.maxSupply = item.available
@@ -191,7 +197,7 @@ export function handleAddItemV1(event: AddWearable): void {
   item.minters = [] // Not used for collections v1
   item.managers = [] // Not used for collections v1
   item.URI = collectionContract.baseURI() + event.params._wearableId
-  item.urn = getURNForWearableV1(collection!, representation.id)
+  item.urn = getURNForWearableV1(collection, representation!.id)
   item.image = getItemImage(item)
   item.createdAt = event.block.timestamp // Not used for collections v1
   item.updatedAt = event.block.timestamp // Not used for collections v1
@@ -201,7 +207,7 @@ export function handleAddItemV1(event: AddWearable): void {
   item.sales = 0
   item.volume = BigInt.fromI32(0)
 
-  let metadata = buildWearableV1Metadata(item, representation)
+  let metadata = buildWearableV1Metadata(item, representation!)
   item.metadata = metadata.id
   item.itemType = metadata.itemType
 
@@ -235,7 +241,7 @@ export function handleTransferWearableV1(event: ERC721Transfer): void {
 
   let nft = new NFT(id)
 
-  nft.collection = collection.id
+  nft.collection = collection!.id
   nft.tokenId = event.params.tokenId
   nft.owner = event.params.to.toHex()
   nft.contractAddress = collectionAddress
@@ -285,7 +291,7 @@ export function handleTransferWearableV1(event: ERC721Transfer): void {
   } else {
     let oldNFT = NFT.load(id)
     if (cancelActiveOrder(oldNFT!, event.block.timestamp)) {
-      nft = clearNFTOrderProperties(nft!)
+      nft = clearNFTOrderProperties(nft)
     }
   }
 

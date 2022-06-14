@@ -17,8 +17,8 @@ export function removeItemMinter(item: Item, minter: string): Array<string> {
   let minters = item.minters
 
   for (let i = 0; i < minters.length; i++) {
-    if (minters![i] != minter) {
-      newMinters.push(minters![i])
+    if (minters[i] != minter) {
+      newMinters.push(minters[i])
     }
   }
 
