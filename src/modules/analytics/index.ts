@@ -9,6 +9,7 @@ import {
   buildCountFromSecondarySale
 } from '../Count'
 import { ONE_MILLION } from '../Store'
+import * as itemTypes from '../metadata/itemTypes'
 import {
   updateBuyerAccountsDayData,
   updateCreatorsSupportedSet,
@@ -64,6 +65,7 @@ export function trackSale(
   sale.searchItemId = item.blockchainId
   sale.searchTokenId = nft.tokenId
   sale.searchContractAddress = nft.contractAddress
+  sale.searchCategory = nft.category
 
   // update Fees
   sale.feesCollector = feesCollector

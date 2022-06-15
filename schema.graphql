@@ -82,6 +82,7 @@ type Item @entity {
 type NFT @entity {
   id: ID!
   tokenId: BigInt!
+  category: String!
   contractAddress: String!
   itemBlockchainId: BigInt
   issuedId: BigInt
@@ -382,6 +383,7 @@ type Sale @entity {
   # search
   searchTokenId: BigInt!
   searchItemId: BigInt!
+  searchCategory: String!
   searchContractAddress: String!
 }
 
