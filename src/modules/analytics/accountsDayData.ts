@@ -93,3 +93,9 @@ export function updateUniqueCollectorsSet(collectors: string[], buyer: Bytes): s
   // @ts-ignore - uniqueCollectors.values() returns an Array<string> and not an IterableIterator<string> as the IDE suggests
   return uniqueCollectors.values()
 }
+
+export function buildAccountsDayDataFromCollection(timestamp: BigInt, creator: string): AccountsDayData {
+  let accountDayData = getOrCreateAccountsDayData(timestamp, creator)
+  accountDayData.collections += 1
+  return accountDayData as AccountsDayData
+}
