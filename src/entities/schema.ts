@@ -746,6 +746,15 @@ export class NFT extends Entity {
     this.set("tokenId", Value.fromBigInt(value));
   }
 
+  get category(): string {
+    let value = this.get("category");
+    return value!.toString();
+  }
+
+  set category(value: string) {
+    this.set("category", Value.fromString(value));
+  }
+
   get contractAddress(): string {
     let value = this.get("contractAddress");
     return value!.toString();
@@ -2642,6 +2651,15 @@ export class Sale extends Entity {
 
   set searchItemId(value: BigInt) {
     this.set("searchItemId", Value.fromBigInt(value));
+  }
+
+  get searchCategory(): string {
+    let value = this.get("searchCategory");
+    return value!.toString();
+  }
+
+  set searchCategory(value: string) {
+    this.set("searchCategory", Value.fromString(value));
   }
 
   get searchContractAddress(): string {

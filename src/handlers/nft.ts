@@ -38,6 +38,7 @@ export function handleMintNFT(event: Issue, collectionAddress: string, item: Ite
     return
   }
   nft.collection = collection.id
+  nft.category = item.itemType == itemTypes.EMOTE_V1 ? 'emote' : 'wearable'
   nft.tokenId = event.params._tokenId
   nft.contractAddress = collectionAddress
   nft.itemBlockchainId = event.params._itemId
@@ -244,6 +245,7 @@ export function handleTransferWearableV1(event: ERC721Transfer): void {
   let nft = new NFT(id)
 
   nft.collection = collection!.id
+  nft.category = item.itemType == itemTypes.EMOTE_V1 ? 'emote' : 'wearable'
   nft.tokenId = event.params.tokenId
   nft.owner = event.params.to.toHex()
   nft.contractAddress = collectionAddress
