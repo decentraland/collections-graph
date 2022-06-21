@@ -49,19 +49,19 @@ export function updateBuyerAccountsDayData(sale: Sale, item: Item): AccountsDayD
   return buyerAccountsDayData as AccountsDayData
 }
 
-export function updateSellerAccountsDayData(sale: Sale, earned: BigInt): AccountsDayData {
-  let sellerAccountsDayData = getOrCreateAccountsDayData(sale.timestamp, sale.seller.toHex())
+export function updateCreatorAccountsDayData(sale: Sale, earned: BigInt): AccountsDayData {
+  let creatorAccountsDayData = getOrCreateAccountsDayData(sale.timestamp, sale.seller.toHex())
 
   // update seller/creator day data
-  sellerAccountsDayData.sales += 1
-  sellerAccountsDayData.earned = sellerAccountsDayData.earned.plus(earned)
+  creatorAccountsDayData.earned = creatorAccountsDayData.earned.plus(earned)
   // for mints, track the number of unique collectors
   if (sale.type == MINT_SALE_TYPE) {
-    sellerAccountsDayData.uniqueCollectors = updateUniqueCollectorsSet(sellerAccountsDayData.uniqueCollectors, sale.buyer)
-    sellerAccountsDayData.uniqueCollectorsTotal = sellerAccountsDayData.uniqueCollectors.length
+    creatorAccountsDayData.sales += 1
+    creatorAccountsDayData.uniqueCollectors = updateUniqueCollectorsSet(creatorAccountsDayData.uniqueCollectors, sale.buyer)
+    creatorAccountsDayData.uniqueCollectorsTotal = creatorAccountsDayData.uniqueCollectors.length
   }
 
-  return sellerAccountsDayData as AccountsDayData
+  return creatorAccountsDayData as AccountsDayData
 }
 
 export function updateUniqueAndMythicItemsSet(uniqueAndMythicItems: string[], item: Item): string[] {
