@@ -1,0 +1,23 @@
+{
+  "network": "goerli",
+  "address_fist_collection_v1": "0x1f0880E0b4514DC58e68B9BE91693bFA8C067ac1",
+  "startBock_first_collections_v1": 7103734,
+  "address_factory": "0x0000000000000000000000000000000000000000",
+  "startBlock_factory": 7103734,
+  "address_factory_v3": "0x0000000000000000000000000000000000000000",
+  "startBlock_factory_v3": 7103734,
+  "address_old_committee": "0x0000000000000000000000000000000000000000",
+  "startBlock_old_committee": 7103734,
+  "address_committee": "0x0000000000000000000000000000000000000000",
+  "startBlock_committee": 7103734,
+  "address_marketplace": "0x0000000000000000000000000000000000000000",
+  "startBlock_marketplace": 7103734,
+  "address_marketplace_V2": "0x0000000000000000000000000000000000000000",
+  "startBlock_marketplace_V2": 7103734,
+  "address_bid": "0x0000000000000000000000000000000000000000",
+  "startBlock_bid": 7103734,
+  "address_bid_v2": "0x0000000000000000000000000000000000000000",
+  "startBlock_bid_v2": 7103734,
+  "address_rarity": "0x0000000000000000000000000000000000000000",
+  "startBlock_rarity": 7103734
+}
