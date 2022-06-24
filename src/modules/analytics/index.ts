@@ -13,7 +13,7 @@ import * as itemTypes from '../metadata/itemTypes'
 import {
   updateBuyerAccountsDayData,
   updateCreatorsSupportedSet,
-  updateSellerAccountsDayData,
+  updateCreatorAccountsDayData,
   updateUniqueAndMythicItemsSet,
   updateUniqueCollectorsSet
 } from './accountsDayData'
@@ -170,8 +170,8 @@ export function trackSale(
   let buyerAccountsDayData = updateBuyerAccountsDayData(sale, item)
   buyerAccountsDayData.save()
 
-  let sellersAccountsDayData = updateSellerAccountsDayData(sale, price.minus(totalFees))
-  sellersAccountsDayData.save()
+  let creatorsAccountsDayData = updateCreatorAccountsDayData(sale, price.minus(totalFees))
+  creatorsAccountsDayData.save()
 }
 
 // ItemsDayData
