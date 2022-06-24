@@ -30,7 +30,6 @@ import { getURNForWearableV2, getURNForCollectionV2 } from '../modules/Metadata/
 import { getStoreAddress } from '../modules/store'
 import { getOrCreateAnalyticsDayData } from '../modules/analytics'
 import { getCurationId, getBlockWhereRescueItemsStarted } from '../modules/Curation'
-import { buildAccountsDayDataFromCollection } from '../modules/analytics/accountsDayData'
 import { toLowerCase } from '../utils'
 
 export function handleInitializeWearablesV1(_: OwnershipTransferred): void {
@@ -87,9 +86,6 @@ export function handleCollectionCreation(event: ProxyCreated): void {
   let creatorAccount = createOrLoadAccount(Address.fromString(collection.creator))
   creatorAccount.collections += 1
   creatorAccount.save()
-
-  let creatorsDayData = buildAccountsDayDataFromCollection(event.block.timestamp, collection.creator)
-  creatorsDayData.save()
 }
 
 export function handleAddItem(event: AddItem): void {
@@ -269,7 +265,7 @@ export function handleIssue(event: Issue): void {
 
   let item = Item.load(id)
 
-  if (item !==null) {
+  if (item !== null) {
     item.available = item.available.minus(BigInt.fromI32(1))
     item.totalSupply = item.totalSupply.plus(BigInt.fromI32(1))
 
