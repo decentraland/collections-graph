@@ -24,7 +24,7 @@ export function handleAddRarity(event: AddRarity): void {
 
 export function handleUpdatePrice(event: UpdatePrice): void {
   let name = event.params._name
-
+  
   let rarity = Rarity.load(name)
 
   if (rarity == null) {

@@ -1,3 +1,4 @@
+import { log } from '@graphprotocol/graph-ts'
 import { AddRarity, UpdatePrice } from '../entities/RaritiesWithOracle/RaritiesWithOracle'
 import { Rarity } from '../entities/schema'
 
@@ -19,7 +20,14 @@ export function handleAddRarity(event: AddRarity): void {
 }
 
 export function handleUpdatePrice(event: UpdatePrice): void {
-  let rarity = Rarity.load(event.params._name)
+  let name = event.params._name
+  
+  let rarity = Rarity.load(name)
+
+  if (rarity == null) {
+    log.error('Rarity with name {} not found',[name])
+    return
+  }
 
   rarity.price = event.params._price
 
