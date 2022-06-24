@@ -1558,7 +1558,7 @@ export class Rarity extends Entity {
 
   get currency(): string {
     let value = this.get("currency");
-    return value.toString();
+    return value!.toString();
   }
 
   set currency(value: string) {

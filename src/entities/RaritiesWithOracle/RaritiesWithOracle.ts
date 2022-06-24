@@ -24,7 +24,9 @@ export class AddRarity__Params {
   }
 
   get _rarity(): AddRarity_rarityStruct {
-    return this._event.parameters[0].value.toTuple() as AddRarity_rarityStruct;
+    return changetype<AddRarity_rarityStruct>(
+      this._event.parameters[0].value.toTuple()
+    );
   }
 }
 
@@ -166,6 +168,18 @@ export class RaritiesWithOracle__raritiesResult {
     map.set("value2", ethereum.Value.fromUnsignedBigInt(this.value2));
     return map;
   }
+
+  getName(): string {
+    return this.value0;
+  }
+
+  getMaxSupply(): BigInt {
+    return this.value1;
+  }
+
+  getPrice(): BigInt {
+    return this.value2;
+  }
 }
 
 export class RaritiesWithOracle extends ethereum.SmartContract {
@@ -239,7 +253,9 @@ export class RaritiesWithOracle extends ethereum.SmartContract {
       [ethereum.Value.fromString(_rarity)]
     );
 
-    return result[0].toTuple() as RaritiesWithOracle__getRarityByNameResultValue0Struct;
+    return changetype<RaritiesWithOracle__getRarityByNameResultValue0Struct>(
+      result[0].toTuple()
+    );
   }
 
   try_getRarityByName(
@@ -257,7 +273,9 @@ export class RaritiesWithOracle extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(
-      value[0].toTuple() as RaritiesWithOracle__getRarityByNameResultValue0Struct
+      changetype<RaritiesWithOracle__getRarityByNameResultValue0Struct>(
+        value[0].toTuple()
+      )
     );
   }
 
