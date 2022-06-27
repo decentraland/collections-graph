@@ -57,7 +57,7 @@ export function updateCreatorAccountsDayData(sale: Sale, earned: BigInt, collect
   // for mints, track the number of unique collectors
   if (sale.type == MINT_SALE_TYPE) {
     creatorAccountsDayData.sales += 1
-    creatorAccountsDayData.uniqueCollectionsSales = updateUniqueCollectionsSalesSet(creatorAccountsDayData.uniqueCollectors, collectionId)
+    creatorAccountsDayData.uniqueCollectionsSales = updateUniqueCollectionsSalesSet(creatorAccountsDayData.uniqueCollectionsSales, collectionId)
     creatorAccountsDayData.uniqueCollectors = updateUniqueCollectorsSet(creatorAccountsDayData.uniqueCollectors, sale.buyer)
     creatorAccountsDayData.uniqueCollectorsTotal = creatorAccountsDayData.uniqueCollectors.length
   }
