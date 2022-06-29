@@ -170,7 +170,7 @@ export function trackSale(
   let buyerAccountsDayData = updateBuyerAccountsDayData(sale, item)
   buyerAccountsDayData.save()
 
-  let creatorsAccountsDayData = updateCreatorAccountsDayData(sale, price.minus(totalFees))
+  let creatorsAccountsDayData = updateCreatorAccountsDayData(sale, price.minus(totalFees), item.collection)
   creatorsAccountsDayData.save()
 }
 

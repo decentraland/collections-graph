@@ -16,7 +16,7 @@ export function getOrCreateAccountsDayData(timestamp: BigInt, address: string): 
     accountsDayData.spent = BigInt.fromI32(0)
     // for creators
     accountsDayData.sales = 0
-    accountsDayData.collections = 0
+    accountsDayData.uniqueCollectionsSales = []
     accountsDayData.uniqueCollectors = []
     accountsDayData.uniqueCollectorsTotal = 0
     // for collectors
@@ -49,7 +49,7 @@ export function updateBuyerAccountsDayData(sale: Sale, item: Item): AccountsDayD
   return buyerAccountsDayData as AccountsDayData
 }
 
-export function updateCreatorAccountsDayData(sale: Sale, earned: BigInt): AccountsDayData {
+export function updateCreatorAccountsDayData(sale: Sale, earned: BigInt, collectionId: string): AccountsDayData {
   let creatorAccountsDayData = getOrCreateAccountsDayData(sale.timestamp, sale.seller.toHex())
 
   // update seller/creator day data
@@ -57,6 +57,7 @@ export function updateCreatorAccountsDayData(sale: Sale, earned: BigInt): Accoun
   // for mints, track the number of unique collectors
   if (sale.type == MINT_SALE_TYPE) {
     creatorAccountsDayData.sales += 1
+    creatorAccountsDayData.uniqueCollectionsSales = updateUniqueCollectionsSalesSet(creatorAccountsDayData.uniqueCollectionsSales, collectionId)
     creatorAccountsDayData.uniqueCollectors = updateUniqueCollectorsSet(creatorAccountsDayData.uniqueCollectors, sale.buyer)
     creatorAccountsDayData.uniqueCollectorsTotal = creatorAccountsDayData.uniqueCollectors.length
   }
@@ -94,8 +95,12 @@ export function updateUniqueCollectorsSet(collectors: string[], buyer: Bytes): s
   return uniqueCollectors.values()
 }
 
-export function buildAccountsDayDataFromCollection(timestamp: BigInt, creator: string): AccountsDayData {
-  let accountDayData = getOrCreateAccountsDayData(timestamp, creator)
-  accountDayData.collections += 1
-  return accountDayData as AccountsDayData
+export function updateUniqueCollectionsSalesSet(uniqueCollectionsSales: string[], collectionId: string): string[] {
+  let uniqueCollectionsSalesSet = new Set<string>()
+  for (let i = 0; i < uniqueCollectionsSales.length; i++) {
+    uniqueCollectionsSalesSet.add(uniqueCollectionsSales[i])
+  }
+  uniqueCollectionsSalesSet.add(collectionId)
+  // @ts-ignore - uniqueCollectionsSalesSet.values() returns an Array<string> and not an IterableIterator<string> as the IDE suggests
+  return uniqueCollectionsSalesSet.values()
 }

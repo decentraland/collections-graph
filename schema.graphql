@@ -416,7 +416,7 @@ type AccountsDayData @entity {
   purchases: Int!
   earned: BigInt!
   spent: BigInt!
-  collections: Int!
+  uniqueCollectionsSales: [String!]!
   uniqueCollectors: [String!]!
   uniqueCollectorsTotal: Int!
   uniqueAndMythicItems: [ID!]!

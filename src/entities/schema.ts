@@ -2937,13 +2937,13 @@ export class AccountsDayData extends Entity {
     this.set("spent", Value.fromBigInt(value));
   }
 
-  get collections(): i32 {
-    let value = this.get("collections");
-    return value!.toI32();
+  get uniqueCollectionsSales(): Array<string> {
+    let value = this.get("uniqueCollectionsSales");
+    return value!.toStringArray();
   }
 
-  set collections(value: i32) {
-    this.set("collections", Value.fromI32(value));
+  set uniqueCollectionsSales(value: Array<string>) {
+    this.set("uniqueCollectionsSales", Value.fromStringArray(value));
   }
 
   get uniqueCollectors(): Array<string> {

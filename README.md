@@ -2,8 +2,8 @@
 
 - Mainnet: https://thegraph.com/explorer/subgraph/decentraland/collections-ethereum-mainnet (QmWrLR11uq12yDD7qUFzeyYEFXxQiU2UcKFYZLrccCYkwk)
 - Ropsten: https://thegraph.com/explorer/subgraph/decentraland/collections-ethereum-ropsten (QmbkYp3VQAvfMqsnYdNhbgYRxJ14mkBF2PnhAVLvs21asT)
-- Matic: https://thegraph.com/explorer/subgraph/decentraland/collections-matic-mainnet (Qme9C6C2ACxAkybRcDmKNvf6xwYbgcfEMF9Zp4BVMUMbjK)
-- Mumbai: https://thegraph.com/explorer/subgraph/decentraland/collections-matic-mumbai (QmX3iGTZ4PSCVEcML4cRubvsA4oXE3HLgbnfSc5bePpkWE)
+- Matic: https://thegraph.com/explorer/subgraph/decentraland/collections-matic-mainnet (QmRULHu7Z3UJ66sNPdXidrDJR75xjoqiESbDvKxQWD7Huh)
+- Mumbai: https://thegraph.com/explorer/subgraph/decentraland/collections-matic-mumbai (QmVpgiDX1Z8HkXAKPae5sJY5umkwQTv31rjYQ1FNPccSZw)
 
 ### Install
 
