@@ -155,6 +155,11 @@ export function trackSale(
   if (type == MINT_SALE_TYPE) {
     let count = buildCountFromPrimarySale(price)
     count.save()
+    // track the sale and mana earned in the creator account
+    let creatorAccount = createOrLoadAccount(Address.fromString(item.creator))
+    creatorAccount.primarySales += 1
+    creatorAccount.primarySalesEarned = creatorAccount.primarySalesEarned.plus(price.minus(totalFees))
+    creatorAccount.save()
   } else {
     // track secondary sale
     let count = buildCountFromSecondarySale(price)

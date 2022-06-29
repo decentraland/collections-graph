@@ -11,8 +11,10 @@ export function createOrLoadAccount(id: Address): Account {
     account.address = id
     account.totalCurations = 0
     account.sales = 0
+    account.primarySales = 0
     account.purchases = 0
     account.earned = BigInt.fromI32(0)
+    account.primarySalesEarned = BigInt.fromI32(0)
     account.spent = BigInt.fromI32(0)
     account.royalties = BigInt.fromI32(0)
     account.collections = 0
