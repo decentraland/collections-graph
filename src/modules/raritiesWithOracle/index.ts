@@ -7,11 +7,11 @@ export function getRaritiesWithOracleAddress(): Address | null {
   let network = dataSource.network()
 
   if (network == 'mumbai') {
-    return Address.fromString('0xb9957735bbe6D42585058Af11AA72da8eAD9043a')
+    return Address.fromString('0xb9957735bbe6d42585058af11aa72da8ead9043a')
   }
 
   if (network == 'matic') {
-    return Address.fromString('0xA9158E22F89Bb3F69c5600338895Cb5FB81e5090')
+    return Address.fromString('0xa9158e22f89bb3f69c5600338895cb5fb81e5090')
   }
 
   return null
