@@ -28,7 +28,7 @@ export function handleUpdatePrice(event: UpdatePrice): void {
   let rarity = Rarity.load(name)
 
   if (rarity == null) {
-    log.warning('Rarity with name {} not found', [name])
+    log.error('Rarity with name {} not found',[name])
     return
   }
 
