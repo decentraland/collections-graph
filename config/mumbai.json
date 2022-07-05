@@ -18,8 +18,10 @@
   "startBlock_bid": 21834173,
   "address_bid_v2": "0x78Dd92c8941dBC7BE54E2a9390D58aD28AD97afD",
   "startBlock_bid_v2": 21834173,
-  "address_rarity": "0x8eabF06f6cf667915bfF30138be70543bCE2901A",
+  "address_rarity": "0x8eabf06f6cf667915bff30138be70543bce2901a",
   "startBlock_rarity": 14517370,
   "address_rarities_with_oracle": "0xb9957735bbe6d42585058af11aa72da8ead9043a",
-  "startBlock_rarities_with_oracle": 24356301
+  "startBlock_rarities_with_oracle": 24356301,
+  "address_collection_manager": "0xe539E0AED3C1971560517D58277f8dd9aC296281",
+  "startBlock_collection_manager": 14517377
 }

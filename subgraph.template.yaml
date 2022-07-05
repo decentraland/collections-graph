@@ -305,6 +305,33 @@ dataSources:
           handler: handleAddRarity
         - event: UpdatePrice(string,uint256)
           handler: handleUpdatePrice
+  # ---------------------------------------------------------
+  # CollectionManager ---------------------------------------
+  # ---------------------------------------------------------
+  - kind: ethereum/contract
+    name: CollectionManager
+    network: {{network}}
+    source:
+      address: '{{address_collection_manager}}'
+      abi: CollectionManager
+      startBlock: {{startBlock_collection_manager}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/handlers/collectionManager.ts
+      entities:
+        - CollectionManager
+      abis:
+        - name: CollectionManager
+          file: ./abis/CollectionManager.json
+        - name: Rarity
+          file: ./abis/Rarity.json
+        - name: RaritiesWithOracle
+          file: ./abis/RaritiesWithOracle.json
+      eventHandlers:
+        - event: RaritiesSet(indexed address,indexed address)
+          handler: handleRaritiesSet
 templates:
   # ---------------------------------------------------------
   # Items V2 ------------------------------------------------
@@ -330,6 +357,8 @@ templates:
           file: ./abis/CollectionV2.json
         - name: CollectionStore
           file: ./abis/CollectionStore.json
+        - name: RaritiesWithOracle
+          file: ./abis/RaritiesWithOracle.json
       eventHandlers:
         - event: SetGlobalMinter(indexed address,bool)
           handler: handleSetGlobalMinter

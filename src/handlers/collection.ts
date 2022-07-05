@@ -31,8 +31,8 @@ import { getURNForWearableV2, getURNForCollectionV2 } from '../modules/Metadata/
 import { getStoreAddress } from '../modules/store'
 import { getOrCreateAnalyticsDayData } from '../modules/analytics'
 import { getCurationId, getBlockWhereRescueItemsStarted } from '../modules/Curation'
-import { getRaritiesWithOracleAddress } from '../modules/raritiesWithOracle'
 import { toLowerCase } from '../utils'
+import { getRaritiesWithOracleAddress } from '../modules/rarity'
 
 export function handleInitializeWearablesV1(_: OwnershipTransferred): void {
   let count = buildCount()
@@ -115,23 +115,15 @@ export function handleAddItem(event: AddItem): void {
   let creationFee = BigInt.fromI32(0)
 
   if (!rarity) {
-    log.info('Undefined rarity {} for collection {} and item {}', [contractItem.rarity, collectionAddress, itemId.toString()])
+    log.warning('Undefined rarity {} for collection {} and item {}', [contractItem.rarity, collectionAddress, itemId.toString()])
   } else {
-    // As the rarity price is currently in MANA, the creation fee can be set as is.
-    if (rarity.currency == 'MANA') {
-      creationFee = rarity.price
-      // If it is not, we need to get the price in MANA converted from USD from the blockchain to assign it.
-    } else {
-      let raritiesWithOracleAddress = getRaritiesWithOracleAddress()
+    creationFee = rarity.price
 
-      if (!raritiesWithOracleAddress) {
-        log.warning('Rarities with Oracle address not found', [])
-      } else {
-        let raritiesWithOracle = RaritiesWithOracle.bind(raritiesWithOracleAddress)
-        let result = raritiesWithOracle.getRarityByName(rarity.name)
+    if (rarity.currency == 'USD') {
+      let raritiesWithOracle = RaritiesWithOracle.bind(getRaritiesWithOracleAddress())
+      let result = raritiesWithOracle.getRarityByName(rarity.name)
 
-        creationFee = result.price
-      }
+      creationFee = result.price
     }
   }
 
