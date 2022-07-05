@@ -235,9 +235,11 @@ type Account @entity {
 
   # analytics
   sales: Int!
+  primarySales: Int!
   purchases: Int!
   spent: BigInt!
   earned: BigInt!
+  primarySalesEarned: BigInt!
   royalties: BigInt!
   uniqueAndMythicItems: [ID!]!
   uniqueAndMythicItemsTotal: Int!
