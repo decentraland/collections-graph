@@ -1641,6 +1641,15 @@ export class Account extends Entity {
     this.set("sales", Value.fromI32(value));
   }
 
+  get primarySales(): i32 {
+    let value = this.get("primarySales");
+    return value!.toI32();
+  }
+
+  set primarySales(value: i32) {
+    this.set("primarySales", Value.fromI32(value));
+  }
+
   get purchases(): i32 {
     let value = this.get("purchases");
     return value!.toI32();
@@ -1666,6 +1675,15 @@ export class Account extends Entity {
 
   set earned(value: BigInt) {
     this.set("earned", Value.fromBigInt(value));
+  }
+
+  get primarySalesEarned(): BigInt {
+    let value = this.get("primarySalesEarned");
+    return value!.toBigInt();
+  }
+
+  set primarySalesEarned(value: BigInt) {
+    this.set("primarySalesEarned", Value.fromBigInt(value));
   }
 
   get royalties(): BigInt {
