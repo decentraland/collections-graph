@@ -2572,6 +2572,15 @@ export class Sale extends Entity {
     this.set("seller", Value.fromBytes(value));
   }
 
+  get beneficiary(): Bytes {
+    let value = this.get("beneficiary");
+    return value!.toBytes();
+  }
+
+  set beneficiary(value: Bytes) {
+    this.set("beneficiary", Value.fromBytes(value));
+  }
+
   get price(): BigInt {
     let value = this.get("price");
     return value!.toBigInt();

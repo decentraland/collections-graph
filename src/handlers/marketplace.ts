@@ -86,6 +86,7 @@ export function handleOrderSuccessful(event: OrderSuccessful): void {
     ORDER_SALE_TYPE,
     event.params.buyer,
     event.params.seller,
+    event.params.seller,
     nft.item!,
     nft.id,
     order.price,

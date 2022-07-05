@@ -26,6 +26,7 @@ export function trackSale(
   type: string,
   buyer: Address,
   seller: Address,
+  beneficiary: Address,
   itemId: string,
   nftId: string,
   price: BigInt,
@@ -57,6 +58,7 @@ export function trackSale(
   sale.type = type
   sale.buyer = buyer
   sale.seller = seller
+  sale.beneficiary = beneficiary
   sale.price = price
   sale.item = itemId
   sale.nft = nftId
