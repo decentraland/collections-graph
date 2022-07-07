@@ -78,6 +78,7 @@ export function handleBidAccepted(event: BidAccepted): void {
     BID_SALE_TYPE,
     event.params._bidder,
     event.params._seller,
+    event.params._seller,
     nft.item!,
     nft.id,
     bid.price,

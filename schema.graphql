@@ -378,6 +378,7 @@ type Sale @entity {
   type: SaleType!
   buyer: Bytes!
   seller: Bytes!
+  beneficiary: Bytes!
   price: BigInt!
   feesCollectorCut: BigInt!
   feesCollector: Bytes!
