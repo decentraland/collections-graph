@@ -89,16 +89,12 @@ export function handleMintNFT(event: Issue, collectionAddress: string, item: Ite
     // Bind contract
     let storeContract = CollectionStore.bind(Address.fromString(minterAddress))
 
-    let seller = item.creator
-    if (item.beneficiary != ZERO_ADDRESS) {
-      seller = item.beneficiary
-    }
-
     mint.searchPrimarySalePrice = item.price
     trackSale(
       MINT_SALE_TYPE,
       event.params._beneficiary,
-      Address.fromString(seller),
+      Address.fromString(item.creator),
+      Address.fromString(item.beneficiary != ZERO_ADDRESS ? item.beneficiary : item.creator),
       item.id,
       nft.id,
       item.price,
