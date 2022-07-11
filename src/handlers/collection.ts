@@ -26,11 +26,13 @@ import {
 } from '../entities/templates/CollectionV2/CollectionV2'
 import { ERC721 } from '../entities/templates'
 import { CollectionV2 } from '../entities/templates'
+import { RaritiesWithOracle } from '../entities/RaritiesWithOracle/RaritiesWithOracle'
 import { getURNForWearableV2, getURNForCollectionV2 } from '../modules/Metadata/wearable'
 import { getStoreAddress } from '../modules/store'
 import { getOrCreateAnalyticsDayData } from '../modules/analytics'
 import { getCurationId, getBlockWhereRescueItemsStarted } from '../modules/Curation'
 import { toLowerCase } from '../utils'
+import { getRaritiesWithOracleAddress } from '../modules/rarity'
 
 export function handleInitializeWearablesV1(_: OwnershipTransferred): void {
   let count = buildCount()
@@ -111,10 +113,18 @@ export function handleAddItem(event: AddItem): void {
   let id = getItemId(collectionAddress, itemId.toString())
   let rarity = Rarity.load(contractItem.rarity)
   let creationFee = BigInt.fromI32(0)
+
   if (!rarity) {
-    log.info('Undefined rarity {} for collection {} and item {}', [contractItem.rarity, collectionAddress, itemId.toString()])
+    log.warning('Undefined rarity {} for collection {} and item {}', [contractItem.rarity, collectionAddress, itemId.toString()])
   } else {
     creationFee = rarity.price
+
+    if (rarity.currency == 'USD') {
+      let raritiesWithOracle = RaritiesWithOracle.bind(getRaritiesWithOracleAddress())
+      let result = raritiesWithOracle.getRarityByName(rarity.name)
+
+      creationFee = result.price
+    }
   }
 
   let item = new Item(id)

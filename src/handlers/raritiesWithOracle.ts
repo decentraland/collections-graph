@@ -1,7 +1,7 @@
-import { AddRarity, UpdatePrice } from '../entities/Rarity/Rarity'
+import { AddRarity, UpdatePrice } from '../entities/RaritiesWithOracle/RaritiesWithOracle'
 import * as utils from '../modules/rarity'
 
-let CURRENCY = 'MANA'
+let CURRENCY = 'USD'
 
 export function handleAddRarity(event: AddRarity): void {
   utils.handleAddRarity(event.params._rarity.name, event.params._rarity.price, event.params._rarity.maxSupply, CURRENCY)
