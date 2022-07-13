@@ -13,7 +13,7 @@ import * as itemTypes from '../metadata/itemTypes'
 import {
   updateBuyerAccountsDayData,
   updateCreatorsSupportedSet,
-  updateSellerAccountsDayData,
+  updateCreatorAccountsDayData,
   updateUniqueAndMythicItemsSet,
   updateUniqueCollectorsSet
 } from './accountsDayData'
@@ -26,6 +26,7 @@ export function trackSale(
   type: string,
   buyer: Address,
   seller: Address,
+  beneficiary: Address,
   itemId: string,
   nftId: string,
   price: BigInt,
@@ -57,6 +58,7 @@ export function trackSale(
   sale.type = type
   sale.buyer = buyer
   sale.seller = seller
+  sale.beneficiary = beneficiary
   sale.price = price
   sale.item = itemId
   sale.nft = nftId
@@ -155,6 +157,11 @@ export function trackSale(
   if (type == MINT_SALE_TYPE) {
     let count = buildCountFromPrimarySale(price)
     count.save()
+    // track the sale and mana earned in the creator account
+    let creatorAccount = createOrLoadAccount(Address.fromString(item.creator))
+    creatorAccount.primarySales += 1
+    creatorAccount.primarySalesEarned = creatorAccount.primarySalesEarned.plus(price.minus(totalFees))
+    creatorAccount.save()
   } else {
     // track secondary sale
     let count = buildCountFromSecondarySale(price)
@@ -170,8 +177,8 @@ export function trackSale(
   let buyerAccountsDayData = updateBuyerAccountsDayData(sale, item)
   buyerAccountsDayData.save()
 
-  let sellersAccountsDayData = updateSellerAccountsDayData(sale, price.minus(totalFees))
-  sellersAccountsDayData.save()
+  let creatorsAccountsDayData = updateCreatorAccountsDayData(sale, price.minus(totalFees), item.collection)
+  creatorsAccountsDayData.save()
 }
 
 // ItemsDayData

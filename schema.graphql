@@ -214,6 +214,12 @@ type Rarity @entity {
   name: String!
   maxSupply: BigInt!
   price: BigInt!
+  currency: Currency!
+}
+
+enum Currency @entity {
+  MANA
+  USD
 }
 
 # ---------------------------------------------------------
@@ -229,9 +235,11 @@ type Account @entity {
 
   # analytics
   sales: Int!
+  primarySales: Int!
   purchases: Int!
   spent: BigInt!
   earned: BigInt!
+  primarySalesEarned: BigInt!
   royalties: BigInt!
   uniqueAndMythicItems: [ID!]!
   uniqueAndMythicItemsTotal: Int!
@@ -370,6 +378,7 @@ type Sale @entity {
   type: SaleType!
   buyer: Bytes!
   seller: Bytes!
+  beneficiary: Bytes!
   price: BigInt!
   feesCollectorCut: BigInt!
   feesCollector: Bytes!
@@ -416,7 +425,7 @@ type AccountsDayData @entity {
   purchases: Int!
   earned: BigInt!
   spent: BigInt!
-  collections: Int!
+  uniqueCollectionsSales: [String!]!
   uniqueCollectors: [String!]!
   uniqueCollectorsTotal: Int!
   uniqueAndMythicItems: [ID!]!

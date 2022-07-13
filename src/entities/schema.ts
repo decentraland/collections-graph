@@ -1555,6 +1555,15 @@ export class Rarity extends Entity {
   set price(value: BigInt) {
     this.set("price", Value.fromBigInt(value));
   }
+
+  get currency(): string {
+    let value = this.get("currency");
+    return value!.toString();
+  }
+
+  set currency(value: string) {
+    this.set("currency", Value.fromString(value));
+  }
 }
 
 export class Account extends Entity {
@@ -1641,6 +1650,15 @@ export class Account extends Entity {
     this.set("sales", Value.fromI32(value));
   }
 
+  get primarySales(): i32 {
+    let value = this.get("primarySales");
+    return value!.toI32();
+  }
+
+  set primarySales(value: i32) {
+    this.set("primarySales", Value.fromI32(value));
+  }
+
   get purchases(): i32 {
     let value = this.get("purchases");
     return value!.toI32();
@@ -1666,6 +1684,15 @@ export class Account extends Entity {
 
   set earned(value: BigInt) {
     this.set("earned", Value.fromBigInt(value));
+  }
+
+  get primarySalesEarned(): BigInt {
+    let value = this.get("primarySalesEarned");
+    return value!.toBigInt();
+  }
+
+  set primarySalesEarned(value: BigInt) {
+    this.set("primarySalesEarned", Value.fromBigInt(value));
   }
 
   get royalties(): BigInt {
@@ -2554,6 +2581,15 @@ export class Sale extends Entity {
     this.set("seller", Value.fromBytes(value));
   }
 
+  get beneficiary(): Bytes {
+    let value = this.get("beneficiary");
+    return value!.toBytes();
+  }
+
+  set beneficiary(value: Bytes) {
+    this.set("beneficiary", Value.fromBytes(value));
+  }
+
   get price(): BigInt {
     let value = this.get("price");
     return value!.toBigInt();
@@ -2937,13 +2973,13 @@ export class AccountsDayData extends Entity {
     this.set("spent", Value.fromBigInt(value));
   }
 
-  get collections(): i32 {
-    let value = this.get("collections");
-    return value!.toI32();
+  get uniqueCollectionsSales(): Array<string> {
+    let value = this.get("uniqueCollectionsSales");
+    return value!.toStringArray();
   }
 
-  set collections(value: i32) {
-    this.set("collections", Value.fromI32(value));
+  set uniqueCollectionsSales(value: Array<string>) {
+    this.set("uniqueCollectionsSales", Value.fromStringArray(value));
   }
 
   get uniqueCollectors(): Array<string> {
