@@ -5,10 +5,12 @@
     "codegen": "graph codegen --debug --output-dir src/entities/",
     "prepare:mainnet": "mustache config/mainnet.json subgraph.template.yaml > subgraph.yaml && npm run codegen",
     "prepare:ropsten": "mustache config/ropsten.json subgraph.template.yaml > subgraph.yaml && npm run codegen",
+    "prepare:goerli": "mustache config/goerli.json subgraph.template.yaml > subgraph.yaml && npm run codegen",
     "prepare:mumbai": "mustache config/mumbai.json subgraph.template.yaml > subgraph.yaml && npm run codegen",
     "prepare:matic": "mustache config/matic.json subgraph.template.yaml > subgraph.yaml && npm run codegen",
     "deploy:mainnet": "npm run prepare:mainnet && npx graph deploy --debug  --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/  decentraland/collections-ethereum-mainnet",
     "deploy:ropsten": "npm run prepare:ropsten && npx graph deploy --debug  --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/  decentraland/collections-ethereum-ropsten",
+    "deploy:goerli": "npm run prepare:goerli && npx graph deploy --debug  --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/  decentraland/collections-ethereum-goerli",
     "deploy:mumbai": "npm run prepare:mumbai && npx graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ decentraland/collections-matic-mumbai",
     "deploy:matic": "npm run prepare:matic && npx graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ decentraland/collections-matic-mainnet"
   },

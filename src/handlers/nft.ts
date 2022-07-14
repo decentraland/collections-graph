@@ -13,7 +13,7 @@ import {
 } from '../modules/Metadata/wearable'
 import { getNFTId, getTokenURI, isMint, cancelActiveOrder, clearNFTOrderProperties } from '../modules/NFT'
 import { NFT, Item, Collection, Mint } from '../entities/schema'
-import { buildCountFromCollection, buildCountFromNFT, buildCountFromItem, buildCountFromPrimarySale } from '../modules/Count'
+import { buildCountFromNFT, buildCountFromItem } from '../modules/Count'
 import { Issue, Transfer, CollectionV2 as CollectionContract } from '../entities/templates/CollectionV2/CollectionV2'
 import { CollectionStore } from '../entities/templates/CollectionStore/CollectionStore'
 import { Transfer as ERC721Transfer, AddWearable } from '../entities/templates/ERC721/ERC721'
@@ -166,9 +166,6 @@ export function handleAddItemV1(event: AddWearable): void {
     collection.isApproved = true
 
     collection.save()
-
-    let collectionMetric = buildCountFromCollection()
-    collectionMetric.save()
   }
 
   // Count item

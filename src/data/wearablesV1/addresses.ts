@@ -1,5 +1,10 @@
+import { dataSource } from '@graphprotocol/graph-ts'
+
 // Ropsten Dummy used for testing
 export let ExclusiveMasksCollectionRopsten = '0x30ae57840b0e9b8ea55334083d53d80b2cfe80e0'
+
+// Goerli Dummy used for testing
+export let ExclusiveMasksCollectionGoerli = '0x1f0880E0b4514DC58e68B9BE91693bFA8C067ac1'
 
 // Mainnet
 export let ExclusiveMasksCollection = '0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd'
@@ -45,10 +50,18 @@ export let RACBasics = '0x68e139552c4077ce5c9ab929c7e18ca721ffff00'
 export let WinklevossCapital = '0xc82a864a94db3550bc71fcb4ce07228bcec21f1a'
 export let DGAtariDillonFrancis = '0x51e0b1afe5da0c038fc93a3fc8e11cf7a238b40b'
 
-
 export function getCollectionsV1(): string[] {
+  let network = dataSource.network()
+
+  if (network == 'goerli') {
+    return [ExclusiveMasksCollectionGoerli]
+  }
+
+  if (network == 'ropsten') {
+    return [ExclusiveMasksCollectionRopsten]
+  }
+
   return [
-    ExclusiveMasksCollectionRopsten,
     ExclusiveMasksCollection,
     Halloween2019Collection,
     Xmas2019Collection,
