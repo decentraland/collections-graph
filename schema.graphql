@@ -186,8 +186,14 @@ enum WearableCategory @entity {
 }
 
 enum EmoteCategory @entity {
-  simple
-  loop
+  dance
+  stunt
+  greetings
+  fun
+  poses
+  reactions
+  horror
+  miscellaneous
 }
 
 enum WearableRarity @entity {

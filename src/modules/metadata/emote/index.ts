@@ -2,7 +2,7 @@ import { log } from '@graphprotocol/graph-ts'
 import { isValidBodyShape } from '..'
 import { Emote, Item, Metadata, NFT, Wearable } from '../../../entities/schema'
 import { toLowerCase } from '../../../utils'
-import { LOOP, SIMPLE } from './categories'
+import { DANCE, FUN, GREETINGS, HORROR, MISCELLANEOUS, POSES, REACTIONS, STUNT } from './categories'
 
 /**
  * @dev The item's rawMetadata for emotes should follow: version:item_type:name:description:category:bodyshapes
@@ -11,7 +11,7 @@ import { LOOP, SIMPLE } from './categories'
 export function buildEmoteItem(item: Item): Emote | null {
   let id = item.id
   let data = item.rawMetadata.split(':')
-  if ((data.length == 6 || data.length == 8) && isValidEmoteCategory(data[4]) && isValidBodyShape(data[5].split(','))) {
+  if ((data.length == 6 || data.length == 8) && isValidBodyShape(data[5].split(','))) {
     let emote = Emote.load(id)
 
     if (emote == null) {
@@ -22,7 +22,7 @@ export function buildEmoteItem(item: Item): Emote | null {
     emote.name = data[2]
     emote.description = data[3]
     emote.rarity = item.rarity
-    emote.category = data[4]
+    emote.category = isValidEmoteCategory(data[4]) ? data[4] : DANCE
     emote.bodyShapes = data[5].split(',') // Could be more than one
     emote.save()
 
@@ -33,7 +33,16 @@ export function buildEmoteItem(item: Item): Emote | null {
 }
 
 function isValidEmoteCategory(category: string): boolean {
-  if (category == SIMPLE || category == LOOP) {
+  if (
+    category == DANCE ||
+    category == STUNT ||
+    category == GREETINGS ||
+    category == FUN ||
+    category == POSES ||
+    category == REACTIONS ||
+    category == HORROR ||
+    category == MISCELLANEOUS
+  ) {
     return true
   }
 
