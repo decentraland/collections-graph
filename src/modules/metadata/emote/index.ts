@@ -22,7 +22,7 @@ export function buildEmoteItem(item: Item): Emote | null {
     emote.name = data[2]
     emote.description = data[3]
     emote.rarity = item.rarity
-    emote.category = isValidEmoteCategory(data[4]) ? data[4] : DANCE
+    emote.category = isValidEmoteCategory(data[4]) ? data[4] : DANCE // We're using DANCE as fallback to support the emotes that were created with the old categories.
     emote.bodyShapes = data[5].split(',') // Could be more than one
     emote.save()
 
