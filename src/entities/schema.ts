@@ -650,6 +650,23 @@ export class Item extends Entity {
     }
   }
 
+  get searchEmotePlayMode(): string | null {
+    let value = this.get("searchEmotePlayMode");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set searchEmotePlayMode(value: string | null) {
+    if (!value) {
+      this.unset("searchEmotePlayMode");
+    } else {
+      this.set("searchEmotePlayMode", Value.fromString(<string>value));
+    }
+  }
+
   get searchEmoteRarity(): string | null {
     let value = this.get("searchEmoteRarity");
     if (!value || value.kind == ValueKind.NULL) {
@@ -1129,6 +1146,23 @@ export class NFT extends Entity {
     }
   }
 
+  get searchEmotePlayMode(): string | null {
+    let value = this.get("searchEmotePlayMode");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set searchEmotePlayMode(value: string | null) {
+    if (!value) {
+      this.unset("searchEmotePlayMode");
+    } else {
+      this.set("searchEmotePlayMode", Value.fromString(<string>value));
+    }
+  }
+
   get searchEmoteRarity(): string | null {
     let value = this.get("searchEmoteRarity");
     if (!value || value.kind == ValueKind.NULL) {
@@ -1469,6 +1503,15 @@ export class Emote extends Entity {
 
   set category(value: string) {
     this.set("category", Value.fromString(value));
+  }
+
+  get playMode(): string {
+    let value = this.get("playMode");
+    return value!.toString();
+  }
+
+  set playMode(value: string) {
+    this.set("playMode", Value.fromString(value));
   }
 
   get rarity(): string {
