@@ -554,8 +554,18 @@ export function handleCompleteCollection(event: Complete): void {
 
 export function handleTransferCreatorship(event: CreatorshipTransferred): void {
   let collection = Collection.load(event.address.toHexString())
+  let newCreator = event.params._newCreator.toHexString()
   if (collection != null) {
-    collection.creator = event.params._newCreator.toHexString()
+    collection.creator = newCreator
+    let itemCount = collection.itemsCount
+    for (let i = 0; i < itemCount; i++) {
+      let itemId = getItemId(collection.id, i.toString())
+      let item = Item.load(itemId)
+      if (item != null) {
+        item.creator = newCreator
+        item.save()
+      }
+    }
     collection.save()
   }
 }
