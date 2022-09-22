@@ -26,7 +26,7 @@ export function buildEmoteItem(item: Item): Emote | null {
     emote.rarity = item.rarity
     emote.category = isValidEmoteCategory(data[4]) ? data[4] : DANCE // We're using DANCE as fallback to support the emotes that were created with the old categories.
     emote.bodyShapes = data[5].split(',') // Could be more than one
-    emote.playMode = data.length == 9 && isValidEmotePlayMode(data[6]) ? data[6] : SIMPLE
+    emote.playMode = data.length == 9 && isValidEmotePlayMode(data[6]) ? data[6] : SIMPLE // Fallback the emotes without playMode to SIMPLE since LOOP wasn't allowed before.
     emote.save()
 
     return emote
