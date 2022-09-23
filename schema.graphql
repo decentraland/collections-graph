@@ -71,6 +71,7 @@ type Item @entity {
 
   ## Emote search fields
   searchEmoteCategory: EmoteCategory
+  searchEmotePlayMode: EmotePlayMode
   searchEmoteRarity: String # We're using String instead of WearableRarity here so we can later query this field via ()_in
   searchEmoteBodyShapes: [WearableBodyShape!]
 
@@ -121,6 +122,7 @@ type NFT @entity {
 
   ## Emote search fields
   searchEmoteCategory: EmoteCategory
+  searchEmotePlayMode: EmotePlayMode
   searchEmoteRarity: String # We're using String instead of WearableRarity here so we can later query this field via ()_in
   searchEmoteBodyShapes: [WearableBodyShape!]
 
@@ -162,6 +164,7 @@ type Emote @entity {
   description: String!
   collection: String!
   category: EmoteCategory!
+  playMode: EmotePlayMode!
   rarity: WearableRarity!
   bodyShapes: [WearableBodyShape!]
 }
@@ -194,6 +197,11 @@ enum EmoteCategory @entity {
   reactions
   horror
   miscellaneous
+}
+
+enum EmotePlayMode @entity {
+  simple
+  loop
 }
 
 enum WearableRarity @entity {
