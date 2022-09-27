@@ -26,7 +26,7 @@ export function buildEmoteItem(item: Item): Emote | null {
     emote.rarity = item.rarity
     emote.category = isValidEmoteCategory(data[4]) ? data[4] : DANCE // We're using DANCE as fallback to support the emotes that were created with the old categories.
     emote.bodyShapes = data[5].split(',') // Could be more than one
-    emote.playMode = data.length == 9 && isValidEmotePlayMode(data[6]) ? data[6] : SIMPLE // Fallback the emotes without playMode to SIMPLE since LOOP wasn't allowed before.
+    emote.loop = data.length == 9 && isValidLoopValue(data[6]) && data[6] == '1' ? true : false // Fallback old emotes as not loopable
     emote.save()
 
     return emote
@@ -54,12 +54,12 @@ function isValidEmoteCategory(category: string): boolean {
   return false
 }
 
-function isValidEmotePlayMode(playMode: string): boolean {
-  if (playMode == SIMPLE || playMode === LOOP) {
+function isValidLoopValue(value: string): boolean {
+  if (value == '0' || value === '1') {
     return true
   }
 
-  log.error('Invalid emote play mode {}', [playMode])
+  log.error('Invalid emote loop value {}', [value])
 
   return false
 }
@@ -74,7 +74,7 @@ export function setItemEmoteSearchFields(item: Item): Item {
     if (emote != null) {
       item.searchText = toLowerCase(emote.name + ' ' + emote.description)
       item.searchEmoteCategory = emote.category
-      item.searchEmotePlayMode = emote.playMode
+      item.searchEmoteLoop = emote.loop
       item.searchEmoteBodyShapes = emote.bodyShapes
       item.searchEmoteRarity = emote.rarity
     }
@@ -94,7 +94,7 @@ export function setNFTEmoteSearchFields(nft: NFT): NFT {
     if (emote) {
       nft.searchText = toLowerCase(emote.name + ' ' + emote.description)
       nft.searchEmoteCategory = emote.category
-      nft.searchEmotePlayMode = emote.playMode
+      nft.searchEmoteLoop = emote.loop
       nft.searchEmoteBodyShapes = emote.bodyShapes
       nft.searchEmoteRarity = emote.rarity
     }

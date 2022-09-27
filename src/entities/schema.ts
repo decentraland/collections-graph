@@ -650,21 +650,13 @@ export class Item extends Entity {
     }
   }
 
-  get searchEmotePlayMode(): string | null {
-    let value = this.get("searchEmotePlayMode");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
+  get searchEmoteLoop(): boolean {
+    let value = this.get("searchEmoteLoop");
+    return value!.toBoolean();
   }
 
-  set searchEmotePlayMode(value: string | null) {
-    if (!value) {
-      this.unset("searchEmotePlayMode");
-    } else {
-      this.set("searchEmotePlayMode", Value.fromString(<string>value));
-    }
+  set searchEmoteLoop(value: boolean) {
+    this.set("searchEmoteLoop", Value.fromBoolean(value));
   }
 
   get searchEmoteRarity(): string | null {
@@ -1146,21 +1138,13 @@ export class NFT extends Entity {
     }
   }
 
-  get searchEmotePlayMode(): string | null {
-    let value = this.get("searchEmotePlayMode");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
+  get searchEmoteLoop(): boolean {
+    let value = this.get("searchEmoteLoop");
+    return value!.toBoolean();
   }
 
-  set searchEmotePlayMode(value: string | null) {
-    if (!value) {
-      this.unset("searchEmotePlayMode");
-    } else {
-      this.set("searchEmotePlayMode", Value.fromString(<string>value));
-    }
+  set searchEmoteLoop(value: boolean) {
+    this.set("searchEmoteLoop", Value.fromBoolean(value));
   }
 
   get searchEmoteRarity(): string | null {
@@ -1505,13 +1489,13 @@ export class Emote extends Entity {
     this.set("category", Value.fromString(value));
   }
 
-  get playMode(): string {
-    let value = this.get("playMode");
-    return value!.toString();
+  get loop(): boolean {
+    let value = this.get("loop");
+    return value!.toBoolean();
   }
 
-  set playMode(value: string) {
-    this.set("playMode", Value.fromString(value));
+  set loop(value: boolean) {
+    this.set("loop", Value.fromBoolean(value));
   }
 
   get rarity(): string {
