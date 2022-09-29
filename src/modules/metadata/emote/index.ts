@@ -12,7 +12,7 @@ import { LOOP, SIMPLE } from './playModes'
 export function buildEmoteItem(item: Item): Emote | null {
   let id = item.id
   let data = item.rawMetadata.split(':')
-  let dataHasValidLength = data.length == 6 || data.length == 8 || data.length == 9
+  let dataHasValidLength = data.length == 6 || data.length == 7 || data.length == 8
   if (dataHasValidLength && isValidBodyShape(data[5].split(','))) {
     let emote = Emote.load(id)
 
@@ -26,7 +26,7 @@ export function buildEmoteItem(item: Item): Emote | null {
     emote.rarity = item.rarity
     emote.category = isValidEmoteCategory(data[4]) ? data[4] : DANCE // We're using DANCE as fallback to support the emotes that were created with the old categories.
     emote.bodyShapes = data[5].split(',') // Could be more than one
-    emote.loop = data.length == 9 && isValidLoopValue(data[6]) && data[6] == '1' ? true : false // Fallback old emotes as not loopable
+    emote.loop = data.length == 7 && isValidLoopValue(data[6]) && data[6] == '1' ? true : false // Fallback old emotes as not loopable
     emote.save()
 
     return emote
