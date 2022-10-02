@@ -55,7 +55,7 @@ function isValidEmoteCategory(category: string): boolean {
 }
 
 function isValidLoopValue(value: string): boolean {
-  if (value == '0' || value === '1') {
+  if (value == '0' || value == '1') {
     return true
   }
 
