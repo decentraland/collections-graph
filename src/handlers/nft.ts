@@ -55,6 +55,7 @@ export function handleMintNFT(event: Issue, collectionAddress: string, item: Ite
   nft.createdAt = event.block.timestamp
   nft.updatedAt = event.block.timestamp
   nft.soldAt = null
+  nft.transferredAt = event.block.timestamp
 
   nft.sales = 0
   nft.volume = BigInt.fromI32(0)
@@ -124,6 +125,7 @@ export function handleTransferNFT(event: Transfer): void {
 
   nft.owner = event.params.to.toHex()
   nft.updatedAt = event.block.timestamp
+  nft.transferredAt = event.block.timestamp
 
   if (cancelActiveOrder(nft, event.block.timestamp)) {
     nft = clearNFTOrderProperties(nft)
@@ -244,6 +246,7 @@ export function handleTransferWearableV1(event: ERC721Transfer): void {
   nft.contractAddress = collectionAddress
   nft.updatedAt = event.block.timestamp
   nft.soldAt = null
+  nft.transferredAt = event.block.timestamp
   nft.itemType = itemTypes.WEARABLE_V1
   nft.tokenURI = tokenURI
   nft.item = item.id
