@@ -1,11 +1,22 @@
 # Decentraland collections graph
 
-- Mainnet: https://thegraph.com/explorer/subgraph/decentraland/collections-ethereum-mainnet (QmWrLR11uq12yDD7qUFzeyYEFXxQiU2UcKFYZLrccCYkwk)
-- Ropsten: https://thegraph.com/explorer/subgraph/decentraland/collections-ethereum-ropsten (QmbkYp3VQAvfMqsnYdNhbgYRxJ14mkBF2PnhAVLvs21asT)
-- Goerli: https://thegraph.com/explorer/subgraph/decentraland/collections-ethereum-goerli (QmSjgZDY25SNr3kW6bsQWcSeh3NRoojtbrMSrXvKz4BsvJ)
-- Matic: https://thegraph.com/explorer/subgraph/decentraland/collections-matic-mainnet (QmQAZp71zgsdaqQqeBmgU2MhxNfS44ioeCJXP9kmt3Sa5c)
-- Matic-temp: https://thegraph.com/explorer/subgraph/decentraland/collections-matic-mainnet-temp (QmaPNpL5oB4NjrTFmWAE4CesMjfhjouCigwptNz7x9i8cD)
-- Mumbai: https://thegraph.com/explorer/subgraph/decentraland/collections-matic-mumbai (Qmebs8WsrLs23pQ2oCZggVFN5raZffPx5Auqh1K1pr7iQQ)
+- Mainnet: https://thegraph.com/explorer/subgraph/decentraland/collections-ethereum-mainnet 
+  - Prev: `QmWrLR11uq12yDD7qUFzeyYEFXxQiU2UcKFYZLrccCYkwk`
+  - Curr: `QmXAJWxr83ff8yqZkK8NrWUxETRHyXbq69sy2bmQznT136`
+- Ropsten (Deprecated): https://thegraph.com/explorer/subgraph/decentraland/collections-ethereum-ropsten 
+  - Curr: `QmbkYp3VQAvfMqsnYdNhbgYRxJ14mkBF2PnhAVLvs21asT`
+- Goerli: https://thegraph.com/explorer/subgraph/decentraland/collections-ethereum-goerli 
+  - Prev: `QmSjgZDY25SNr3kW6bsQWcSeh3NRoojtbrMSrXvKz4BsvJ`
+  - Curr: `QmXbmCWShvjizcePNj2BqxqsWxdb4sxK83RvDeF1gFcFDG`
+- Matic: https://thegraph.com/explorer/subgraph/decentraland/collections-matic-mainnet 
+  - Prev: `QmNrxac6yGrZWKwYLNSFagwRcGEmHUeurwfVyfYppzAs6x`
+  - Curr: `Qmc1XwMPmbVNCqvbTkTNWxGogcZLxQ72WwTsgHVbRTJ7XD`
+- Matic-temp: https://thegraph.com/explorer/subgraph/decentraland/collections-matic-mainnet-temp 
+  - Prev: `QmaPNpL5oB4NjrTFmWAE4CesMjfhjouCigwptNz7x9i8cD`
+  - Curr: `QmNrxac6yGrZWKwYLNSFagwRcGEmHUeurwfVyfYppzAs6x`
+- Mumbai: https://thegraph.com/explorer/subgraph/decentraland/collections-matic-mumbai          
+  - Prev: `Qmebs8WsrLs23pQ2oCZggVFN5raZffPx5Auqh1K1pr7iQQ`
+  - Curr: `QmfZsAg5pbMBpwY1WuDR7QPfUZ3oNEkNagVXcQ42nKX1C5`
 
 ### Install
 
