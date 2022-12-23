@@ -997,6 +997,15 @@ export class NFT extends Entity {
     }
   }
 
+  get transferredAt(): BigInt {
+    let value = this.get("transferredAt");
+    return value!.toBigInt();
+  }
+
+  set transferredAt(value: BigInt) {
+    this.set("transferredAt", Value.fromBigInt(value));
+  }
+
   get sales(): i32 {
     let value = this.get("sales");
     return value!.toI32();

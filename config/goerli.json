@@ -19,5 +19,9 @@
   "address_bid_v2": "0x0000000000000000000000000000000000000000",
   "startBlock_bid_v2": 7103734,
   "address_rarity": "0x0000000000000000000000000000000000000000",
-  "startBlock_rarity": 7103734
+  "startBlock_rarity": 7103734,
+  "address_rarities_with_oracle": "0x0000000000000000000000000000000000000000",
+  "startBlock_rarities_with_oracle": 7103734,
+  "address_collection_manager": "0x0000000000000000000000000000000000000000",
+  "startBlock_collection_manager": 7103734
 }

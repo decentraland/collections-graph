@@ -104,6 +104,7 @@ type NFT @entity {
   createdAt: BigInt!
   updatedAt: BigInt!
   soldAt: BigInt
+  transferredAt: BigInt!
 
   # analytics
   sales: Int!
