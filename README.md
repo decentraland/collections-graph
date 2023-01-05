@@ -2,13 +2,12 @@
 
 |Network|URL|Current|Previous|
 |-|-|-|-|
-|Mainnet (Hosted Services)|https://thegraph.com/explorer/subgraph/decentraland/collections-ethereum-mainnet |QmXAJWxr83ff8yqZkK8NrWUxETRHyXbq69sy2bmQznT136|QmWrLR11uq12yDD7qUFzeyYEFXxQiU2UcKFYZLrccCYkwk|
 |Mainnet (Satsuma)|https://subgraph.satsuma-prod.com/decentraland/collections-ethereum-mainnet/playground|QmXAJWxr83ff8yqZkK8NrWUxETRHyXbq69sy2bmQznT136|-|
+|Mainnet (Hosted Services)|https://thegraph.com/explorer/subgraph/decentraland/collections-ethereum-mainnet |QmXAJWxr83ff8yqZkK8NrWUxETRHyXbq69sy2bmQznT136|QmWrLR11uq12yDD7qUFzeyYEFXxQiU2UcKFYZLrccCYkwk|
 |Goerli (Hosted Services)|https://thegraph.com/explorer/subgraph/decentraland/collections-ethereum-goerli|QmXbmCWShvjizcePNj2BqxqsWxdb4sxK83RvDeF1gFcFDG|QmSjgZDY25SNr3kW6bsQWcSeh3NRoojtbrMSrXvKz4BsvJ|
-|Ropsten (Hosted Services)|https://thegraph.com/explorer/subgraph/decentraland/collections-ethereum-ropsten|QmbkYp3VQAvfMqsnYdNhbgYRxJ14mkBF2PnhAVLvs21asT|-|
+|Matic (Satsuma)|https://subgraph.satsuma-prod.com/decentraland/collections-matic-mainnet/playground|Qmc1XwMPmbVNCqvbTkTNWxGogcZLxQ72WwTsgHVbRTJ7XD|QmaQmyuQeQQv2SVrj7uckChi1BMmCNaKQ3UMpL6JZxrSXs|
 |Matic (Hosted Services)|https://thegraph.com/explorer/subgraph/decentraland/collections-matic-mainnet|Qmc1XwMPmbVNCqvbTkTNWxGogcZLxQ72WwTsgHVbRTJ7XD|QmNrxac6yGrZWKwYLNSFagwRcGEmHUeurwfVyfYppzAs6x|
 |Matic Temp (Hosted Services)|https://thegraph.com/explorer/subgraph/decentraland/collections-matic-mainnet-temp|QmNrxac6yGrZWKwYLNSFagwRcGEmHUeurwfVyfYppzAs6x|QmaPNpL5oB4NjrTFmWAE4CesMjfhjouCigwptNz7x9i8cD|
-|Matic (Satsuma)|https://subgraph.satsuma-prod.com/decentraland/collections-matic-mainnet/playground|Qmc1XwMPmbVNCqvbTkTNWxGogcZLxQ72WwTsgHVbRTJ7XD|QmaQmyuQeQQv2SVrj7uckChi1BMmCNaKQ3UMpL6JZxrSXs|
 |Mumbai (Hosted Service)|https://thegraph.com/explorer/subgraph/decentraland/collections-matic-mumbai|QmfZsAg5pbMBpwY1WuDR7QPfUZ3oNEkNagVXcQ42nKX1C5|Qmebs8WsrLs23pQ2oCZggVFN5raZffPx5Auqh1K1pr7iQQ|
 
 Using [The Graph](https://thegraph.com) and [Satsuma](https://www.satsuma.xyz/)
