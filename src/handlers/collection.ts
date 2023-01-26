@@ -338,7 +338,7 @@ export function handleSetGlobalMinter(event: SetGlobalMinter): void {
         if (item != null) {
           item.searchIsStoreMinter = true
 
-          if (item.firstListedAt == null) {
+          if (!item.firstListedAt) {
             item.firstListedAt = event.block.timestamp
           }
 
