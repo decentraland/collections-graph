@@ -337,6 +337,11 @@ export function handleSetGlobalMinter(event: SetGlobalMinter): void {
         let item = Item.load(itemId)
         if (item != null) {
           item.searchIsStoreMinter = true
+
+          if (item.firstListedAt == null) {
+            item.firstListedAt = event.block.timestamp
+          }
+
           item.save()
         }
       }

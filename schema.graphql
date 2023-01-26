@@ -49,6 +49,8 @@ type Item @entity {
   reviewedAt: BigInt!
   "Last time the Item was sold"
   soldAt: BigInt
+  "First time the Item was listed"
+  firstListedAt: BigInt
 
   # analytics
   sales: Int!
