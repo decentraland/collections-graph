@@ -15,6 +15,7 @@ type Collection @entity {
   createdAt: BigInt!
   updatedAt: BigInt!
   reviewedAt: BigInt!
+  firstListedAt: BigInt
 
   # Searcheable fields
   searchIsStoreMinter: Boolean!
