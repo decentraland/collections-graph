@@ -15,7 +15,7 @@
     "deploy:mumbai": "npm run prepare:mumbai && npx graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ decentraland/collections-matic-mumbai",
     "deploy:matic": "npm run prepare:matic && npx graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ decentraland/collections-matic-mainnet",
     "deploy:temp": "npm run prepare:temp && npx graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ decentraland/collections-matic-mainnet-temp",
-    "test": "graph test --docker"
+    "test": "graph test"
   },
   "devDependencies": {
     "@graphprotocol/graph-cli": "^0.30.4",
