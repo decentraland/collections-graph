@@ -1,11 +1,13 @@
 import { assert, clearStore, test, describe, afterAll, dataSourceMock, beforeEach } from 'matchstick-as/assembly/index'
 import { Address, BigInt } from '@graphprotocol/graph-ts'
 import { handleSetGlobalMinter } from '../../src/handlers/collection'
-import { addresses, createCollection, createSetGlobalMinterEvent } from './utils'
+import { addresses, createCollection, createItem, createSetGlobalMinterEvent } from './utils'
 import { getStoreAddress } from '../../src/modules/store'
+import { getItemId } from '../../src/modules/Item'
 
 let minter: Address
 let firstListedAt: BigInt | null
+let itemFirstListedAt: BigInt | null
 
 describe('collection', () => {
   afterAll(() => {
@@ -43,6 +45,64 @@ describe('collection', () => {
             handleSetGlobalMinter(setGlobalMinterEvent)
 
             assert.fieldEquals('Collection', collectionId, 'firstListedAt', setGlobalMinterEvent.block.timestamp.toString())
+          })
+
+          describe('when the item firstListedAt is null', () => {
+            beforeEach(() => {
+              itemFirstListedAt = null
+            })
+
+            test('should set the item firstListedAt timestamp', () => {
+              let collectionAddress = addresses[0]
+              let collectionId = collectionAddress.toHexString()
+              let collection = createCollection(collectionId)
+
+              collection.itemsCount = 1
+
+              collection.save()
+
+              let itemId = getItemId(collectionId, '0')
+              let item = createItem(itemId)
+
+              item.firstListedAt = itemFirstListedAt
+
+              item.save()
+
+              let setGlobalMinterEvent = createSetGlobalMinterEvent(collectionAddress, minter, true)
+
+              handleSetGlobalMinter(setGlobalMinterEvent)
+
+              assert.fieldEquals('Item', itemId, 'firstListedAt', setGlobalMinterEvent.block.timestamp.toString())
+            })
+          })
+
+          describe('when the item firstListedAt has a value', () => {
+            beforeEach(() => {
+              itemFirstListedAt = BigInt.fromI32(100)
+            })
+
+            test('should keep current item firstListedAt value', () => {
+              let collectionAddress = addresses[0]
+              let collectionId = collectionAddress.toHexString()
+              let collection = createCollection(collectionId)
+
+              collection.itemsCount = 1
+
+              collection.save()
+
+              let itemId = getItemId(collectionId, '0')
+              let item = createItem(itemId)
+
+              item.firstListedAt = itemFirstListedAt
+
+              item.save()
+
+              let setGlobalMinterEvent = createSetGlobalMinterEvent(collectionAddress, minter, true)
+
+              handleSetGlobalMinter(setGlobalMinterEvent)
+
+              assert.fieldEquals('Item', itemId, 'firstListedAt', (itemFirstListedAt as BigInt).toString())
+            })
           })
         })
 
@@ -93,6 +153,35 @@ describe('collection', () => {
             handleSetGlobalMinter(setGlobalMinterEvent)
 
             assert.fieldEquals('Collection', collectionId, 'firstListedAt', 'null')
+          })
+
+          describe('when the item firstListedAt is null', () => {
+            beforeEach(() => {
+              itemFirstListedAt = null
+            })
+
+            test('should keep item firstListedAt as null', () => {
+              let collectionAddress = addresses[0]
+              let collectionId = collectionAddress.toHexString()
+              let collection = createCollection(collectionId)
+
+              collection.itemsCount = 1
+
+              collection.save()
+
+              let itemId = getItemId(collectionId, '0')
+              let item = createItem(itemId)
+
+              item.firstListedAt = itemFirstListedAt
+
+              item.save()
+
+              let setGlobalMinterEvent = createSetGlobalMinterEvent(collectionAddress, minter, true)
+
+              handleSetGlobalMinter(setGlobalMinterEvent)
+
+              assert.fieldEquals('Item', itemId, 'firstListedAt', 'null')
+            })
           })
         })
       })

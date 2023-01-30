@@ -1,6 +1,6 @@
 import { Address, BigInt, ethereum } from '@graphprotocol/graph-ts'
 import { newMockEvent } from 'matchstick-as'
-import { Collection } from '../../src/entities/schema'
+import { Collection, Item } from '../../src/entities/schema'
 import { SetGlobalMinter } from '../../src/entities/templates/CollectionV2/CollectionV2'
 
 export let addresses = [
@@ -20,7 +20,7 @@ export function createCollection(id: string): Collection {
   let collection = new Collection(id)
 
   collection.owner = addresses[0].toString()
-  collection.creator = addresses[1].toString()
+  collection.creator = addresses[0].toString()
   collection.name = id
   collection.symbol = id
   collection.minters = []
@@ -34,6 +34,37 @@ export function createCollection(id: string): Collection {
   collection.searchText = id
 
   return collection
+}
+
+export function createItem(id: string): Item {
+  let item = new Item(id)
+
+  item.collection = addresses[0].toString()
+  item.blockchainId = BigInt.fromI32(0)
+  item.creator = addresses[0].toString()
+  item.itemType = 'emote_v1'
+  item.totalSupply = BigInt.fromI32(0)
+  item.maxSupply = BigInt.fromI32(0)
+  item.rarity = 'common'
+  item.creationFee = BigInt.fromI32(0)
+  item.available = BigInt.fromI32(0)
+  item.price = BigInt.fromI32(0)
+  item.beneficiary = addresses[0].toString()
+  item.URI = 'uri'
+  item.minters = []
+  item.managers = []
+  item.rawMetadata = 'rawMetadata'
+  item.urn = 'urn'
+  item.createdAt = BigInt.fromI32(0)
+  item.updatedAt = BigInt.fromI32(0)
+  item.reviewedAt = BigInt.fromI32(0)
+  item.sales = 0
+  item.volume = BigInt.fromI32(0)
+  item.searchIsStoreMinter = false
+  item.uniqueCollectors = []
+  item.uniqueCollectorsTotal = 0
+
+  return item
 }
 
 export function createSetGlobalMinterEvent(source: Address, minter: Address, value: boolean): SetGlobalMinter {
