@@ -13,18 +13,18 @@ describe('collection', () => {
     dataSourceMock.resetValues()
   })
 
-  describe('when the network is matic', () => {
-    beforeEach(() => {
-      dataSourceMock.setNetwork('matic')
-    })
+  describe('handleSetGlobalMinter', () => {
+    describe('when the network is matic', () => {
+      beforeEach(() => {
+        dataSourceMock.setNetwork('matic')
+      })
 
-    describe('handleSetGlobalMinter', () => {
       describe('when the minter is the store', () => {
         beforeEach(() => {
           minter = Address.fromString(getStoreAddress())
         })
 
-        describe('and firstListedAt is null', () => {
+        describe('when firstListedAt is null', () => {
           beforeEach(() => {
             firstListedAt = null
           })
@@ -46,7 +46,7 @@ describe('collection', () => {
           })
         })
 
-        describe('and firstListedAt has a value', () => {
+        describe('when firstListedAt has a value', () => {
           beforeEach(() => {
             firstListedAt = BigInt.fromI32(100)
           })
@@ -74,7 +74,7 @@ describe('collection', () => {
           minter = addresses[1]
         })
 
-        describe('and firstListedAt is null', () => {
+        describe('when firstListedAt is null', () => {
           beforeEach(() => {
             firstListedAt = null
           })
