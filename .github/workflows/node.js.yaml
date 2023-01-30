@@ -16,11 +16,18 @@ jobs:
         node-version: [14.x]
 
     steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-      - run: npm ci
-      - run: npm run prepare:mumbai
-      - run: npm test
+    - uses: actions/checkout@v2
+      with:
+        persist-credentials: false
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - name: Reconfigure git to use HTTP authentication
+      run: >
+          git config --global url."https://github.com/".insteadOf
+          ssh://git@github.com/
+    - run: npm ci
+    - run: npm run prepare:matic
+    - run: npm test
