@@ -1,7 +1,7 @@
 import { Address, BigInt, ethereum } from '@graphprotocol/graph-ts'
 import { newMockEvent } from 'matchstick-as'
 import { Collection, Item } from '../../src/entities/schema'
-import { SetGlobalMinter } from '../../src/entities/templates/CollectionV2/CollectionV2'
+import { SetGlobalMinter, SetItemMinter } from '../../src/entities/templates/CollectionV2/CollectionV2'
 
 export let addresses = [
   Address.fromString('0x3d0446B2E9dF7666Db1E5e00196D7B938549c184'),
@@ -77,6 +77,24 @@ export function createSetGlobalMinterEvent(source: Address, minter: Address, val
   let minterParam = new ethereum.EventParam('_minter', ethereum.Value.fromAddress(minter))
   let valueParam = new ethereum.EventParam('_value', ethereum.Value.fromBoolean(value))
 
+  ev.parameters.push(minterParam)
+  ev.parameters.push(valueParam)
+
+  return ev
+}
+
+export function createSetItemMinterEvent(source: Address, itemId: string, minter: Address, value: string): SetItemMinter {
+  let ev: SetItemMinter = changetype<SetItemMinter>(newMockEvent())
+
+  ev.address = source
+
+  ev.parameters = new Array()
+
+  let itemIdParam = new ethereum.EventParam('_itemId', ethereum.Value.fromUnsignedBigInt(BigInt.fromString(itemId)))
+  let minterParam = new ethereum.EventParam('_minter', ethereum.Value.fromAddress(minter))
+  let valueParam = new ethereum.EventParam('_value', ethereum.Value.fromUnsignedBigInt(BigInt.fromString(value)))
+
+  ev.parameters.push(itemIdParam)
   ev.parameters.push(minterParam)
   ev.parameters.push(valueParam)
 
