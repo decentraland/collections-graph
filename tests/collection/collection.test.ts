@@ -5,275 +5,212 @@ import { addresses, createCollection, createItem, createSetGlobalMinterEvent, cr
 import { getStoreAddress } from '../../src/modules/store'
 import { getItemId } from '../../src/modules/Item'
 
-let minter: Address
-let firstListedAt: BigInt | null
-let itemFirstListedAt: BigInt | null
-
 describe('collection', () => {
+  beforeEach(() => {
+    dataSourceMock.setNetwork('matic')
+  })
+
   afterAll(() => {
     clearStore()
     dataSourceMock.resetValues()
   })
 
   describe('handleSetGlobalMinter', () => {
-    describe('when the network is matic', () => {
-      beforeEach(() => {
-        dataSourceMock.setNetwork('matic')
-      })
+    test('should set firstListedAt when minter is the store', () => {
+      let minter = Address.fromString(getStoreAddress())
+      let firstListedAt: BigInt | null = null
 
-      describe('when the minter is the store', () => {
-        beforeEach(() => {
-          minter = Address.fromString(getStoreAddress())
-        })
+      let collectionAddress = addresses[0]
+      let collectionId = collectionAddress.toHexString()
+      let collection = createCollection(collectionId)
 
-        describe('when firstListedAt is null', () => {
-          beforeEach(() => {
-            firstListedAt = null
-          })
+      collection.firstListedAt = firstListedAt
 
-          test('should set firstListedAt timestamp', () => {
-            let collectionAddress = addresses[0]
-            let collectionId = collectionAddress.toHexString()
-            let collection = createCollection(collectionId)
+      collection.save()
 
-            collection.firstListedAt = firstListedAt
+      let setGlobalMinterEvent = createSetGlobalMinterEvent(collectionAddress, minter, true)
 
-            collection.save()
+      handleSetGlobalMinter(setGlobalMinterEvent)
 
-            let setGlobalMinterEvent = createSetGlobalMinterEvent(collectionAddress, minter, true)
+      assert.fieldEquals('Collection', collectionId, 'firstListedAt', setGlobalMinterEvent.block.timestamp.toString())
+    })
 
-            handleSetGlobalMinter(setGlobalMinterEvent)
+    test('should keep firstListedAt if it is not null', () => {
+      let minter = Address.fromString(getStoreAddress())
+      let firstListedAt = BigInt.fromI32(100)
 
-            assert.fieldEquals('Collection', collectionId, 'firstListedAt', setGlobalMinterEvent.block.timestamp.toString())
-          })
+      let collectionAddress = addresses[0]
+      let collectionId = collectionAddress.toHexString()
+      let collection = createCollection(collectionId)
 
-          describe('when the item firstListedAt is null', () => {
-            beforeEach(() => {
-              itemFirstListedAt = null
-            })
+      collection.firstListedAt = firstListedAt
 
-            test('should set the item firstListedAt timestamp', () => {
-              let collectionAddress = addresses[0]
-              let collectionId = collectionAddress.toHexString()
-              let collection = createCollection(collectionId)
+      collection.save()
 
-              collection.itemsCount = 1
+      let setGlobalMinterEvent = createSetGlobalMinterEvent(collectionAddress, minter, true)
 
-              collection.save()
+      handleSetGlobalMinter(setGlobalMinterEvent)
 
-              let itemId = getItemId(collectionId, '0')
-              let item = createItem(itemId)
+      assert.fieldEquals('Collection', collectionId, 'firstListedAt', (firstListedAt as BigInt).toString())
+    })
 
-              item.firstListedAt = itemFirstListedAt
+    test('should keep firstListedAt if the minter is not the store', () => {
+      let minter = addresses[1]
+      let firstListedAt = BigInt.fromI32(100)
 
-              item.save()
+      let collectionAddress = addresses[0]
+      let collectionId = collectionAddress.toHexString()
+      let collection = createCollection(collectionId)
 
-              let setGlobalMinterEvent = createSetGlobalMinterEvent(collectionAddress, minter, true)
+      collection.firstListedAt = firstListedAt
 
-              handleSetGlobalMinter(setGlobalMinterEvent)
+      collection.save()
 
-              assert.fieldEquals('Item', itemId, 'firstListedAt', setGlobalMinterEvent.block.timestamp.toString())
-            })
-          })
+      let setGlobalMinterEvent = createSetGlobalMinterEvent(collectionAddress, minter, true)
 
-          describe('when the item firstListedAt has a value', () => {
-            beforeEach(() => {
-              itemFirstListedAt = BigInt.fromI32(100)
-            })
+      handleSetGlobalMinter(setGlobalMinterEvent)
 
-            test('should keep current item firstListedAt value', () => {
-              let collectionAddress = addresses[0]
-              let collectionId = collectionAddress.toHexString()
-              let collection = createCollection(collectionId)
+      assert.fieldEquals('Collection', collectionId, 'firstListedAt', (firstListedAt as BigInt).toString())
+    })
 
-              collection.itemsCount = 1
+    test('should set item firstListedAt when the minter is the store', () => {
+      let minter = Address.fromString(getStoreAddress())
+      let itemFirstListedAt: BigInt | null = null
 
-              collection.save()
+      let collectionAddress = addresses[0]
+      let collectionId = collectionAddress.toHexString()
+      let collection = createCollection(collectionId)
 
-              let itemId = getItemId(collectionId, '0')
-              let item = createItem(itemId)
+      collection.itemsCount = 1
 
-              item.firstListedAt = itemFirstListedAt
+      collection.save()
 
-              item.save()
+      let itemId = getItemId(collectionId, '0')
+      let item = createItem(itemId)
 
-              let setGlobalMinterEvent = createSetGlobalMinterEvent(collectionAddress, minter, true)
+      item.firstListedAt = itemFirstListedAt
 
-              handleSetGlobalMinter(setGlobalMinterEvent)
+      item.save()
 
-              assert.fieldEquals('Item', itemId, 'firstListedAt', (itemFirstListedAt as BigInt).toString())
-            })
-          })
-        })
+      let setGlobalMinterEvent = createSetGlobalMinterEvent(collectionAddress, minter, true)
 
-        describe('when firstListedAt has a value', () => {
-          beforeEach(() => {
-            firstListedAt = BigInt.fromI32(100)
-          })
+      handleSetGlobalMinter(setGlobalMinterEvent)
 
-          test('should keep current firstListedAt value', () => {
-            let collectionAddress = addresses[0]
-            let collectionId = collectionAddress.toHexString()
-            let collection = createCollection(collectionId)
+      assert.fieldEquals('Item', itemId, 'firstListedAt', setGlobalMinterEvent.block.timestamp.toString())
+    })
 
-            collection.firstListedAt = firstListedAt
+    test('should keep item firstListedAt if it is not null', () => {
+      let minter = Address.fromString(getStoreAddress())
+      let itemFirstListedAt = BigInt.fromI32(100)
 
-            collection.save()
+      let collectionAddress = addresses[0]
+      let collectionId = collectionAddress.toHexString()
+      let collection = createCollection(collectionId)
 
-            let setGlobalMinterEvent = createSetGlobalMinterEvent(collectionAddress, minter, true)
+      collection.itemsCount = 1
 
-            handleSetGlobalMinter(setGlobalMinterEvent)
+      collection.save()
 
-            assert.fieldEquals('Collection', collectionId, 'firstListedAt', (firstListedAt as BigInt).toString())
-          })
-        })
-      })
+      let itemId = getItemId(collectionId, '0')
+      let item = createItem(itemId)
 
-      describe('when the minter is not the store', () => {
-        beforeEach(() => {
-          minter = addresses[1]
-        })
+      item.firstListedAt = itemFirstListedAt
 
-        describe('when firstListedAt is null', () => {
-          beforeEach(() => {
-            firstListedAt = null
-          })
+      item.save()
 
-          test('should keep firstListedAt as null', () => {
-            let collectionAddress = addresses[0]
-            let collectionId = collectionAddress.toHexString()
-            let collection = createCollection(collectionId)
+      let setGlobalMinterEvent = createSetGlobalMinterEvent(collectionAddress, minter, true)
 
-            collection.firstListedAt = firstListedAt
+      handleSetGlobalMinter(setGlobalMinterEvent)
 
-            collection.save()
+      assert.fieldEquals('Item', itemId, 'firstListedAt', (itemFirstListedAt as BigInt).toString())
+    })
 
-            let setGlobalMinterEvent = createSetGlobalMinterEvent(collectionAddress, minter, true)
+    test('should keep item firstListedAt if the minter is not the store', () => {
+      let minter = addresses[1]
+      let itemFirstListedAt = BigInt.fromI32(100)
 
-            handleSetGlobalMinter(setGlobalMinterEvent)
+      let collectionAddress = addresses[0]
+      let collectionId = collectionAddress.toHexString()
+      let collection = createCollection(collectionId)
 
-            assert.fieldEquals('Collection', collectionId, 'firstListedAt', 'null')
-          })
+      collection.itemsCount = 1
 
-          describe('when the item firstListedAt is null', () => {
-            beforeEach(() => {
-              itemFirstListedAt = null
-            })
+      collection.save()
 
-            test('should keep item firstListedAt as null', () => {
-              let collectionAddress = addresses[0]
-              let collectionId = collectionAddress.toHexString()
-              let collection = createCollection(collectionId)
+      let itemId = getItemId(collectionId, '0')
+      let item = createItem(itemId)
 
-              collection.itemsCount = 1
+      item.firstListedAt = itemFirstListedAt
 
-              collection.save()
+      item.save()
 
-              let itemId = getItemId(collectionId, '0')
-              let item = createItem(itemId)
+      let setGlobalMinterEvent = createSetGlobalMinterEvent(collectionAddress, minter, true)
 
-              item.firstListedAt = itemFirstListedAt
+      handleSetGlobalMinter(setGlobalMinterEvent)
 
-              item.save()
-
-              let setGlobalMinterEvent = createSetGlobalMinterEvent(collectionAddress, minter, true)
-
-              handleSetGlobalMinter(setGlobalMinterEvent)
-
-              assert.fieldEquals('Item', itemId, 'firstListedAt', 'null')
-            })
-          })
-        })
-      })
+      assert.fieldEquals('Item', itemId, 'firstListedAt', (itemFirstListedAt as BigInt).toString())
     })
   })
 
   describe('handleSetItemMinter', () => {
-    describe('when the network is matic', () => {
-      beforeEach(() => {
-        dataSourceMock.setNetwork('matic')
-      })
+    test('should set firstListedAt when the minter is the store', () => {
+      let minter = Address.fromString(getStoreAddress())
+      let itemFirstListedAt: BigInt | null = null
 
-      describe('when the minter is the store', () => {
-        beforeEach(() => {
-          minter = Address.fromString(getStoreAddress())
-        })
+      let collectionAddress = addresses[0]
 
-        describe('when the item firstListedAt is null', () => {
-          beforeEach(() => {
-            itemFirstListedAt = null
-          })
+      let itemId = getItemId(collectionAddress.toHexString(), '0')
+      let item = createItem(itemId)
 
-          test('should set the item firstListedAt timestamp', () => {
-            let collectionAddress = addresses[0]
+      item.firstListedAt = itemFirstListedAt
 
-            let itemId = getItemId(collectionAddress.toHexString(), '0')
-            let item = createItem(itemId)
+      item.save()
 
-            item.firstListedAt = itemFirstListedAt
+      let setItemMinterEvent = createSetItemMinterEvent(collectionAddress, '0', minter, '1')
 
-            item.save()
+      handleSetItemMinter(setItemMinterEvent)
 
-            let setItemMinterEvent = createSetItemMinterEvent(collectionAddress, '0', minter, '1')
+      assert.fieldEquals('Item', itemId, 'firstListedAt', setItemMinterEvent.block.timestamp.toString())
+    })
 
-            handleSetItemMinter(setItemMinterEvent)
+    test('should keep firstListedAt if it is not null', () => {
+      let minter = Address.fromString(getStoreAddress())
+      let itemFirstListedAt = BigInt.fromI32(100)
 
-            assert.fieldEquals('Item', itemId, 'firstListedAt', setItemMinterEvent.block.timestamp.toString())
-          })
-        })
+      let collectionAddress = addresses[0]
 
-        describe('when the item firstListedAt has value', () => {
-          beforeEach(() => {
-            itemFirstListedAt = BigInt.fromI32(100)
-          })
+      let itemId = getItemId(collectionAddress.toHexString(), '0')
+      let item = createItem(itemId)
 
-          test('should keep the current value of firstListedAt timestamp', () => {
-            let collectionAddress = addresses[0]
+      item.firstListedAt = itemFirstListedAt
 
-            let itemId = getItemId(collectionAddress.toHexString(), '0')
-            let item = createItem(itemId)
+      item.save()
 
-            item.firstListedAt = itemFirstListedAt
+      let setItemMinterEvent = createSetItemMinterEvent(collectionAddress, '0', minter, '1')
 
-            item.save()
+      handleSetItemMinter(setItemMinterEvent)
 
-            let setItemMinterEvent = createSetItemMinterEvent(collectionAddress, '0', minter, '1')
+      assert.fieldEquals('Item', itemId, 'firstListedAt', (itemFirstListedAt as BigInt).toString())
+    })
 
-            handleSetItemMinter(setItemMinterEvent)
+    test('should keep firstListedAt if the minter is not the store', () => {
+      let minter = addresses[1]
+      let itemFirstListedAt = BigInt.fromI32(100)
 
-            assert.fieldEquals('Item', itemId, 'firstListedAt', (itemFirstListedAt as BigInt).toString())
-          })
-        })
-      })
+      let collectionAddress = addresses[0]
 
-      describe('when the minter is not the store', () => {
-        beforeEach(() => {
-          minter = addresses[1]
-        })
+      let itemId = getItemId(collectionAddress.toHexString(), '0')
+      let item = createItem(itemId)
 
-        describe('when the item firstListedAt is null', () => {
-          beforeEach(() => {
-            itemFirstListedAt = null
-          })
+      item.firstListedAt = itemFirstListedAt
 
-          test('should keep item firstListedAt as null', () => {
-            let collectionAddress = addresses[0]
+      item.save()
 
-            let itemId = getItemId(collectionAddress.toHexString(), '0')
-            let item = createItem(itemId)
+      let setItemMinterEvent = createSetItemMinterEvent(collectionAddress, '0', minter, '1')
 
-            item.firstListedAt = itemFirstListedAt
+      handleSetItemMinter(setItemMinterEvent)
 
-            item.save()
-
-            let setItemMinterEvent = createSetItemMinterEvent(collectionAddress, '0', minter, '1')
-
-            handleSetItemMinter(setItemMinterEvent)
-
-            assert.fieldEquals('Item', itemId, 'firstListedAt', 'null')
-          })
-        })
-      })
+      assert.fieldEquals('Item', itemId, 'firstListedAt', (itemFirstListedAt as BigInt).toString())
     })
   })
 })
