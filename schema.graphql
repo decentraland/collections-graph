@@ -15,6 +15,7 @@ type Collection @entity {
   createdAt: BigInt!
   updatedAt: BigInt!
   reviewedAt: BigInt!
+  firstListedAt: BigInt
 
   # Searcheable fields
   searchIsStoreMinter: Boolean!
@@ -49,6 +50,8 @@ type Item @entity {
   reviewedAt: BigInt!
   "Last time the Item was sold"
   soldAt: BigInt
+  "First time the Item was listed"
+  firstListedAt: BigInt
 
   # analytics
   sales: Int!

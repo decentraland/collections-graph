@@ -185,6 +185,23 @@ export class Collection extends Entity {
     this.set("reviewedAt", Value.fromBigInt(value));
   }
 
+  get firstListedAt(): BigInt | null {
+    let value = this.get("firstListedAt");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set firstListedAt(value: BigInt | null) {
+    if (!value) {
+      this.unset("firstListedAt");
+    } else {
+      this.set("firstListedAt", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
   get searchIsStoreMinter(): boolean {
     let value = this.get("searchIsStoreMinter");
     return value!.toBoolean();
@@ -488,6 +505,23 @@ export class Item extends Entity {
       this.unset("soldAt");
     } else {
       this.set("soldAt", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
+  get firstListedAt(): BigInt | null {
+    let value = this.get("firstListedAt");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set firstListedAt(value: BigInt | null) {
+    if (!value) {
+      this.unset("firstListedAt");
+    } else {
+      this.set("firstListedAt", Value.fromBigInt(<BigInt>value));
     }
   }
 

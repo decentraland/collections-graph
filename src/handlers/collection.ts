@@ -330,6 +330,11 @@ export function handleSetGlobalMinter(event: SetGlobalMinter): void {
     // set flag on collection
     if (minterAddress == storeAddress) {
       collection.searchIsStoreMinter = true
+
+      if (!collection.firstListedAt) {
+        collection.firstListedAt = event.block.timestamp
+      }
+
       // loop over all items and set flag
       let itemCount = collection.itemsCount
       for (let i = 0; i < itemCount; i++) {
@@ -337,6 +342,11 @@ export function handleSetGlobalMinter(event: SetGlobalMinter): void {
         let item = Item.load(itemId)
         if (item != null) {
           item.searchIsStoreMinter = true
+
+          if (!item.firstListedAt) {
+            item.firstListedAt = event.block.timestamp
+          }
+
           item.save()
         }
       }
@@ -427,6 +437,10 @@ export function handleSetItemMinter(event: SetItemMinter): void {
     // if minter is store address, set flag
     if (minterAddress == storeAddress) {
       item.searchIsStoreMinter = true
+
+      if (!item.firstListedAt) {
+        item.firstListedAt = event.block.timestamp
+      }
     }
   } else {
     item.minters = removeItemMinter(item, minterAddress)
