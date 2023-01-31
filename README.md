@@ -6,7 +6,7 @@
 |Mainnet (Hosted Services)|https://thegraph.com/explorer/subgraph/decentraland/collections-ethereum-mainnet |QmXAJWxr83ff8yqZkK8NrWUxETRHyXbq69sy2bmQznT136|QmWrLR11uq12yDD7qUFzeyYEFXxQiU2UcKFYZLrccCYkwk|
 |Goerli (Hosted Services)|https://thegraph.com/explorer/subgraph/decentraland/collections-ethereum-goerli|QmXbmCWShvjizcePNj2BqxqsWxdb4sxK83RvDeF1gFcFDG|QmSjgZDY25SNr3kW6bsQWcSeh3NRoojtbrMSrXvKz4BsvJ|
 |Matic (Satsuma)|https://subgraph.satsuma-prod.com/decentraland/collections-matic-mainnet/playground|QmUCo2VWg5Cj8C46nS1LNVemLbiXPcf2ad75d3dMrhdpJv|Qmc1XwMPmbVNCqvbTkTNWxGogcZLxQ72WwTsgHVbRTJ7XD|
-|Matic (Hosted Services)|https://thegraph.com/explorer/subgraph/decentraland/collections-matic-mainnet|Qmc1XwMPmbVNCqvbTkTNWxGogcZLxQ72WwTsgHVbRTJ7XD|QmNrxac6yGrZWKwYLNSFagwRcGEmHUeurwfVyfYppzAs6x|
+|Matic (Hosted Services)|https://thegraph.com/explorer/subgraph/decentraland/collections-matic-mainnet|QmUCo2VWg5Cj8C46nS1LNVemLbiXPcf2ad75d3dMrhdpJv|Qmc1XwMPmbVNCqvbTkTNWxGogcZLxQ72WwTsgHVbRTJ7XD|
 |Matic Temp (Hosted Services)|https://thegraph.com/explorer/subgraph/decentraland/collections-matic-mainnet-temp|QmUCo2VWg5Cj8C46nS1LNVemLbiXPcf2ad75d3dMrhdpJv|QmNrxac6yGrZWKwYLNSFagwRcGEmHUeurwfVyfYppzAs6x|
 |Mumbai (Satsuma)|https://subgraph.satsuma-prod.com/decentraland/collections-matic-mumbai/playground|QmQRwsc2CCebd4KVHNVeTcLZacqc3PGU5gt6yEo1n19x7L|-|
 |Mumbai (Hosted Service)|https://thegraph.com/explorer/subgraph/decentraland/collections-matic-mumbai|QmQRwsc2CCebd4KVHNVeTcLZacqc3PGU5gt6yEo1n19x7L|QmfZsAg5pbMBpwY1WuDR7QPfUZ3oNEkNagVXcQ42nKX1C5|
