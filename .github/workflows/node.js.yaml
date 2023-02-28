@@ -24,3 +24,4 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - run: npm run prepare:matic
+      - run: npm test
