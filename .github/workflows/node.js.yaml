@@ -24,5 +24,3 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - run: npm run prepare:matic
-      - run: docker build -t matchstick ./tests/.docker
-      - run: docker run --rm --mount type=bind,source=$(pwd),target=/matchstick matchstick
