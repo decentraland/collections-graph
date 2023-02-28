@@ -32,5 +32,4 @@ public/
 subgraph.yaml
 
 tests/.bin
-tests/.docker
 tests/.latest.json
