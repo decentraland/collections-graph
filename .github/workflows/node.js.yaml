@@ -4,7 +4,7 @@ on:
   push:
     branches: [ main ]
   pull_request:
-    branches: [ main, feat/add-tests ]
+    branches: [ main ]
 
 jobs:
   build:
