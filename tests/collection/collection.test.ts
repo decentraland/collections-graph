@@ -210,7 +210,7 @@ describe('collection', () => {
 
       handleSetItemMinter(setItemMinterEvent)
 
-      assert.fieldEquals('Item', itemId, 'firstListedAt', '100000')
+      assert.fieldEquals('Item', itemId, 'firstListedAt', (itemFirstListedAt as BigInt).toString())
     })
   })
 })
