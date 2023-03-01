@@ -7,7 +7,7 @@ import {
   buildCountFromRoyalties,
   buildCountFromSale,
   buildCountFromSecondarySale
-} from '../Count'
+} from '../count'
 import { ONE_MILLION } from '../Store'
 import {
   updateBuyerAccountsDayData,

@@ -1,5 +1,5 @@
 import { BigInt } from '@graphprotocol/graph-ts'
-import { getNetwork } from '../network'
+import { getNetwork } from '../Network'
 
 export function getCurationId(collectionAddress: string, transactionHash: string, logIndex: string): string {
   return collectionAddress + '-' + transactionHash + '-' + logIndex
