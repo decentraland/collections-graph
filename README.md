@@ -124,5 +124,3 @@ Owner's `id` is the owner's Ethereum address
   }
 }
 ```
-
-.
