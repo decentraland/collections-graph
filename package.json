@@ -15,7 +15,8 @@
     "deploy:mumbai": "npm run prepare:mumbai && npx graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ decentraland/collections-matic-mumbai",
     "deploy:matic": "npm run prepare:matic && npx graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ decentraland/collections-matic-mainnet",
     "deploy:temp": "npm run prepare:temp && npx graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ decentraland/collections-matic-mainnet-temp",
-    "test": "graph test --docker"
+    "test": "graph test",
+    "test:docker": "npm test -- --docker"
   },
   "devDependencies": {
     "@graphprotocol/graph-cli": "^0.30.4",
@@ -28,11 +29,7 @@
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
-    "babel-register": "^6.26.0",
-    "truffle": "^5.0.4",
-    "truffle-contract": "^4.0.5",
-    "truffle-hdwallet-provider": "^1.0.4",
-    "tslint-plugin-prettier": "^2.0.1"
+    "babel-register": "^6.26.0"
   },
   "prettier": {
     "semi": false,

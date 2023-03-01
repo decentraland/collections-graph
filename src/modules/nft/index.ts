@@ -1,8 +1,8 @@
 import { BigInt, log, Address } from '@graphprotocol/graph-ts'
 
 import * as status from '../order'
-import { ZERO_ADDRESS } from '../Account'
-import { NFT, Order, Bid } from '../../entities/schema'
+import { ZERO_ADDRESS } from '../account'
+import { NFT, Order } from '../../entities/schema'
 import { ERC721 } from '../../entities/templates/ERC721/ERC721'
 
 export function isMint(to: string): boolean {

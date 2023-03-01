@@ -48,7 +48,7 @@ import {
   dg_atari_dillon_francis,
   wearable_test
 } from '../../../data/wearablesV1'
-import { getNetwork } from '../../network'
+import { getNetwork } from '../../Network'
 import { toLowerCase } from '../../../utils'
 import { isValidBodyShape } from '..'
 
