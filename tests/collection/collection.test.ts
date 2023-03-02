@@ -2,7 +2,7 @@ import { assert, clearStore, test, describe, afterAll, dataSourceMock, beforeEac
 import { Address, BigInt } from '@graphprotocol/graph-ts'
 import { handleSetGlobalMinter, handleSetItemMinter } from '../../src/handlers/collection'
 import { addresses, createCollection, createItem, createSetGlobalMinterEvent, createSetItemMinterEvent } from './utils'
-import { getStoreAddress } from '../../src/modules/Store'
+import { getStoreAddress } from '../../src/modules/store'
 import { getItemId } from '../../src/modules/item'
 
 describe('collection', () => {
