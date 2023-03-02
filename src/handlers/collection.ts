@@ -164,8 +164,9 @@ export function handleAddItem(event: AddItem): void {
   item = setItemSearchFields(item)
   item.save()
 
-  let metric = buildCountFromItem()
-  metric.save()
+  let count = buildCountFromItem()
+  count.daoEarningsManaTotal = count.daoEarningsManaTotal.plus(creationFee)
+  count.save()
 
   // tracks the number of items created by the creator and fees to DAO
   let analyticsDayData = getOrCreateAnalyticsDayData(event.block.timestamp)
