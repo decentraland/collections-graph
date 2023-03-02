@@ -16,8 +16,30 @@ Using [The Graph](https://thegraph.com) and [Satsuma](https://www.satsuma.xyz/)
 ### Install
 
 ```bash
-npm run install
+npm ci
 ```
+
+### Test
+
+Tests are defined inside the `./tests` directory and executed using:
+
+```bash
+npm test
+```
+
+> **Take into consideration:**
+>`Postgres 14` is required to run tests locally because `graph-node`, the underlying engine to index the subgraph, needs it.
+
+An alternative to run tests locally without installing Postgres is through `Docker. To run them, use the following command:
+
+```
+npm run test:docker
+```
+
+> **CI Notice:**
+> Tests are run on the CI using `npm test` because the `ubuntu-latest` image used in the CI contains Postgres 14.
+
+More about how to write subgraph tests can be found on the [graph's unit testing documentation](https://thegraph.com/docs/en/developing/unit-testing-framework/).
 
 ### Deploy
 
