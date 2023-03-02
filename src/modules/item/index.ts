@@ -1,5 +1,5 @@
 import { Item } from "../../entities/schema"
-import { getCatalystBase } from '../Catalyst'
+import { getCatalystBase } from '../_catalyst'
 
 
 export function getItemId(contractAddress: string, itemId: string): string {

@@ -3,7 +3,7 @@ import { BidCreated, BidAccepted, BidCancelled, ERC721Bid } from '../entities/ER
 import { Bid, NFT } from '../entities/schema'
 import { getNFTId } from '../modules/NFT'
 import * as status from '../modules/Order'
-import { getBidId } from '../modules/bid'
+import { getBidId } from '../modules/_bid'
 import { buildCountFromBid } from '../modules/Count'
 import { BID_SALE_TYPE, trackSale } from '../modules/analytics'
 
