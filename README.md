@@ -29,7 +29,7 @@ npm test
 
 `Postgres 14` is required to run tests locally. That is because `graph-node`, the underlying engine to index the subgraph, needs it.
 
-An alternative to run tests locally without Postgres is to have `Docker` installed. In that case, tests can be run using:
+An alternative to run tests locally without installing Postgres is through `Docker. To run them, use the following command:
 
 ```
 npm run test:docker
