@@ -35,7 +35,8 @@ An alternative to run tests locally without installing Postgres is through `Dock
 npm run test:docker
 ```
 
-Tests are run on PRs to master just with `npm test` because the `ubuntu-latest` image being used contains Postgres 14.
+> **CI Notice:**
+> Tests are run on the CI using `npm test` because the `ubuntu-latest` image used in the CI contains Postgres 14.
 
 More about how to write subgraph tests can be found on the [graph's unit testing documentation](https://thegraph.com/docs/en/developing/unit-testing-framework/).
 
