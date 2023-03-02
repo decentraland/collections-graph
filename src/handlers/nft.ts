@@ -1,19 +1,19 @@
 import { BigInt, Address, log } from '@graphprotocol/graph-ts'
 
-import { getItemId, getItemImage } from '../modules/Item'
-import { createOrLoadAccount, ZERO_ADDRESS } from '../modules/Account'
-import { setItemSearchFields, setNFTSearchFields, buildWearableV1Metadata } from '../modules/Metadata'
-import * as itemTypes from '../modules/Metadata/itemTypes'
+import { getItemId, getItemImage } from '../modules/item'
+import { createOrLoadAccount, ZERO_ADDRESS } from '../modules/account'
+import { setItemSearchFields, setNFTSearchFields, buildWearableV1Metadata } from '../modules/metadata'
+import * as itemTypes from '../modules/metadata/itemTypes'
 import {
   getWearableIdFromTokenURI,
   getWearableV1Representation,
   getIssuedIdFromTokenURI,
   getURNForCollectionV1,
   getURNForWearableV1
-} from '../modules/Metadata/wearable'
-import { getNFTId, getTokenURI, isMint, cancelActiveOrder, clearNFTOrderProperties } from '../modules/NFT'
+} from '../modules/metadata/wearable'
+import { getNFTId, getTokenURI, isMint, cancelActiveOrder, clearNFTOrderProperties } from '../modules/nft'
 import { NFT, Item, Collection, Mint } from '../entities/schema'
-import { buildCountFromNFT, buildCountFromItem } from '../modules/Count'
+import { buildCountFromNFT, buildCountFromItem } from '../modules/count'
 import { Issue, Transfer, CollectionV2 as CollectionContract } from '../entities/templates/CollectionV2/CollectionV2'
 import { CollectionStore } from '../entities/templates/CollectionStore/CollectionStore'
 import { Transfer as ERC721Transfer, AddWearable } from '../entities/templates/ERC721/ERC721'
