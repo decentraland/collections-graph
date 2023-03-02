@@ -1,9 +1,9 @@
 import { assert, clearStore, test, describe, afterAll, dataSourceMock, beforeEach } from 'matchstick-as/assembly/index'
 import { Address, BigInt } from '@graphprotocol/graph-ts'
 import { handleSetGlobalMinter, handleSetItemMinter } from '../../src/handlers/collection'
-import { addresses, createCollection, createItem, createSetGlobalMinterEvent, createSetItemMinterEvent } from './utils'
 import { getStoreAddress } from '../../src/modules/store'
 import { getItemId } from '../../src/modules/item'
+import { addresses, createCollection, createItem, createSetGlobalMinterEvent, createSetItemMinterEvent } from './utils'
 
 describe('collection', () => {
   beforeEach(() => {
