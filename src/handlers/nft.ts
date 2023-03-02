@@ -17,7 +17,7 @@ import { buildCountFromNFT, buildCountFromItem } from '../modules/count'
 import { Issue, Transfer, CollectionV2 as CollectionContract } from '../entities/templates/CollectionV2/CollectionV2'
 import { CollectionStore } from '../entities/templates/CollectionStore/CollectionStore'
 import { Transfer as ERC721Transfer, AddWearable } from '../entities/templates/ERC721/ERC721'
-import { getStoreAddress } from '../modules/_store'
+import { getStoreAddress } from '../modules/store'
 import { MINT_SALE_TYPE, trackSale } from '../modules/analytics'
 import { toLowerCase } from '../utils'
 

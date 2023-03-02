@@ -8,7 +8,7 @@ import {
   buildCountFromSale,
   buildCountFromSecondarySale
 } from '../count'
-import { ONE_MILLION } from '../_store'
+import { ONE_MILLION } from '../store'
 import {
   updateBuyerAccountsDayData,
   updateCreatorsSupportedSet,
