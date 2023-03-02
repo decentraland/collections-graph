@@ -37,7 +37,7 @@ npm run test:docker
 
 Tests are run on PRs to master just with `npm test` because the `ubuntu-latest` image being used contains Postgres 14.
 
-More about how to write subgraph tests can be found on https://thegraph.com/docs/en/developing/unit-testing-framework/
+More about how to write subgraph tests can be found on the [graph's unit testing documentation](https://thegraph.com/docs/en/developing/unit-testing-framework/).
 
 ### Deploy
 
