@@ -287,17 +287,10 @@ export function handleIssue(event: Issue): void {
   let collection = Collection.load(collectionAddress)
 
   if (collection != null) {
-    let isGlobalMinter = false
-
     for (let i = 0; i < collection.minters.length; i++) {
       if (collection.minters[i] == event.params._caller.toHexString()) {
-        isGlobalMinter = true
-        break
+        return
       }
-    }
-
-    if (isGlobalMinter) {
-      return
     }
   }
 
