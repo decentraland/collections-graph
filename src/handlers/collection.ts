@@ -284,13 +284,25 @@ export function handleIssue(event: Issue): void {
     handleMintNFT(event, collectionAddress, item)
   }
 
+  let collection = Collection.load(collectionAddress)
+
+  if (collection != null) {
+    let isGlobalMinter = false
+
+    for (let i = 0; i < collection.minters.length; i++) {
+      if (collection.minters[i] == event.params._caller.toHexString()) {
+        isGlobalMinter = true
+        break
+      }
+    }
+
+    if (isGlobalMinter) {
+      return
+    }
+  }
+
   // Bind contract
   let collectionContract = CollectionContract.bind(event.address)
-  let isGlobalMinter = collectionContract.globalMinters(event.params._caller)
-
-  if (isGlobalMinter) {
-    return
-  }
 
   let amountOfMintsAvailable = collectionContract.itemMinters(event.params._itemId, event.params._caller)
 
