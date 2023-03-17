@@ -1,10 +1,11 @@
-import { log } from '@graphprotocol/graph-ts'
+import { log, BigInt } from '@graphprotocol/graph-ts'
 import { OrderCreated, OrderSuccessful, OrderCancelled, MarketplaceV2 } from '../entities/MarketplaceV2/MarketplaceV2'
-import { Order, NFT } from '../entities/schema'
+import { Order, NFT, Item } from '../entities/schema'
 import { getNFTId, updateNFTOrderProperties, cancelActiveOrder } from '../modules/NFT'
 import { buildCountFromOrder } from '../modules/Count'
 import * as status from '../modules/Order'
 import { ORDER_SALE_TYPE, trackSale } from '../modules/analytics'
+import { updateItemOrderData } from '../modules/item'
 
 export function handleOrderCreated(event: OrderCreated): void {
   let nftId = getNFTId(event.params.nftAddress.toHexString(), event.params.assetId.toString())
@@ -38,6 +39,11 @@ export function handleOrderCreated(event: OrderCreated): void {
   nft.updatedAt = event.block.timestamp
   nft = updateNFTOrderProperties(nft, order)
   nft.save()
+
+  let item = Item.load(nft.item!)
+  if (item) {
+    updateItemOrderData(item, order)
+  }
 
   let count = buildCountFromOrder()
   count.save()
@@ -86,8 +92,13 @@ export function handleOrderSuccessful(event: OrderSuccessful): void {
     marketplaceContract.feesCollector(),
     marketplaceContract.royaltiesCutPerMillion(),
     event.block.timestamp,
-    event.transaction.hash,
+    event.transaction.hash
   )
+
+  let item = Item.load(nft.item!)
+  if (item) {
+    updateItemOrderData(item, order)
+  }
 }
 
 export function handleOrderCancelled(event: OrderCancelled): void {
@@ -112,4 +123,9 @@ export function handleOrderCancelled(event: OrderCancelled): void {
   nft.updatedAt = event.block.timestamp
   nft = updateNFTOrderProperties(nft, order)
   nft.save()
+
+  let item = Item.load(nft.item!)
+  if (item) {
+    updateItemOrderData(item, order)
+  }
 }

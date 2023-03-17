@@ -155,6 +155,11 @@ export function handleAddItem(event: AddItem): void {
   item.volume = BigInt.fromI32(0)
   item.uniqueCollectors = []
   item.uniqueCollectorsTotal = 0
+  item.nftOrderPrices = []
+  item.nftOpenOrdersCount = 0
+  item.minPrice = contractItem.price
+  item.minNftOrder = BigInt.fromI32(0)
+  item.maxNftOrder = BigInt.fromI32(0)
 
   let metadata = buildItemMetadata(item)
 

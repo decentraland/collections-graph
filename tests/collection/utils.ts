@@ -63,6 +63,11 @@ export function createItem(id: string): Item {
   item.searchIsStoreMinter = false
   item.uniqueCollectors = []
   item.uniqueCollectorsTotal = 0
+  item.nftOrderPrices = []
+  item.minPrice = BigInt.fromI32(0)
+  item.minNftOrder = BigInt.fromI32(0)
+  item.maxNftOrder = BigInt.fromI32(0)
+  item.nftOpenOrdersCount = 0
 
   return item
 }

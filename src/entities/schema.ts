@@ -747,6 +747,51 @@ export class Item extends Entity {
   set uniqueCollectorsTotal(value: i32) {
     this.set("uniqueCollectorsTotal", Value.fromI32(value));
   }
+
+  get nftOpenOrdersCount(): i32 {
+    let value = this.get("nftOpenOrdersCount");
+    return value!.toI32();
+  }
+
+  set nftOpenOrdersCount(value: i32) {
+    this.set("nftOpenOrdersCount", Value.fromI32(value));
+  }
+
+  get nftOrderPrices(): Array<BigInt> {
+    let value = this.get("nftOrderPrices");
+    return value!.toBigIntArray();
+  }
+
+  set nftOrderPrices(value: Array<BigInt>) {
+    this.set("nftOrderPrices", Value.fromBigIntArray(value));
+  }
+
+  get minNftOrder(): BigInt {
+    let value = this.get("minNftOrder");
+    return value!.toBigInt();
+  }
+
+  set minNftOrder(value: BigInt) {
+    this.set("minNftOrder", Value.fromBigInt(value));
+  }
+
+  get maxNftOrder(): BigInt {
+    let value = this.get("maxNftOrder");
+    return value!.toBigInt();
+  }
+
+  set maxNftOrder(value: BigInt) {
+    this.set("maxNftOrder", Value.fromBigInt(value));
+  }
+
+  get minPrice(): BigInt {
+    let value = this.get("minPrice");
+    return value!.toBigInt();
+  }
+
+  set minPrice(value: BigInt) {
+    this.set("minPrice", Value.fromBigInt(value));
+  }
 }
 
 export class NFT extends Entity {

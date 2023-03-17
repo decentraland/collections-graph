@@ -81,6 +81,13 @@ type Item @entity {
   ## Unique collectors
   uniqueCollectors: [String!]!
   uniqueCollectorsTotal: Int!
+
+  ## Orders
+  nftOpenOrdersCount: Int!
+  nftOrderPrices: [BigInt!]!
+  minNftOrder: BigInt!
+  maxNftOrder: BigInt!
+  minPrice: BigInt!
 }
 
 type NFT @entity {

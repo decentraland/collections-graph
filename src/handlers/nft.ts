@@ -204,6 +204,10 @@ export function handleAddItemV1(event: AddWearable): void {
   item.volume = BigInt.fromI32(0)
   item.uniqueCollectors = []
   item.uniqueCollectorsTotal = 0
+  item.nftOrderPrices = []
+  item.nftOpenOrdersCount = 0
+  item.minNftOrder = BigInt.fromI32(0)
+  item.maxNftOrder = BigInt.fromI32(0)
 
   let metadata = buildWearableV1Metadata(item, representation!)
   item.metadata = metadata.id
