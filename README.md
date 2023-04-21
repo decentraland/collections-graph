@@ -4,8 +4,8 @@
 |-|-|-|-|
 |Mainnet (Satsuma)|https://subgraph.satsuma-prod.com/decentraland/collections-ethereum-mainnet/playground|QmXAJWxr83ff8yqZkK8NrWUxETRHyXbq69sy2bmQznT136|-|
 |Mainnet (Hosted Services)|https://thegraph.com/explorer/subgraph/decentraland/collections-ethereum-mainnet|QmXAJWxr83ff8yqZkK8NrWUxETRHyXbq69sy2bmQznT136|QmWrLR11uq12yDD7qUFzeyYEFXxQiU2UcKFYZLrccCYkwk|
-|Goerli (Satsuma)|https://thegraph.com/explorer/subgraph/decentraland/collections-ethereum-goerli|QmRbsXQDYGF4MEFsbjfbKegGyo36VXKAwcwHEiqLvwzsdS|-|
-|Goerli (Hosted Services)|https://thegraph.com/explorer/subgraph/decentraland/collections-ethereum-goerli|QmRbsXQDYGF4MEFsbjfbKegGyo36VXKAwcwHEiqLvwzsdS|QmXbmCWShvjizcePNj2BqxqsWxdb4sxK83RvDeF1gFcFDG|
+|Goerli (Satsuma)|https://thegraph.com/explorer/subgraph/decentraland/collections-ethereum-goerli|QmbL8a1aMAuKoMZKNjjP2pzyekFqb6AdRWji3nsPnQkEoo|QmRbsXQDYGF4MEFsbjfbKegGyo36VXKAwcwHEiqLvwzsdS|
+|Goerli (Hosted Services)|https://thegraph.com/explorer/subgraph/decentraland/collections-ethereum-goerli|QmPtETAfzq2eCJ3U7HsS5ugC7L4WK4oNZ6RaNkYoKZZbZL|QmRbsXQDYGF4MEFsbjfbKegGyo36VXKAwcwHEiqLvwzsdS|
 |Matic (Satsuma)|https://subgraph.satsuma-prod.com/decentraland/collections-matic-mainnet/playground|QmUCo2VWg5Cj8C46nS1LNVemLbiXPcf2ad75d3dMrhdpJv|Qmc1XwMPmbVNCqvbTkTNWxGogcZLxQ72WwTsgHVbRTJ7XD|
 |Matic (Hosted Services)|https://thegraph.com/explorer/subgraph/decentraland/collections-matic-mainnet|QmUCo2VWg5Cj8C46nS1LNVemLbiXPcf2ad75d3dMrhdpJv|Qmc1XwMPmbVNCqvbTkTNWxGogcZLxQ72WwTsgHVbRTJ7XD|
 |Matic Temp (Hosted Services)|https://thegraph.com/explorer/subgraph/decentraland/collections-matic-mainnet-temp|QmUCo2VWg5Cj8C46nS1LNVemLbiXPcf2ad75d3dMrhdpJv|QmNrxac6yGrZWKwYLNSFagwRcGEmHUeurwfVyfYppzAs6x|
