@@ -1895,6 +1895,23 @@ export class Order extends Entity {
     }
   }
 
+  get item(): string | null {
+    let value = this.get("item");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set item(value: string | null) {
+    if (!value) {
+      this.unset("item");
+    } else {
+      this.set("item", Value.fromString(<string>value));
+    }
+  }
+
   get nftAddress(): Bytes {
     let value = this.get("nftAddress");
     return value!.toBytes();
