@@ -7,19 +7,6 @@
 
 // Do not change this export. Satsuma expects a non-default `resolvers` string to be exported from this file.
 export const typeDefs = `
-    type AvailableEntityTable {
-        name: String!
-        description: String
-        columns: [String]
-    }
-    
-    type CustomQueryHelpers {
-      available_entity_tables: [AvailableEntityTable]
-      something_else: String
-      schema: String
-      db_uri: String
-    }
-    
     type CustomResponseItem {
       total_rows: Int!
       id: String!
@@ -53,6 +40,5 @@ export const typeDefs = `
     type Query {
         # Your type definitions here
         testing(skip: Int = 0, limit: Int = 100): [CustomResponseItem]!
-        custom_query_helpers: CustomQueryHelpers
     }
 `;
