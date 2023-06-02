@@ -278,6 +278,7 @@ type Order @entity {
   id: ID!
   marketplaceAddress: Bytes!
   nft: NFT
+  item: Item
   nftAddress: Bytes!
   tokenId: BigInt!
   txHash: Bytes!
