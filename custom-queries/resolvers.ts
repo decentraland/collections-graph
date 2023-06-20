@@ -14,6 +14,7 @@ export const resolvers = {
     sales_aggregation: async (parent: any, args: any, context: Context, info: any) => {
       const daysInPast = args.daysInPast || 0
 
+      // Wanted to check if this is logged by the process run with `npx @satsuma/cli local`
       console.log(tables.ITEMS_DAY_DATA)
 
       const result = await context.db.entities.raw(
