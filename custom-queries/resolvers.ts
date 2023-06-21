@@ -4,28 +4,31 @@
 // moment
 // knex
 // console
-
+//
 import { Context } from './schema'
-import { tables } from './schema'
 
 // Do not change this export. Satsuma expects a non-default `resolvers` object to be exported from this file.
 export const resolvers = {
   Query: {
-    sales_aggregation: async (parent: any, args: any, context: Context, info: any) => {
+    salesAggregation: async (parent: any, args: any, context: Context, info: any) => {
       const daysInPast = args.daysInPast || 0
 
       // Wanted to check if this is logged by the process run with `npx @satsuma/cli local`
-      console.log(tables.ITEMS_DAY_DATA)
+      // Satsuma: We are supposed to use `context.db.entities.tables` instead of importing the `tables` variable directly.
+      console.log(context.db.entities.tables)
 
       const result = await context.db.entities.raw(
-        `SELECT * FROM ? WHERE date > EXTRACT(EPOCH FROM CURRENT_TIMESTAMP - INTERVAL '${daysInPast} days')`, [tables.ITEMS_DAY_DATA]
+        `SELECT * FROM :table: WHERE date > EXTRACT(EPOCH FROM CURRENT_TIMESTAMP - INTERVAL '${daysInPast} days')`, {
+          table: context.db.entities.tables.ITEMS_DAY_DATA
+        }
       )
 
+      // Need to parseInt any values that are returned as strings
       return result.rows.reduce(
         (acc, next) => {
           return {
-            amount: acc.amount + next.sales,
-            volume: acc.volume + next.volume
+            amount: acc.amount + parseFloat(next.sales),
+            volume: acc.volume + parseFloat(next.volume)
           }
         },
         {
