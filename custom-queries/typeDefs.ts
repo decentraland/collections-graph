@@ -8,12 +8,12 @@
 // Do not change this export. Satsuma expects a non-default `resolvers` string to be exported from this file.
 export const typeDefs = `
     type SalesAggregation {
-        amount: Int!
-        volume: BigInt!
+        amount: Float!
+        volume: Float!
     }
     
     type Query {
         # Your type definitions here
-        sales_aggregation(daysInPast: Int! = 0): SalesAggregation
+        salesAggregation(daysInPast: Int! = 0): SalesAggregation
     }
 `;
