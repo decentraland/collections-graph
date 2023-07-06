@@ -98,7 +98,8 @@ function isValidWearableCategory(category: string): boolean {
     category == 'mask' ||
     category == 'tiara' ||
     category == 'top_head' ||
-    category == 'skin'
+    category == 'skin' ||
+    category == 'hands_wear'
   ) {
     return true
   }
