@@ -21,8 +21,8 @@
     "test:docker": "npm test -- --docker"
   },
   "devDependencies": {
-    "@graphprotocol/graph-cli": "^0.30.4",
-    "@graphprotocol/graph-ts": "^0.27.0",
+    "@graphprotocol/graph-cli": "^0.51.2",
+    "@graphprotocol/graph-ts": "^0.31.0",
     "matchstick-as": "^0.5.0",
     "mustache": "^4.0.1",
     "prettier": "^1.19.1",
