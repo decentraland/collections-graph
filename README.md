@@ -4,6 +4,7 @@
 |-|-|-|-|
 |Mainnet (Satsuma)|https://subgraph.satsuma-prod.com/decentraland/collections-ethereum-mainnet/playground|Qmf1ouGZcxBegEWodVy5fjFYFgQaB7wzw7j5rHwLcKeSXB|QmXAJWxr83ff8yqZkK8NrWUxETRHyXbq69sy2bmQznT136|
 |Mainnet (Hosted Services)|https://thegraph.com/explorer/subgraph/decentraland/collections-ethereum-mainnet|QmPjcwU1HSxWAf9sMyAag6NGSYxP2Y2U2PAx4sPg15mmJZ|QmXAJWxr83ff8yqZkK8NrWUxETRHyXbq69sy2bmQznT136|
+|Sepolia (Graph Studio)|https://api.studio.thegraph.com/query/49472/collections-ethereum-sepolia/0.0.2|QmaMmimNwj6U1mbRGWmJFLbWJ88ZyPdoesuWimfgqjVBrn|-|
 |Goerli (Satsuma)|https://thegraph.com/explorer/subgraph/decentraland/collections-ethereum-goerli|QmSSzDJBxX7Kj4EqszCUw3AHiznkt5W1fJEpLhiTsVdaqN|QmbL8a1aMAuKoMZKNjjP2pzyekFqb6AdRWji3nsPnQkEoo|
 |Goerli (Hosted Services)|https://thegraph.com/explorer/subgraph/decentraland/collections-ethereum-goerli|QmTNQHzovP1WLp1zBmJvU72uRpHhmzeHe1wb1hwysaXx6F|QmPtETAfzq2eCJ3U7HsS5ugC7L4WK4oNZ6RaNkYoKZZbZL|
 |Matic (Satsuma)|https://subgraph.satsuma-prod.com/decentraland/collections-matic-mainnet/playground|Qmf1ouGZcxBegEWodVy5fjFYFgQaB7wzw7j5rHwLcKeSXB|QmUCo2VWg5Cj8C46nS1LNVemLbiXPcf2ad75d3dMrhdpJv|
