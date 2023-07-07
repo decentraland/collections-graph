@@ -7,7 +7,7 @@ export let ExclusiveMasksCollectionRopsten = '0x30ae57840b0e9b8ea55334083d53d80b
 export let ExclusiveMasksCollectionGoerli = '0x1f0880E0b4514DC58e68B9BE91693bFA8C067ac1'
 
 // Sepolia Dummy used for testing
-export let ExclusiveMasksCollectionSepolia = '0xeea85b0a58c5ac32f73b62c61165815f6b851e65'
+export let ExclusiveMasksCollectionSepolia = '0x11a970e744ff69db8f461c2d0fc91d4293914301'
 
 // Mainnet
 export let ExclusiveMasksCollection = '0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd'
