@@ -9,8 +9,8 @@
 |Matic (Satsuma)|https://subgraph.satsuma-prod.com/decentraland/collections-matic-mainnet/playground|Qmf1ouGZcxBegEWodVy5fjFYFgQaB7wzw7j5rHwLcKeSXB|QmUCo2VWg5Cj8C46nS1LNVemLbiXPcf2ad75d3dMrhdpJv|
 |Matic (Hosted Services)|https://thegraph.com/explorer/subgraph/decentraland/collections-matic-mainnet|Qmf3igvJs24gozdwCwnDyPNz9DEBQMPQRFmEhUzEvgxZSq|QmUCo2VWg5Cj8C46nS1LNVemLbiXPcf2ad75d3dMrhdpJv|
 |Matic Temp (Hosted Services)|https://thegraph.com/explorer/subgraph/decentraland/collections-matic-mainnet-temp|QmXyrt3tNkrnDRopnMdY7Na9y8jbKi1645gbR4cJTURbk5|QmUCo2VWg5Cj8C46nS1LNVemLbiXPcf2ad75d3dMrhdpJv|
-|Mumbai (Satsuma)|https://subgraph.satsuma-prod.com/decentraland/collections-matic-mumbai/playground|QmeSvj8AMGwFcQSoDdbMnB1SrVhrhAYq2DaUukEdMDpZ3v|QmQRwsc2CCebd4KVHNVeTcLZacqc3PGU5gt6yEo1n19x7L|
-|Mumbai (Hosted Service)|https://thegraph.com/explorer/subgraph/decentraland/collections-matic-mumbai|QmdwRWh1FeGi3bJFYkD1Hu8w2uHvAHzJqbdCtszymfoqDS|QmQRwsc2CCebd4KVHNVeTcLZacqc3PGU5gt6yEo1n19x7L|
+|Mumbai (Satsuma)|https://subgraph.satsuma-prod.com/decentraland/collections-matic-mumbai/playground|QmRpCReFLwhB4tATJhur1MEjsPY1Rgo2yVrd5oinnjCrAy|QmY4hQRkXCtKRGP3aCYn4ES8kv1MmeHfov5gSK4EvTbzwz|
+|Mumbai (Hosted Service)|https://thegraph.com/explorer/subgraph/decentraland/collections-matic-mumbai|QmegTREYw1Li3DYMAcCVJDcoBuquoCFKDUCzxrxyGhWwUW|QmdwRWh1FeGi3bJFYkD1Hu8w2uHvAHzJqbdCtszymfoqDS|
 
 Using [The Graph](https://thegraph.com) and [Satsuma](https://www.satsuma.xyz/)
 
