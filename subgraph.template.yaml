@@ -1,7 +1,7 @@
 specVersion: 0.0.2
 description: Decentraland collections
-features:
-  - grafting
+# features:
+#   - grafting
 # graft:
 #   base: QmY4hQRkXCtKRGP3aCYn4ES8kv1MmeHfov5gSK4EvTbzwz # Subgraph ID of base subgraph
 #   block: 37597980  # Block number
