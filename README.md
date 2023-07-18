@@ -1,17 +1,18 @@
 # Decentraland collections graph
 
-|Network|URL|Current|Previous|
-|-|-|-|-|
-|Mainnet (Satsuma)|https://subgraph.satsuma-prod.com/decentraland/collections-ethereum-mainnet/playground|QmcyYqqmE3egvtZReHk1aVxmZawxRSECuj1PcZLgMVzHSp|QmbzvX1C9aBbb1Z2nJc99JcmgmWmURQ9mPvjZV6Zb4gcx2|
-|Mainnet (Hosted Services)|https://thegraph.com/explorer/subgraph/decentraland/collections-ethereum-mainnet|QmP2EQebbD9W8AaphRTzNUL7NLdMH8FdqNNWtqUiNg2VkB|QmPjcwU1HSxWAf9sMyAag6NGSYxP2Y2U2PAx4sPg15mmJZ|
-|Sepolia (Graph Studio)|https://api.studio.thegraph.com/query/49472/collections-ethereum-sepolia/version/latest|QmWQZiMSV5AnUPN34NFmAYtxGntxewMUUwuS9r5vBpc5Ys|-|
-|Goerli (Satsuma)|https://thegraph.com/explorer/subgraph/decentraland/collections-ethereum-goerli|QmUvtxgRKdFf1zcZZLrJ5nZ6HyoUYKPtByGQigP4rHxwSj|QmSSzDJBxX7Kj4EqszCUw3AHiznkt5W1fJEpLhiTsVdaqN|
-|Goerli (Hosted Services)|https://thegraph.com/explorer/subgraph/decentraland/collections-ethereum-goerli|QmUvtxgRKdFf1zcZZLrJ5nZ6HyoUYKPtByGQigP4rHxwSj|QmTNQHzovP1WLp1zBmJvU72uRpHhmzeHe1wb1hwysaXx6F|
-|Matic (Satsuma)|https://subgraph.satsuma-prod.com/decentraland/collections-matic-mainnet/playground|QmdavX3eGWLYCjjzYAZv924hyoLv8f9Rg6FxHD7kAJ4fXn|Qmf1ouGZcxBegEWodVy5fjFYFgQaB7wzw7j5rHwLcKeSXB|
-|Matic (Hosted Services)|https://thegraph.com/explorer/subgraph/decentraland/collections-matic-mainnet|QmXEwSeNTT5xHRQPcTUDQJayjjfhcbaxYf2o7ycuYf8YF7|Qmf3igvJs24gozdwCwnDyPNz9DEBQMPQRFmEhUzEvgxZSq|
-|Matic Temp (Hosted Services)|https://thegraph.com/explorer/subgraph/decentraland/collections-matic-mainnet-temp|Qmf3igvJs24gozdwCwnDyPNz9DEBQMPQRFmEhUzEvgxZSq|QmXyrt3tNkrnDRopnMdY7Na9y8jbKi1645gbR4cJTURbk5|
-|Mumbai (Satsuma)|https://subgraph.satsuma-prod.com/decentraland/collections-matic-mumbai/playground|QmRpCReFLwhB4tATJhur1MEjsPY1Rgo2yVrd5oinnjCrAy|QmY4hQRkXCtKRGP3aCYn4ES8kv1MmeHfov5gSK4EvTbzwz|
-|Mumbai (Hosted Service)|https://thegraph.com/explorer/subgraph/decentraland/collections-matic-mumbai|QmegTREYw1Li3DYMAcCVJDcoBuquoCFKDUCzxrxyGhWwUW|QmdwRWh1FeGi3bJFYkD1Hu8w2uHvAHzJqbdCtszymfoqDS|
+| Network    | Provider        | URL                                                                                     | Current                                        | Previous                                       |
+| ---------- | --------------- | --------------------------------------------------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- |
+| Mainnet    | Satsuma         | https://subgraph.satsuma-prod.com/decentraland/collections-ethereum-mainnet/playground  | QmcyYqqmE3egvtZReHk1aVxmZawxRSECuj1PcZLgMVzHSp | QmbzvX1C9aBbb1Z2nJc99JcmgmWmURQ9mPvjZV6Zb4gcx2 |
+| Mainnet    | Hosted Services | https://thegraph.com/explorer/subgraph/decentraland/collections-ethereum-mainnet        | QmP2EQebbD9W8AaphRTzNUL7NLdMH8FdqNNWtqUiNg2VkB | QmPjcwU1HSxWAf9sMyAag6NGSYxP2Y2U2PAx4sPg15mmJZ |
+| Sepolia    | Satsuma         | https://subgraph.satsuma-prod.com/decentraland/collections-ethereum-sepolia/playground  | QmWQZiMSV5AnUPN34NFmAYtxGntxewMUUwuS9r5vBpc5Ys | -                                              |
+| Sepolia    | Graph Studio    | https://api.studio.thegraph.com/query/49472/collections-ethereum-sepolia/version/latest | QmWQZiMSV5AnUPN34NFmAYtxGntxewMUUwuS9r5vBpc5Ys | -                                              |
+| Goerli     | Satsuma         | https://subgraph.satsuma-prod.com/decentraland/collections-ethereum-goerli/playground   | QmUvtxgRKdFf1zcZZLrJ5nZ6HyoUYKPtByGQigP4rHxwSj | QmSSzDJBxX7Kj4EqszCUw3AHiznkt5W1fJEpLhiTsVdaqN |
+| Goerli     | Hosted Services | https://thegraph.com/explorer/subgraph/decentraland/collections-ethereum-goerli         | QmUvtxgRKdFf1zcZZLrJ5nZ6HyoUYKPtByGQigP4rHxwSj | QmTNQHzovP1WLp1zBmJvU72uRpHhmzeHe1wb1hwysaXx6F |
+| Matic      | Satsuma         | https://subgraph.satsuma-prod.com/decentraland/collections-matic-mainnet/playground     | QmdavX3eGWLYCjjzYAZv924hyoLv8f9Rg6FxHD7kAJ4fXn | Qmf1ouGZcxBegEWodVy5fjFYFgQaB7wzw7j5rHwLcKeSXB |
+| Matic      | Hosted Services | https://thegraph.com/explorer/subgraph/decentraland/collections-matic-mainnet           | QmXEwSeNTT5xHRQPcTUDQJayjjfhcbaxYf2o7ycuYf8YF7 | Qmf3igvJs24gozdwCwnDyPNz9DEBQMPQRFmEhUzEvgxZSq |
+| Matic Temp | Hosted Services | https://thegraph.com/explorer/subgraph/decentraland/collections-matic-mainnet-temp      | Qmf3igvJs24gozdwCwnDyPNz9DEBQMPQRFmEhUzEvgxZSq | QmXyrt3tNkrnDRopnMdY7Na9y8jbKi1645gbR4cJTURbk5 |
+| Mumbai     | Satsuma         | https://subgraph.satsuma-prod.com/decentraland/collections-matic-mumbai/playground      | QmRpCReFLwhB4tATJhur1MEjsPY1Rgo2yVrd5oinnjCrAy | QmY4hQRkXCtKRGP3aCYn4ES8kv1MmeHfov5gSK4EvTbzwz |
+| Mumbai     | Hosted Service  | https://thegraph.com/explorer/subgraph/decentraland/collections-matic-mumbai            | QmegTREYw1Li3DYMAcCVJDcoBuquoCFKDUCzxrxyGhWwUW | QmdwRWh1FeGi3bJFYkD1Hu8w2uHvAHzJqbdCtszymfoqDS |
 
 Using [The Graph](https://thegraph.com) and [Satsuma](https://www.satsuma.xyz/)
 
@@ -29,7 +30,8 @@ Tests are defined inside the `./tests` directory and executed using:
 npm test
 ```
 
-> **Take into consideration:**
+> **Take into consideration:** 
+>
 >`Postgres 14` is required to run tests locally because `graph-node`, the underlying engine to index the subgraph, needs it.
 
 An alternative to run tests locally without installing Postgres is through `Docker. To run them, use the following command:
@@ -39,6 +41,7 @@ npm run test:docker
 ```
 
 > **CI Notice:**
+>
 > Tests are run on the CI using `npm test` because the `ubuntu-latest` image used in the CI contains Postgres 14.
 
 More about how to write subgraph tests can be found on the [graph's unit testing documentation](https://thegraph.com/docs/en/developing/unit-testing-framework/).
