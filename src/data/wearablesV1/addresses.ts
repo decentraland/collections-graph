@@ -6,6 +6,9 @@ export let ExclusiveMasksCollectionRopsten = '0x30ae57840b0e9b8ea55334083d53d80b
 // Goerli Dummy used for testing
 export let ExclusiveMasksCollectionGoerli = '0x1f0880E0b4514DC58e68B9BE91693bFA8C067ac1'
 
+// Sepolia Dummy used for testing
+export let ExclusiveMasksCollectionSepolia = '0x11a970e744ff69db8f461c2d0fc91d4293914301'
+
 // Mainnet
 export let ExclusiveMasksCollection = '0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd'
 export let Halloween2019Collection = '0xc1f4b0eea2bd6690930e6c66efd3e197d620b9c2'
@@ -52,6 +55,10 @@ export let DGAtariDillonFrancis = '0x51e0b1afe5da0c038fc93a3fc8e11cf7a238b40b'
 
 export function getCollectionsV1(): string[] {
   let network = dataSource.network()
+
+  if (network == 'sepolia') {
+    return [ExclusiveMasksCollectionSepolia]
+  }
 
   if (network == 'goerli') {
     return [ExclusiveMasksCollectionGoerli]
