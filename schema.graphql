@@ -77,6 +77,8 @@ type Item @entity {
   searchEmoteLoop: Boolean
   searchEmoteRarity: String # We're using String instead of WearableRarity here so we can later query this field via ()_in
   searchEmoteBodyShapes: [WearableBodyShape!]
+  searchEmoteHasSound: Boolean
+  searchEmoteHasGeometry: Boolean
 
   ## Unique collectors
   uniqueCollectors: [String!]!
@@ -171,6 +173,8 @@ type Emote @entity {
   loop: Boolean!
   rarity: WearableRarity!
   bodyShapes: [WearableBodyShape!]
+  hasSound: Boolean
+  hasGeometry: Boolean
 }
 
 enum WearableCategory @entity {

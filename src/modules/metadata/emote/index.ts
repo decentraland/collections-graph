@@ -3,7 +3,6 @@ import { isValidBodyShape } from '..'
 import { Emote, Item, Metadata, NFT } from '../../../entities/schema'
 import { toLowerCase } from '../../../utils'
 import { DANCE, FUN, GREETINGS, HORROR, MISCELLANEOUS, POSES, REACTIONS, STUNT } from './categories'
-import { LOOP, SIMPLE } from './playModes'
 
 /**
  * @dev The item's rawMetadata for emotes should follow: version:item_type:name:description:category:bodyshapes:play_mode
@@ -26,7 +25,9 @@ export function buildEmoteItem(item: Item): Emote | null {
     emote.rarity = item.rarity
     emote.category = isValidEmoteCategory(data[4]) ? data[4] : DANCE // We're using DANCE as fallback to support the emotes that were created with the old categories.
     emote.bodyShapes = data[5].split(',') // Could be more than one
-    emote.loop = data.length == 7 && isValidLoopValue(data[6]) && data[6] == '1' ? true : false // Fallback old emotes as not loopable
+    emote.loop = data.length >= 7 && isValidLoopValue(data[6]) && data[6] == '1' ? true : false // Fallback old emotes as not loopable
+    emote.hasGeometry = data.length >= 8 && data[7].includes('g')
+    emote.hasSound = data.length >= 8 && data[7].includes('s')
     emote.save()
 
     return emote
@@ -77,6 +78,8 @@ export function setItemEmoteSearchFields(item: Item): Item {
       item.searchEmoteLoop = emote.loop
       item.searchEmoteBodyShapes = emote.bodyShapes
       item.searchEmoteRarity = emote.rarity
+      item.searchEmoteHasSound = emote.hasSound
+      item.searchEmoteHasGeometry = emote.hasGeometry
     }
     item.searchItemType = item.itemType
   }
