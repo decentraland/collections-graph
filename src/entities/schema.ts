@@ -890,7 +890,11 @@ export class Item extends Entity {
 
   get searchEmoteHasSound(): boolean {
     let value = this.get("searchEmoteHasSound");
-    return value!.toBoolean();
+    if (!value || value.kind == ValueKind.NULL) {
+      return false;
+    } else {
+      return value.toBoolean();
+    }
   }
 
   set searchEmoteHasSound(value: boolean) {
@@ -899,7 +903,11 @@ export class Item extends Entity {
 
   get searchEmoteHasGeometry(): boolean {
     let value = this.get("searchEmoteHasGeometry");
-    return value!.toBoolean();
+    if (!value || value.kind == ValueKind.NULL) {
+      return false;
+    } else {
+      return value.toBoolean();
+    }
   }
 
   set searchEmoteHasGeometry(value: boolean) {
@@ -1867,7 +1875,11 @@ export class Emote extends Entity {
 
   get hasSound(): boolean {
     let value = this.get("hasSound");
-    return value!.toBoolean();
+    if (!value || value.kind == ValueKind.NULL) {
+      return false;
+    } else {
+      return value.toBoolean();
+    }
   }
 
   set hasSound(value: boolean) {
@@ -1876,7 +1888,11 @@ export class Emote extends Entity {
 
   get hasGeometry(): boolean {
     let value = this.get("hasGeometry");
-    return value!.toBoolean();
+    if (!value || value.kind == ValueKind.NULL) {
+      return false;
+    } else {
+      return value.toBoolean();
+    }
   }
 
   set hasGeometry(value: boolean) {
