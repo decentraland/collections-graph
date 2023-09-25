@@ -888,6 +888,32 @@ export class Item extends Entity {
     }
   }
 
+  get searchEmoteHasSound(): boolean {
+    let value = this.get("searchEmoteHasSound");
+    if (!value || value.kind == ValueKind.NULL) {
+      return false;
+    } else {
+      return value.toBoolean();
+    }
+  }
+
+  set searchEmoteHasSound(value: boolean) {
+    this.set("searchEmoteHasSound", Value.fromBoolean(value));
+  }
+
+  get searchEmoteHasGeometry(): boolean {
+    let value = this.get("searchEmoteHasGeometry");
+    if (!value || value.kind == ValueKind.NULL) {
+      return false;
+    } else {
+      return value.toBoolean();
+    }
+  }
+
+  set searchEmoteHasGeometry(value: boolean) {
+    this.set("searchEmoteHasGeometry", Value.fromBoolean(value));
+  }
+
   get uniqueCollectors(): Array<string> {
     let value = this.get("uniqueCollectors");
     if (!value || value.kind == ValueKind.NULL) {
@@ -1845,6 +1871,32 @@ export class Emote extends Entity {
     } else {
       this.set("bodyShapes", Value.fromStringArray(<Array<string>>value));
     }
+  }
+
+  get hasSound(): boolean {
+    let value = this.get("hasSound");
+    if (!value || value.kind == ValueKind.NULL) {
+      return false;
+    } else {
+      return value.toBoolean();
+    }
+  }
+
+  set hasSound(value: boolean) {
+    this.set("hasSound", Value.fromBoolean(value));
+  }
+
+  get hasGeometry(): boolean {
+    let value = this.get("hasGeometry");
+    if (!value || value.kind == ValueKind.NULL) {
+      return false;
+    } else {
+      return value.toBoolean();
+    }
+  }
+
+  set hasGeometry(value: boolean) {
+    this.set("hasGeometry", Value.fromBoolean(value));
   }
 }
 
