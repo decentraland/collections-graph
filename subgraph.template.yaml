@@ -1,10 +1,10 @@
-specVersion: 0.0.2
+specVersion: 0.0.4
 description: Decentraland collections
 # features:
 #   - grafting
 # graft:
-#   base: QmY4hQRkXCtKRGP3aCYn4ES8kv1MmeHfov5gSK4EvTbzwz # Subgraph ID of base subgraph
-#   block: 37597980  # Block number
+#   base: QmYVGaMGvqkcBMrJ4F5XrkzwCzhB3FfJvHRBERbtgovCai # Subgraph ID of base subgraph
+#   block: 47827000 # Block number
 repository: https://github.com/decentraland/collections-graph
 schema:
   file: ./schema.graphql
