@@ -11,6 +11,7 @@
 | Matic Temp | Hosted Services | https://thegraph.com/explorer/subgraph/decentraland/collections-matic-mainnet-temp      | QmTKztw187jUHZ33S2pndtyo68K462XwewcvMVAVH7mwZR | Qmf3igvJs24gozdwCwnDyPNz9DEBQMPQRFmEhUzEvgxZSq |
 | Mumbai     | Satsuma         | https://subgraph.satsuma-prod.com/decentraland/collections-matic-mumbai/playground      | QmdqoM3jpJWWbK1EMTZcSE5WJgiUaoSpKcSLeQRHhqQSea | QmYVGaMGvqkcBMrJ4F5XrkzwCzhB3FfJvHRBERbtgovCai |
 | Mumbai     | Hosted Service  | https://thegraph.com/explorer/subgraph/decentraland/collections-matic-mumbai            | QmdqoM3jpJWWbK1EMTZcSE5WJgiUaoSpKcSLeQRHhqQSea | QmYVGaMGvqkcBMrJ4F5XrkzwCzhB3FfJvHRBERbtgovCai |
+| Amoy       | Satsuma         | https://subgraph.satsuma-prod.com/decentraland/collections-matic-amoy/playground        | QmZKxA9VfjFTDNbNDASec194y3rZxiamtEMakWaoFaD8ov | Qma6T1cGQtBvYY5bsctwLNSbNymXKidkXaC9DbQVTgH1BE |
 
 Using [The Graph](https://thegraph.com) and [Alchemy](https://www.alchemy.com/)
 
