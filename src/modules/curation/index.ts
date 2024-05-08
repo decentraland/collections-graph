@@ -16,5 +16,9 @@ export function getBlockWhereRescueItemsStarted(): BigInt {
     return BigInt.fromI32(19885000)
   }
 
+  if (network == 'amoy') {
+    return BigInt.fromI32(5706678)
+  }
+
   return BigInt.fromI32(I32.MAX_VALUE)
 }

@@ -13,6 +13,10 @@ export function getStoreAddress(): string {
     return '0x6ddf1b1924dad850adbc1c02026535464be06b0c'
   }
 
+  if (network == 'polygon-amoy') {
+    return '0xe36abc9ec616c83caaa386541380829106149d68'
+  }
+
   log.debug('Could not find store address. Invalid network {}', [network])
   return ''
 }
