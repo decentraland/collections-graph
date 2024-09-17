@@ -1,5 +1,6 @@
 import { Address, BigInt, Bytes, log } from '@graphprotocol/graph-ts'
 import { Item, NFT, Sale, AnalyticsDayData, ItemsDayData } from '../../entities/schema'
+import { ERC721 } from '../../entities/templates/ERC721/ERC721'
 import { createOrLoadAccount, ZERO_ADDRESS } from '../account'
 import {
   buildCountFromEarnings,
@@ -16,6 +17,14 @@ import {
   updateUniqueAndMythicItemsSet,
   updateUniqueCollectorsSet
 } from './accountsDayData'
+
+// check if the buyer in a sale was a third party provider (to pay with credit card, cross chain, etc)
+export function isThirdPartySale(buyer: string): boolean {
+  if (buyer == '0xed038688ecf1193f8d9717eb3930f0bf0d745cb4' || buyer == '0xea749fd6ba492dbc14c24fe8a3d08769229b896c') {
+    return true
+  }
+  return false
+}
 
 export let BID_SALE_TYPE = 'bid'
 export let ORDER_SALE_TYPE = 'order'
@@ -49,6 +58,12 @@ export function trackSale(
   let nft = NFT.load(nftId)
   if (!item || !nft) {
     return
+  }
+
+  // check if the buyer is a third party and update it if so
+  if (isThirdPartySale(buyer.toHexString())) {
+    let erc721 = ERC721.bind(Address.fromString(nft.contractAddress))
+    buyer = erc721.ownerOf(nft.tokenId)
   }
 
   // save sale
