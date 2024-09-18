@@ -90,6 +90,8 @@ dataSources:
       abis:
         - name: Marketplace
           file: ./abis/Marketplace.json
+        - name: ERC721
+          file: ./abis/ERC721.json
       eventHandlers:
         - event: OrderCreated(bytes32,indexed uint256,indexed address,address,uint256,uint256)
           handler: handleOrderCreated
@@ -118,6 +120,8 @@ dataSources:
       abis:
         - name: MarketplaceV2
           file: ./abis/MarketplaceV2.json
+        - name: ERC721
+          file: ./abis/ERC721.json
       eventHandlers:
         - event: OrderCreated(bytes32,indexed uint256,indexed address,address,uint256,uint256)
           handler: handleOrderCreated
@@ -145,6 +149,8 @@ dataSources:
       abis:
         - name: ERC721Bid
           file: ./abis/ERC721Bid.json
+        - name: ERC721
+          file: ./abis/ERC721.json
       eventHandlers:
         - event: BidCreated(bytes32,indexed address,indexed uint256,indexed address,uint256,uint256,bytes)
           handler: handleBidCreated
@@ -172,6 +178,8 @@ dataSources:
       abis:
         - name: ERC721BidV2
           file: ./abis/ERC721BidV2.json
+        - name: ERC721
+          file: ./abis/ERC721.json
       eventHandlers:
         - event: BidCreated(bytes32,indexed address,indexed uint256,indexed address,uint256,uint256,bytes)
           handler: handleBidCreated
@@ -359,6 +367,8 @@ templates:
           file: ./abis/CollectionStore.json
         - name: RaritiesWithOracle
           file: ./abis/RaritiesWithOracle.json
+        - name: ERC721
+          file: ./abis/ERC721.json
       eventHandlers:
         - event: SetGlobalMinter(indexed address,bool)
           handler: handleSetGlobalMinter
