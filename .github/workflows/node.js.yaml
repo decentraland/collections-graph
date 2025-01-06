@@ -2,20 +2,20 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Use Node.js 20.x
+        uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: 20.x
       # Cache dependencies as `npm ci` takes like 6 minutes to run.
       # https://github.com/actions/cache/blob/main/examples.md#node---npm
       - id: npm-cache-dir
