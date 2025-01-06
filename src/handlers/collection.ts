@@ -595,7 +595,7 @@ export function handleTransferOwnership(event: OwnershipTransferred): void {
 // 0x07bd3522: forwardMetaTx(address _target, bytes calldata _data)
 // 0xad718d2a: sponsoredCallV2(address _target,bytes _data,bytes32 _correlationId,bytes32 _r,bytes32 _vs)
 // 0x81c9308e: manageCollection(address,address,address,bytes[]) selector
-const ALLOWED_SELECTORS = ['0x07bd3522', '0xad718d2a', '0x81c9308e']
+const ALLOWED_SELECTORS: string[] = ['0x07bd3522', '0xad718d2a', '0x81c9308e']
 
 /**
  * Verify if it's an allowed committee transaction input.
@@ -603,5 +603,10 @@ const ALLOWED_SELECTORS = ['0x07bd3522', '0xad718d2a', '0x81c9308e']
  * @returns True if the input starts with an allowed selector, false otherwise.
  */
 function isAllowedCommitteeTxInput(txInput: string): boolean {
-  return ALLOWED_SELECTORS.some(selector => txInput.startsWith(selector))
+  for (let i = 0; i < ALLOWED_SELECTORS.length; i++) {
+    if (txInput.startsWith(ALLOWED_SELECTORS[i])) {
+      return true
+    }
+  }
+  return false
 }
