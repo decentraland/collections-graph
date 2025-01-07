@@ -30,8 +30,8 @@ import { RaritiesWithOracle } from '../entities/RaritiesWithOracle/RaritiesWithO
 import { getURNForWearableV2, getURNForCollectionV2 } from '../modules/metadata/wearable'
 import { getStoreAddress } from '../modules/store'
 import { getOrCreateAnalyticsDayData } from '../modules/analytics'
-import { getCurationId, getBlockWhereRescueItemsStarted } from '../modules/curation'
-import { toLowerCase, isAllowedCommitteeTxInput } from '../utils'
+import { getCurationId, getBlockWhereRescueItemsStarted, isAllowedCommitteeTxInput } from '../modules/curation'
+import { toLowerCase } from '../utils'
 import { getRaritiesWithOracleAddress } from '../modules/rarity'
 
 export function handleInitializeWearablesV1(_: OwnershipTransferred): void {
