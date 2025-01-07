@@ -31,7 +31,7 @@ import { getURNForWearableV2, getURNForCollectionV2 } from '../modules/metadata/
 import { getStoreAddress } from '../modules/store'
 import { getOrCreateAnalyticsDayData } from '../modules/analytics'
 import { getCurationId, getBlockWhereRescueItemsStarted } from '../modules/curation'
-import { toLowerCase } from '../utils'
+import { toLowerCase, isAllowedCommitteeTxInput } from '../utils'
 import { getRaritiesWithOracleAddress } from '../modules/rarity'
 
 export function handleInitializeWearablesV1(_: OwnershipTransferred): void {
@@ -589,24 +589,4 @@ export function handleTransferOwnership(event: OwnershipTransferred): void {
     collection.owner = event.params.newOwner.toHexString()
     collection.save()
   }
-}
-
-// List of allowed committee function selectors
-// 0x07bd3522: forwardMetaTx(address _target, bytes calldata _data)
-// 0xad718d2a: sponsoredCallV2(address _target,bytes _data,bytes32 _correlationId,bytes32 _r,bytes32 _vs)
-// 0x81c9308e: manageCollection(address,address,address,bytes[]) selector
-const ALLOWED_SELECTORS: string[] = ['0x07bd3522', '0xad718d2a', '0x81c9308e']
-
-/**
- * Verify if it's an allowed committee transaction input.
- * @param txInput - The transaction input data as a hexadecimal string.
- * @returns True if the input starts with an allowed selector, false otherwise.
- */
-function isAllowedCommitteeTxInput(txInput: string): boolean {
-  for (let i = 0; i < ALLOWED_SELECTORS.length; i++) {
-    if (txInput.startsWith(ALLOWED_SELECTORS[i])) {
-      return true
-    }
-  }
-  return false
 }
