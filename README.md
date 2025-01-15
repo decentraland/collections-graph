@@ -2,16 +2,14 @@
 
 | Network    | Provider        | URL                                                                                     | Current                                        | Previous                                       |
 | ---------- | --------------- | --------------------------------------------------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- |
-| Mainnet    | Satsuma         | https://subgraph.satsuma-prod.com/decentraland/collections-ethereum-mainnet/playground  | QmQVuFfc5quYrG7t4jVPRTNXjBWhPrqVtwwKkGrWoqnSHw | Qmf4SMTepdDoFh1ozcaAUMieGF83tnNa2G2Jr4KkH5jPRA |
+| Mainnet    | Satsuma         | https://subgraph.satsuma-prod.com/decentraland/collections-ethereum-mainnet/playground  | QmUB93QwfnCHoivBT46XVKUN58hCwioVmJTtwYbekQTjAg | QmXd2SSKpMa9Z4igqbGwr6vSvA7rgxRUFmYipgNFBbnMHN |
 | Mainnet    | Hosted Services | https://thegraph.com/explorer/subgraph/decentraland/collections-ethereum-mainnet        | QmQVuFfc5quYrG7t4jVPRTNXjBWhPrqVtwwKkGrWoqnSHw | Qmf4SMTepdDoFh1ozcaAUMieGF83tnNa2G2Jr4KkH5jPRA |
-| Sepolia    | Satsuma         | https://subgraph.satsuma-prod.com/decentraland/collections-ethereum-sepolia/playground  | QmSYyRTthY69mSHxkAY6ym3beCWQr97NwecWdpxjiHypKh | QmWQZiMSV5AnUPN34NFmAYtxGntxewMUUwuS9r5vBpc5Ys |
+| Sepolia    | Satsuma         | https://subgraph.satsuma-prod.com/decentraland/collections-ethereum-sepolia/playground  | Qme5ou2ivyxTsosbmK5W5RWzpNmtDZFSqpGzDxpJUrdbhj | QmSYyRTthY69mSHxkAY6ym3beCWQr97NwecWdpxjiHypKh |
 | Sepolia    | Graph Studio    | https://api.studio.thegraph.com/query/49472/collections-ethereum-sepolia/version/latest | QmSYyRTthY69mSHxkAY6ym3beCWQr97NwecWdpxjiHypKh | QmWQZiMSV5AnUPN34NFmAYtxGntxewMUUwuS9r5vBpc5Ys |
-| Matic      | Satsuma         | https://subgraph.satsuma-prod.com/decentraland/collections-matic-mainnet/playground     | QmVtyq4MTv7ajHhBg3WHszkCQDnD1DM57AEcxMFb1PkHkk | QmPAV5PzFgu7iaiSYYmRTPGFR4ADGfeKSTPqTPt5eKVAVv |
-| Matic      | Hosted Services | https://thegraph.com/explorer/subgraph/decentraland/collections-matic-mainnet           | QmVtyq4MTv7ajHhBg3WHszkCQDnD1DM57AEcxMFb1PkHkk | QmPAV5PzFgu7iaiSYYmRTPGFR4ADGfeKSTPqTPt5eKVAVv |
+| Matic      | Satsuma         | https://subgraph.satsuma-prod.com/decentraland/collections-matic-mainnet/playground     | QmTmqmgdZ58JRp5N7nKj2XiE4b6R2HjsPNeMmbtU92Uc2x | QmTNHaULmSpzSsaMnFvUDqSpHUw7o5hGS7oGxj5hQo8pwX |
+| Matic      | Graph Studio    | https://thegraph.com/explorer/subgraph/decentraland/collections-matic-mainnet           | Qmddr5gN7TY67SVZQzqGKSgwz3boofKdcnDD7QxSopraHV | QmTNHaULmSpzSsaMnFvUDqSpHUw7o5hGS7oGxj5hQo8pwX |
 | Matic Temp | Hosted Services | https://thegraph.com/explorer/subgraph/decentraland/collections-matic-mainnet-temp      | QmTKztw187jUHZ33S2pndtyo68K462XwewcvMVAVH7mwZR | Qmf3igvJs24gozdwCwnDyPNz9DEBQMPQRFmEhUzEvgxZSq |
-| Mumbai     | Satsuma         | https://subgraph.satsuma-prod.com/decentraland/collections-matic-mumbai/playground      | QmdqoM3jpJWWbK1EMTZcSE5WJgiUaoSpKcSLeQRHhqQSea | QmYVGaMGvqkcBMrJ4F5XrkzwCzhB3FfJvHRBERbtgovCai |
-| Mumbai     | Hosted Service  | https://thegraph.com/explorer/subgraph/decentraland/collections-matic-mumbai            | QmdqoM3jpJWWbK1EMTZcSE5WJgiUaoSpKcSLeQRHhqQSea | QmYVGaMGvqkcBMrJ4F5XrkzwCzhB3FfJvHRBERbtgovCai |
-| Amoy       | Satsuma         | https://subgraph.satsuma-prod.com/decentraland/collections-matic-amoy/playground        | QmeJBtfn5mgPH2CbRJpWbwUBmjg64vxTA5KTERaHUtG15u | QmZKxA9VfjFTDNbNDASec194y3rZxiamtEMakWaoFaD8ov |
+| Amoy       | Satsuma         | https://subgraph.satsuma-prod.com/decentraland/collections-matic-amoy/playground        | Qmd3Fxkiv9gWH87sWiNDaagU61mns77MizCMoKNDmhqbhK | QmeJBtfn5mgPH2CbRJpWbwUBmjg64vxTA5KTERaHUtG15u |
 
 Using [The Graph](https://thegraph.com) and [Alchemy](https://www.alchemy.com/)
 

@@ -30,7 +30,7 @@ import { RaritiesWithOracle } from '../entities/RaritiesWithOracle/RaritiesWithO
 import { getURNForWearableV2, getURNForCollectionV2 } from '../modules/metadata/wearable'
 import { getStoreAddress } from '../modules/store'
 import { getOrCreateAnalyticsDayData } from '../modules/analytics'
-import { getCurationId, getBlockWhereRescueItemsStarted } from '../modules/curation'
+import { getCurationId, getBlockWhereRescueItemsStarted, isAllowedCommitteeTxInput } from '../modules/curation'
 import { toLowerCase } from '../utils'
 import { getRaritiesWithOracleAddress } from '../modules/rarity'
 
@@ -212,8 +212,7 @@ export function handleRescueItem(event: RescueItem): void {
   if ((isNewContent && event.block.number.gt(block)) || event.block.number.equals(block)) {
     // Create curation
     let txInput = event.transaction.input.toHexString()
-    // forwardMetaTx(address _target, bytes calldata _data) or manageCollection(address,address,address,bytes[]) selector
-    if (txInput.startsWith('0x07bd3522') || txInput.startsWith('0x81c9308e')) {
+    if (isAllowedCommitteeTxInput(txInput)) {
       let curationId = getCurationId(collectionAddress, event.transaction.hash.toHexString(), event.logIndex.toString())
       let curation = new Curation(curationId)
       let curator = ''
@@ -517,8 +516,7 @@ export function handleSetApproved(event: SetApproved): void {
   if (event.block.number.lt(block)) {
     // Create curation
     let txInput = event.transaction.input.toHexString()
-    // forwardMetaTx(address _target, bytes calldata _data) or manageCollection(address,address,address,bytes[]) selector
-    if (txInput.startsWith('0x07bd3522') || txInput.startsWith('0x81c9308e')) {
+    if (isAllowedCommitteeTxInput(txInput)) {
       let curationId = getCurationId(collectionAddress, event.transaction.hash.toHexString(), event.logIndex.toString())
       let curation = new Curation(curationId)
       let curator = ''
