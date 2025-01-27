@@ -276,6 +276,7 @@ enum OrderStatus @entity {
   open
   sold
   cancelled
+  transferred
 }
 
 # thegraph doesn't support nested property searches, so we're doing promoting properties

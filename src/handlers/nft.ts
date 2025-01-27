@@ -12,7 +12,7 @@ import {
   getURNForWearableV1
 } from '../modules/metadata/wearable'
 import { getNFTId, getTokenURI, isMint, cancelActiveOrder, clearNFTOrderProperties } from '../modules/nft'
-import { NFT, Item, Collection, Mint } from '../entities/schema'
+import { NFT, Item, Collection, Mint, Order } from '../entities/schema'
 import { buildCountFromNFT, buildCountFromItem } from '../modules/count'
 import { Issue, Transfer, CollectionV2 as CollectionContract } from '../entities/templates/CollectionV2/CollectionV2'
 import { CollectionStore } from '../entities/templates/CollectionStore/CollectionStore'
@@ -20,6 +20,7 @@ import { Transfer as ERC721Transfer, AddWearable } from '../entities/templates/E
 import { getStoreAddress } from '../modules/store'
 import { MINT_SALE_TYPE, trackSale } from '../modules/analytics'
 import { toLowerCase } from '../utils'
+import * as status from '../modules/order'
 
 /**
  * @notice mint an NFT by a collection v2 issue event
@@ -127,8 +128,22 @@ export function handleTransferNFT(event: Transfer): void {
   nft.updatedAt = event.block.timestamp
   nft.transferredAt = event.block.timestamp
 
-  if (cancelActiveOrder(nft, event.block.timestamp)) {
-    nft = clearNFTOrderProperties(nft)
+  if (nft.activeOrder != null) {
+    let oldOrder = Order.load(nft.activeOrder!)
+    if (oldOrder != null && oldOrder.status == status.OPEN) {
+      oldOrder.status = status.TRANSFERRED
+      oldOrder.save()
+      nft.searchOrderStatus = status.TRANSFERRED
+    } else if (oldOrder != null && oldOrder.status == status.TRANSFERRED) {
+      let isComingBackToOrderOwner = oldOrder.owner == event.params.to
+      if (isComingBackToOrderOwner) {
+        oldOrder.status = status.OPEN
+        oldOrder.save()
+        nft.searchOrderStatus = status.OPEN
+      } else {
+        nft.searchOrderStatus = status.TRANSFERRED
+      }
+    }
   }
 
   createOrLoadAccount(event.params.to)
