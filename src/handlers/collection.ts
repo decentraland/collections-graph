@@ -579,6 +579,7 @@ export function handleTransferCreatorship(event: CreatorshipTransferred): void {
         item.save()
       }
     }
+    collection.updatedAt = event.block.timestamp
     collection.save()
   }
 }
@@ -587,6 +588,7 @@ export function handleTransferOwnership(event: OwnershipTransferred): void {
   let collection = Collection.load(event.address.toHexString())
   if (collection != null) {
     collection.owner = event.params.newOwner.toHexString()
+    collection.updatedAt = event.block.timestamp
     collection.save()
   }
 }
