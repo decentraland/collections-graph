@@ -576,6 +576,7 @@ export function handleTransferCreatorship(event: CreatorshipTransferred): void {
       let item = Item.load(itemId)
       if (item != null) {
         item.creator = newCreator
+        item.updatedAt = event.block.timestamp
         item.save()
       }
     }
