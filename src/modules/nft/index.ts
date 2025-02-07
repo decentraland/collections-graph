@@ -45,8 +45,8 @@ export function cancelActiveOrder(nft: NFT, now: BigInt): boolean {
   if (!nft.activeOrder) {
     return false
   }
-  let oldOrder = Order.load(nft.activeOrder!)
-  if (oldOrder != null && oldOrder.status == status.OPEN) {
+  let oldOrder = Order.load(nft.activeOrder)
+  if (oldOrder != null && (oldOrder.status == status.OPEN || oldOrder.status == status.TRANSFERRED)) {
     // Here we are setting old orders as cancelled, because the smart contract allows new orders to be created
     // and they just overwrite them in place. But the subgraph stores all orders ever
     // you can also overwrite ones that are expired
