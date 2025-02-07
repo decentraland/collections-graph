@@ -11,8 +11,8 @@ import {
   getURNForCollectionV1,
   getURNForWearableV1
 } from '../modules/metadata/wearable'
-import { getNFTId, getTokenURI, isMint, cancelActiveOrder, clearNFTOrderProperties } from '../modules/nft'
-import { NFT, Item, Collection, Mint } from '../entities/schema'
+import { getNFTId, getTokenURI, isMint, cancelActiveOrder, clearNFTOrderProperties, handleTransferOrder } from '../modules/nft'
+import { NFT, Item, Collection, Mint, Order } from '../entities/schema'
 import { buildCountFromNFT, buildCountFromItem } from '../modules/count'
 import { Issue, Transfer, CollectionV2 as CollectionContract } from '../entities/templates/CollectionV2/CollectionV2'
 import { CollectionStore } from '../entities/templates/CollectionStore/CollectionStore'
@@ -20,6 +20,7 @@ import { Transfer as ERC721Transfer, AddWearable } from '../entities/templates/E
 import { getStoreAddress } from '../modules/store'
 import { MINT_SALE_TYPE, trackSale } from '../modules/analytics'
 import { toLowerCase } from '../utils'
+import * as status from '../modules/order'
 
 /**
  * @notice mint an NFT by a collection v2 issue event
@@ -127,9 +128,7 @@ export function handleTransferNFT(event: Transfer): void {
   nft.updatedAt = event.block.timestamp
   nft.transferredAt = event.block.timestamp
 
-  if (cancelActiveOrder(nft, event.block.timestamp)) {
-    nft = clearNFTOrderProperties(nft)
-  }
+  handleTransferOrder(nft, event.params.to)
 
   createOrLoadAccount(event.params.to)
 
@@ -290,9 +289,7 @@ export function handleTransferWearableV1(event: ERC721Transfer): void {
     mint.save()
   } else {
     let oldNFT = NFT.load(id)
-    if (cancelActiveOrder(oldNFT!, event.block.timestamp)) {
-      nft = clearNFTOrderProperties(nft)
-    }
+    handleTransferOrder(oldNFT, event.params.to)
   }
 
   createOrLoadAccount(event.params.to)

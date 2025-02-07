@@ -1,4 +1,4 @@
-import { BigInt, log, Address } from '@graphprotocol/graph-ts'
+import { BigInt, log, Address, Bytes } from '@graphprotocol/graph-ts'
 
 import * as status from '../order'
 import { ZERO_ADDRESS } from '../account'
@@ -45,8 +45,8 @@ export function cancelActiveOrder(nft: NFT, now: BigInt): boolean {
   if (!nft.activeOrder) {
     return false
   }
-  let oldOrder = Order.load(nft.activeOrder!)
-  if (oldOrder != null && oldOrder.status == status.OPEN) {
+  let oldOrder = Order.load(nft.activeOrder)
+  if (oldOrder != null && (oldOrder.status == status.OPEN || oldOrder.status == status.TRANSFERRED)) {
     // Here we are setting old orders as cancelled, because the smart contract allows new orders to be created
     // and they just overwrite them in place. But the subgraph stores all orders ever
     // you can also overwrite ones that are expired
@@ -72,4 +72,24 @@ export function getTokenURI(collectionAddress: Address, tokenId: BigInt): string
   }
 
   return tokenURI
+}
+
+export function handleTransferOrder(nft: NFT | null, to: Bytes): void {
+  if (nft != null && nft.activeOrder != null) {
+    let oldOrder = Order.load(nft.activeOrder!)
+    if (oldOrder != null && oldOrder.status == status.OPEN) {
+      oldOrder.status = status.TRANSFERRED
+      oldOrder.save()
+      nft.searchOrderStatus = status.TRANSFERRED
+    } else if (oldOrder != null && oldOrder.status == status.TRANSFERRED) {
+      let isComingBackToOrderOwner = oldOrder.owner == to
+      if (isComingBackToOrderOwner) {
+        oldOrder.status = status.OPEN
+        oldOrder.save()
+        nft.searchOrderStatus = status.OPEN
+      } else {
+        nft.searchOrderStatus = status.TRANSFERRED
+      }
+    }
+  }
 }
