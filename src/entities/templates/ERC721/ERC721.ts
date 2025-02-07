@@ -7,7 +7,7 @@ import {
   Entity,
   Bytes,
   Address,
-  BigInt
+  BigInt,
 } from "@graphprotocol/graph-ts";
 
 export class Transfer extends ethereum.Event {
@@ -189,7 +189,7 @@ export class ERC721 extends ethereum.SmartContract {
 
   ownerOf(_tokenId: BigInt): Address {
     let result = super.call("ownerOf", "ownerOf(uint256):(address)", [
-      ethereum.Value.fromUnsignedBigInt(_tokenId)
+      ethereum.Value.fromUnsignedBigInt(_tokenId),
     ]);
 
     return result[0].toAddress();
@@ -197,7 +197,7 @@ export class ERC721 extends ethereum.SmartContract {
 
   try_ownerOf(_tokenId: BigInt): ethereum.CallResult<Address> {
     let result = super.tryCall("ownerOf", "ownerOf(uint256):(address)", [
-      ethereum.Value.fromUnsignedBigInt(_tokenId)
+      ethereum.Value.fromUnsignedBigInt(_tokenId),
     ]);
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -208,7 +208,7 @@ export class ERC721 extends ethereum.SmartContract {
 
   tokenURI(_tokenId: BigInt): string {
     let result = super.call("tokenURI", "tokenURI(uint256):(string)", [
-      ethereum.Value.fromUnsignedBigInt(_tokenId)
+      ethereum.Value.fromUnsignedBigInt(_tokenId),
     ]);
 
     return result[0].toString();
@@ -216,7 +216,7 @@ export class ERC721 extends ethereum.SmartContract {
 
   try_tokenURI(_tokenId: BigInt): ethereum.CallResult<string> {
     let result = super.tryCall("tokenURI", "tokenURI(uint256):(string)", [
-      ethereum.Value.fromUnsignedBigInt(_tokenId)
+      ethereum.Value.fromUnsignedBigInt(_tokenId),
     ]);
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -227,7 +227,7 @@ export class ERC721 extends ethereum.SmartContract {
 
   balanceOf(_owner: Address): BigInt {
     let result = super.call("balanceOf", "balanceOf(address):(uint256)", [
-      ethereum.Value.fromAddress(_owner)
+      ethereum.Value.fromAddress(_owner),
     ]);
 
     return result[0].toBigInt();
@@ -235,7 +235,7 @@ export class ERC721 extends ethereum.SmartContract {
 
   try_balanceOf(_owner: Address): ethereum.CallResult<BigInt> {
     let result = super.tryCall("balanceOf", "balanceOf(address):(uint256)", [
-      ethereum.Value.fromAddress(_owner)
+      ethereum.Value.fromAddress(_owner),
     ]);
     if (result.reverted) {
       return new ethereum.CallResult();
