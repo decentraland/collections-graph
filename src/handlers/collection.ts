@@ -576,9 +576,11 @@ export function handleTransferCreatorship(event: CreatorshipTransferred): void {
       let item = Item.load(itemId)
       if (item != null) {
         item.creator = newCreator
+        item.updatedAt = event.block.timestamp
         item.save()
       }
     }
+    collection.updatedAt = event.block.timestamp
     collection.save()
   }
 }
@@ -587,6 +589,7 @@ export function handleTransferOwnership(event: OwnershipTransferred): void {
   let collection = Collection.load(event.address.toHexString())
   if (collection != null) {
     collection.owner = event.params.newOwner.toHexString()
+    collection.updatedAt = event.block.timestamp
     collection.save()
   }
 }
