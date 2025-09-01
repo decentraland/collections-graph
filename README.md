@@ -2,14 +2,14 @@
 
 | Network    | Provider        | URL                                                                                     | Current                                        | Previous                                       |
 | ---------- | --------------- | --------------------------------------------------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- |
-| Mainnet    | Satsuma         | https://subgraph.satsuma-prod.com/decentraland/collections-ethereum-mainnet/playground  | QmUB93QwfnCHoivBT46XVKUN58hCwioVmJTtwYbekQTjAg | QmXd2SSKpMa9Z4igqbGwr6vSvA7rgxRUFmYipgNFBbnMHN |
-| Mainnet    | Hosted Services | https://thegraph.com/explorer/subgraph/decentraland/collections-ethereum-mainnet        | QmQVuFfc5quYrG7t4jVPRTNXjBWhPrqVtwwKkGrWoqnSHw | Qmf4SMTepdDoFh1ozcaAUMieGF83tnNa2G2Jr4KkH5jPRA |
-| Sepolia    | Satsuma         | https://subgraph.satsuma-prod.com/decentraland/collections-ethereum-sepolia/playground  | Qme5ou2ivyxTsosbmK5W5RWzpNmtDZFSqpGzDxpJUrdbhj | QmSYyRTthY69mSHxkAY6ym3beCWQr97NwecWdpxjiHypKh |
-| Sepolia    | Graph Studio    | https://api.studio.thegraph.com/query/49472/collections-ethereum-sepolia/version/latest | QmSYyRTthY69mSHxkAY6ym3beCWQr97NwecWdpxjiHypKh | QmWQZiMSV5AnUPN34NFmAYtxGntxewMUUwuS9r5vBpc5Ys |
-| Matic      | Satsuma         | https://subgraph.satsuma-prod.com/decentraland/collections-matic-mainnet/playground     | QmQFB7Li2kPn51FisuV4UtVhyyyQ1wAkmnkoXKjYrLMCBP | QmTmqmgdZ58JRp5N7nKj2XiE4b6R2HjsPNeMmbtU92Uc2x |
-| Matic      | Graph Studio    | https://thegraph.com/explorer/subgraph/decentraland/collections-matic-mainnet           | Qmddr5gN7TY67SVZQzqGKSgwz3boofKdcnDD7QxSopraHV | QmTNHaULmSpzSsaMnFvUDqSpHUw7o5hGS7oGxj5hQo8pwX |
-| Matic Temp | Hosted Services | https://thegraph.com/explorer/subgraph/decentraland/collections-matic-mainnet-temp      | QmTKztw187jUHZ33S2pndtyo68K462XwewcvMVAVH7mwZR | Qmf3igvJs24gozdwCwnDyPNz9DEBQMPQRFmEhUzEvgxZSq |
-| Amoy       | Satsuma         | https://subgraph.satsuma-prod.com/decentraland/collections-matic-amoy/playground        | QmTcuNd9C76Wj5L7tMA2Vm2d1WRxm5ME8Jf4uKPZgGC788 | Qmd3Fxkiv9gWH87sWiNDaagU61mns77MizCMoKNDmhqbhK |
+| Mainnet    | Satsuma         | <https://subgraph.satsuma-prod.com/decentraland/collections-ethereum-mainnet/playground>  | QmUB93QwfnCHoivBT46XVKUN58hCwioVmJTtwYbekQTjAg | QmXd2SSKpMa9Z4igqbGwr6vSvA7rgxRUFmYipgNFBbnMHN |
+| Mainnet    | Hosted Services | <https://thegraph.com/explorer/subgraph/decentraland/collections-ethereum-mainnet>        | QmQVuFfc5quYrG7t4jVPRTNXjBWhPrqVtwwKkGrWoqnSHw | Qmf4SMTepdDoFh1ozcaAUMieGF83tnNa2G2Jr4KkH5jPRA |
+| Sepolia    | Satsuma         | <https://subgraph.satsuma-prod.com/decentraland/collections-ethereum-sepolia/playground>  | Qme5ou2ivyxTsosbmK5W5RWzpNmtDZFSqpGzDxpJUrdbhj | QmSYyRTthY69mSHxkAY6ym3beCWQr97NwecWdpxjiHypKh |
+| Sepolia    | Graph Studio    | <https://api.studio.thegraph.com/query/49472/collections-ethereum-sepolia/version/latest> | QmSYyRTthY69mSHxkAY6ym3beCWQr97NwecWdpxjiHypKh | QmWQZiMSV5AnUPN34NFmAYtxGntxewMUUwuS9r5vBpc5Ys |
+| Matic      | Satsuma         | <https://subgraph.satsuma-prod.com/decentraland/collections-matic-mainnet/playground>     | QmQFB7Li2kPn51FisuV4UtVhyyyQ1wAkmnkoXKjYrLMCBP | QmTmqmgdZ58JRp5N7nKj2XiE4b6R2HjsPNeMmbtU92Uc2x |
+| Matic      | Graph Studio    | <https://thegraph.com/explorer/subgraph/decentraland/collections-matic-mainnet>           | QmQWptijAdr3EUwGbeAMEWuVtSNaWDjFBfGqKGWvGrwdzj | Qmddr5gN7TY67SVZQzqGKSgwz3boofKdcnDD7QxSopraHV |
+| Matic Temp | Hosted Services | <https://thegraph.com/explorer/subgraph/decentraland/collections-matic-mainnet-temp>      | QmTKztw187jUHZ33S2pndtyo68K462XwewcvMVAVH7mwZR | Qmf3igvJs24gozdwCwnDyPNz9DEBQMPQRFmEhUzEvgxZSq |
+| Amoy       | Satsuma         | <https://subgraph.satsuma-prod.com/decentraland/collections-matic-amoy/playground>        | QmTcuNd9C76Wj5L7tMA2Vm2d1WRxm5ME8Jf4uKPZgGC788 | Qmd3Fxkiv9gWH87sWiNDaagU61mns77MizCMoKNDmhqbhK |
 
 Using [The Graph](https://thegraph.com) and [Alchemy](https://www.alchemy.com/)
 
