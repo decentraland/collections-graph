@@ -27,7 +27,8 @@ export function getBlockWhereRescueItemsStarted(): BigInt {
 // 0x07bd3522: forwardMetaTx(address _target, bytes calldata _data)
 // 0xad718d2a: sponsoredCallV2(address _target,bytes _data,bytes32 _correlationId,bytes32 _r,bytes32 _vs)
 // 0x81c9308e: manageCollection(address,address,address,bytes[]) selector
-export const ALLOWED_SELECTORS: string[] = ['0x07bd3522', '0xad718d2a', '0x81c9308e']
+// 0x0c53c51c: executeMetaTransaction(address, bytes, bytes32, bytes32, uint8)
+export const ALLOWED_SELECTORS: string[] = ['0x07bd3522', '0xad718d2a', '0x81c9308e', '0x0c53c51c']
 
 /**
  * Verify if it's an allowed committee transaction input.
