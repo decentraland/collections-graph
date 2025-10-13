@@ -3,6 +3,7 @@ import { isValidBodyShape } from '..'
 import { Emote, Item, Metadata, NFT } from '../../../entities/schema'
 import { toLowerCase } from '../../../utils'
 import { DANCE, FUN, GREETINGS, HORROR, MISCELLANEOUS, POSES, REACTIONS, STUNT } from './categories'
+import { MAP_OUTCOME_TO_STRING, OUTCOMES, SIMPLE_OUTCOME } from './outcomes'
 
 /**
  * @dev The item's rawMetadata for emotes should follow: version:item_type:name:description:category:bodyshapes:play_mode
@@ -11,7 +12,7 @@ import { DANCE, FUN, GREETINGS, HORROR, MISCELLANEOUS, POSES, REACTIONS, STUNT }
 export function buildEmoteItem(item: Item): Emote | null {
   let id = item.id
   let data = item.rawMetadata.split(':')
-  let dataHasValidLength = data.length == 6 || data.length == 7 || data.length == 8
+  let dataHasValidLength = data.length == 6 || data.length == 7 || data.length == 8 || data.length == 9
   if (dataHasValidLength && isValidBodyShape(data[5].split(','))) {
     let emote = Emote.load(id)
 
@@ -28,9 +29,22 @@ export function buildEmoteItem(item: Item): Emote | null {
     emote.loop = data.length >= 7 && isValidLoopValue(data[6]) && data[6] == '1' ? true : false // Fallback old emotes as not loopable
     emote.hasGeometry = data.length >= 8 && data[7].includes('g')
     emote.hasSound = data.length >= 8 && data[7].includes('s')
+    emote.outcomeType = handleEmoteOutcomeType(data)
     emote.save()
 
     return emote
+  }
+
+  return null
+}
+
+const handleEmoteOutcomeType = (data: string[]): string | null => {
+  if (data.length >= 8 && OUTCOMES.includes(data[7])) {
+    return MAP_OUTCOME_TO_STRING[data[7]]
+  }
+
+  if (data.length >= 9 && OUTCOMES.includes(data[8])) {
+    return MAP_OUTCOME_TO_STRING[data[8]]
   }
 
   return null

@@ -914,6 +914,23 @@ export class Item extends Entity {
     this.set("searchEmoteHasGeometry", Value.fromBoolean(value));
   }
 
+  get searchEmoteOutcomeType(): string | null {
+    let value = this.get("searchEmoteOutcomeType")
+    if (!value || value.kind == ValueKind.NULL) {
+      return null
+    } else {
+      return value.toString()
+    }
+  }
+
+  set searchEmoteOutcomeType(value: string | null) {
+    if (!value) {
+      this.unset("searchEmoteOutcomeType")
+    } else {
+      this.set("searchEmoteOutcomeType", Value.fromString(<string>value))
+    }
+  }
+
   get uniqueCollectors(): Array<string> {
     let value = this.get("uniqueCollectors");
     if (!value || value.kind == ValueKind.NULL) {
@@ -1897,6 +1914,23 @@ export class Emote extends Entity {
 
   set hasGeometry(value: boolean) {
     this.set("hasGeometry", Value.fromBoolean(value));
+  }
+
+  get outcomeType(): string | null {
+    let value = this.get("outcomeType")
+    if (!value || value.kind == ValueKind.NULL) {
+      return null
+    } else {
+      return value.toString()
+    }
+  }
+
+  set outcomeType(value: string | null) {
+    if (!value) {
+      this.unset("outcomeType")
+    } else {
+      this.set("outcomeType", Value.fromString(<string>value))
+    }
   }
 }
 

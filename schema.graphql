@@ -79,6 +79,7 @@ type Item @entity {
   searchEmoteBodyShapes: [WearableBodyShape!]
   searchEmoteHasSound: Boolean
   searchEmoteHasGeometry: Boolean
+  searchEmoteOutcomeType: String
 
   ## Unique collectors
   uniqueCollectors: [String!]!
@@ -175,6 +176,7 @@ type Emote @entity {
   bodyShapes: [WearableBodyShape!]
   hasSound: Boolean
   hasGeometry: Boolean
+  outcomeType: EmoteOutcomeType
 }
 
 enum WearableCategory @entity {
@@ -193,7 +195,7 @@ enum WearableCategory @entity {
   mask
   tiara
   top_head
-  skin,
+  skin
   hands_wear
 }
 
@@ -206,6 +208,12 @@ enum EmoteCategory @entity {
   reactions
   horror
   miscellaneous
+}
+
+enum EmoteOutcomeType @entity {
+  simple_outcome
+  multiple_outcome
+  random_outcome
 }
 
 enum WearableRarity @entity {
