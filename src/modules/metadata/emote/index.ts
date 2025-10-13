@@ -3,7 +3,7 @@ import { isValidBodyShape } from '..'
 import { Emote, Item, Metadata, NFT } from '../../../entities/schema'
 import { toLowerCase } from '../../../utils'
 import { DANCE, FUN, GREETINGS, HORROR, MISCELLANEOUS, POSES, REACTIONS, STUNT } from './categories'
-import { MAP_OUTCOME_TO_STRING, OUTCOMES, SIMPLE_OUTCOME } from './outcomes'
+import { mapOutcomeToString, OUTCOMES } from './outcomes'
 
 /**
  * @dev The item's rawMetadata for emotes should follow: version:item_type:name:description:category:bodyshapes:play_mode
@@ -40,11 +40,11 @@ export function buildEmoteItem(item: Item): Emote | null {
 
 const handleEmoteOutcomeType = (data: string[]): string | null => {
   if (data.length >= 8 && OUTCOMES.includes(data[7])) {
-    return MAP_OUTCOME_TO_STRING[data[7]]
+    return mapOutcomeToString[data[7]]
   }
 
   if (data.length >= 9 && OUTCOMES.includes(data[8])) {
-    return MAP_OUTCOME_TO_STRING[data[8]]
+    return mapOutcomeToString[data[8]]
   }
 
   return null

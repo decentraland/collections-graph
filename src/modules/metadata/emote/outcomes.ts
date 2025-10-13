@@ -9,8 +9,12 @@ export const RANDOM_OUTCOME_SHORT = 'ro'
 
 export const OUTCOMES = [SIMPLE_OUTCOME_SHORT, MULTIPLE_OUTCOME_SHORT, RANDOM_OUTCOME_SHORT]
 
-export const MAP_OUTCOME_TO_STRING = {
-  [SIMPLE_OUTCOME_SHORT]: SIMPLE_OUTCOME,
-  [MULTIPLE_OUTCOME_SHORT]: MULTIPLE_OUTCOME,
-  [RANDOM_OUTCOME_SHORT]: RANDOM_OUTCOME
+export function mapOutcomeToString(outcome: string): string {
+  if (outcome == MULTIPLE_OUTCOME_SHORT) {
+    return MULTIPLE_OUTCOME
+  } else if (outcome == RANDOM_OUTCOME_SHORT) {
+    return RANDOM_OUTCOME
+  }
+
+  return SIMPLE_OUTCOME
 }
