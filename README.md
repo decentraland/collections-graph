@@ -9,7 +9,7 @@
 | Matic      | Satsuma         | <https://subgraph.satsuma-prod.com/decentraland/collections-matic-mainnet/playground>     | QmQFB7Li2kPn51FisuV4UtVhyyyQ1wAkmnkoXKjYrLMCBP | QmTmqmgdZ58JRp5N7nKj2XiE4b6R2HjsPNeMmbtU92Uc2x |
 | Matic      | Graph Studio    | <https://thegraph.com/explorer/subgraph/decentraland/collections-matic-mainnet>           | QmQWptijAdr3EUwGbeAMEWuVtSNaWDjFBfGqKGWvGrwdzj | Qmddr5gN7TY67SVZQzqGKSgwz3boofKdcnDD7QxSopraHV |
 | Matic Temp | Hosted Services | <https://thegraph.com/explorer/subgraph/decentraland/collections-matic-mainnet-temp>      | QmTKztw187jUHZ33S2pndtyo68K462XwewcvMVAVH7mwZR | Qmf3igvJs24gozdwCwnDyPNz9DEBQMPQRFmEhUzEvgxZSq |
-| Amoy       | Satsuma         | <https://subgraph.satsuma-prod.com/decentraland/collections-matic-amoy/playground>        | QmTcuNd9C76Wj5L7tMA2Vm2d1WRxm5ME8Jf4uKPZgGC788 | Qmd3Fxkiv9gWH87sWiNDaagU61mns77MizCMoKNDmhqbhK |
+| Amoy       | Satsuma         | <https://subgraph.satsuma-prod.com/decentraland/collections-matic-amoy/playground>        | QmQddZdxytFqjLzYFdaEwPv3DNx1PZDzDT1CCe7tukmnCA | QmTcuNd9C76Wj5L7tMA2Vm2d1WRxm5ME8Jf4uKPZgGC788 |
 
 Using [The Graph](https://thegraph.com) and [Alchemy](https://www.alchemy.com/)
 
