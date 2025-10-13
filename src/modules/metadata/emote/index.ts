@@ -40,11 +40,11 @@ export function buildEmoteItem(item: Item): Emote | null {
 
 const handleEmoteOutcomeType = (data: string[]): string | null => {
   if (data.length >= 8 && OUTCOMES.includes(data[7])) {
-    return mapOutcomeToString[data[7]]
+    return mapOutcomeToString(data[7])
   }
 
   if (data.length >= 9 && OUTCOMES.includes(data[8])) {
-    return mapOutcomeToString[data[8]]
+    return mapOutcomeToString(data[8])
   }
 
   return null
