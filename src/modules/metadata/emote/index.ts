@@ -27,8 +27,12 @@ export function buildEmoteItem(item: Item): Emote | null {
     emote.category = isValidEmoteCategory(data[4]) ? data[4] : DANCE // We're using DANCE as fallback to support the emotes that were created with the old categories.
     emote.bodyShapes = data[5].split(',') // Could be more than one
     emote.loop = data.length >= 7 && isValidLoopValue(data[6]) && data[6] == '1' ? true : false // Fallback old emotes as not loopable
-    emote.hasGeometry = data.length >= 8 && data[7].includes('g')
-    emote.hasSound = data.length >= 8 && data[7].includes('s')
+    // data[7] can contain properties (g, s, gs) OR outcome type (so, mo, ro)
+    // If length is 9: data[7] = properties, data[8] = outcome
+    // If length is 8: data[7] = properties OR outcome (but not both)
+    let isOutcomeType = data.length >= 8 && OUTCOMES.includes(data[7])
+    emote.hasGeometry = data.length >= 8 && !isOutcomeType && data[7].includes('g')
+    emote.hasSound = data.length >= 8 && !isOutcomeType && data[7].includes('s')
     emote.outcomeType = handleEmoteOutcomeType(data)
     emote.save()
 
