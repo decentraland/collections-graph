@@ -1,7 +1,7 @@
 # Decentraland collections graph
 
-| Network    | Provider        | URL                                                                                     | Current                                        | Previous                                       |
-| ---------- | --------------- | --------------------------------------------------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- |
+| Network    | Provider        | URL                                                                                       | Current                                        | Previous                                       |
+| ---------- | --------------- | ----------------------------------------------------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- |
 | Mainnet    | Satsuma         | <https://subgraph.satsuma-prod.com/decentraland/collections-ethereum-mainnet/playground>  | QmUB93QwfnCHoivBT46XVKUN58hCwioVmJTtwYbekQTjAg | QmXd2SSKpMa9Z4igqbGwr6vSvA7rgxRUFmYipgNFBbnMHN |
 | Mainnet    | Hosted Services | <https://thegraph.com/explorer/subgraph/decentraland/collections-ethereum-mainnet>        | QmQVuFfc5quYrG7t4jVPRTNXjBWhPrqVtwwKkGrWoqnSHw | Qmf4SMTepdDoFh1ozcaAUMieGF83tnNa2G2Jr4KkH5jPRA |
 | Sepolia    | Satsuma         | <https://subgraph.satsuma-prod.com/decentraland/collections-ethereum-sepolia/playground>  | Qme5ou2ivyxTsosbmK5W5RWzpNmtDZFSqpGzDxpJUrdbhj | QmSYyRTthY69mSHxkAY6ym3beCWQr97NwecWdpxjiHypKh |
@@ -9,7 +9,7 @@
 | Matic      | Satsuma         | <https://subgraph.satsuma-prod.com/decentraland/collections-matic-mainnet/playground>     | QmQFB7Li2kPn51FisuV4UtVhyyyQ1wAkmnkoXKjYrLMCBP | QmTmqmgdZ58JRp5N7nKj2XiE4b6R2HjsPNeMmbtU92Uc2x |
 | Matic      | Graph Studio    | <https://thegraph.com/explorer/subgraph/decentraland/collections-matic-mainnet>           | QmQWptijAdr3EUwGbeAMEWuVtSNaWDjFBfGqKGWvGrwdzj | Qmddr5gN7TY67SVZQzqGKSgwz3boofKdcnDD7QxSopraHV |
 | Matic Temp | Hosted Services | <https://thegraph.com/explorer/subgraph/decentraland/collections-matic-mainnet-temp>      | QmTKztw187jUHZ33S2pndtyo68K462XwewcvMVAVH7mwZR | Qmf3igvJs24gozdwCwnDyPNz9DEBQMPQRFmEhUzEvgxZSq |
-| Amoy       | Satsuma         | <https://subgraph.satsuma-prod.com/decentraland/collections-matic-amoy/playground>        | QmQddZdxytFqjLzYFdaEwPv3DNx1PZDzDT1CCe7tukmnCA | QmTcuNd9C76Wj5L7tMA2Vm2d1WRxm5ME8Jf4uKPZgGC788 |
+| Amoy       | Satsuma         | <https://subgraph.satsuma-prod.com/decentraland/collections-matic-amoy/playground>        | QmVyKxREa88GTdBM8NXu6vTd6iZsnMrHvyth5LaJ6j4pkJ | QmTcuNd9C76Wj5L7tMA2Vm2d1WRxm5ME8Jf4uKPZgGC788 |
 
 Using [The Graph](https://thegraph.com) and [Alchemy](https://www.alchemy.com/)
 
