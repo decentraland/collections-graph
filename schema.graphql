@@ -79,7 +79,7 @@ type Item @entity {
   searchEmoteBodyShapes: [WearableBodyShape!]
   searchEmoteHasSound: Boolean
   searchEmoteHasGeometry: Boolean
-  searchEmoteOutcomeType: String
+  searchEmoteOutcomeType: EmoteOutcomeType
 
   ## Unique collectors
   uniqueCollectors: [String!]!
