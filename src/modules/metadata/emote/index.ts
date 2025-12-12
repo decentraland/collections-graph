@@ -3,6 +3,7 @@ import { isValidBodyShape } from '..'
 import { Emote, Item, Metadata, NFT } from '../../../entities/schema'
 import { toLowerCase } from '../../../utils'
 import { DANCE, FUN, GREETINGS, HORROR, MISCELLANEOUS, POSES, REACTIONS, STUNT } from './categories'
+import { mapOutcomeToString, OUTCOMES } from './outcomes'
 
 /**
  * @dev The item's rawMetadata for emotes should follow: version:item_type:name:description:category:bodyshapes:play_mode
@@ -11,7 +12,7 @@ import { DANCE, FUN, GREETINGS, HORROR, MISCELLANEOUS, POSES, REACTIONS, STUNT }
 export function buildEmoteItem(item: Item): Emote | null {
   let id = item.id
   let data = item.rawMetadata.split(':')
-  let dataHasValidLength = data.length == 6 || data.length == 7 || data.length == 8
+  let dataHasValidLength = data.length == 6 || data.length == 7 || data.length == 8 || data.length == 9
   if (dataHasValidLength && isValidBodyShape(data[5].split(','))) {
     let emote = Emote.load(id)
 
@@ -26,11 +27,28 @@ export function buildEmoteItem(item: Item): Emote | null {
     emote.category = isValidEmoteCategory(data[4]) ? data[4] : DANCE // We're using DANCE as fallback to support the emotes that were created with the old categories.
     emote.bodyShapes = data[5].split(',') // Could be more than one
     emote.loop = data.length >= 7 && isValidLoopValue(data[6]) && data[6] == '1' ? true : false // Fallback old emotes as not loopable
-    emote.hasGeometry = data.length >= 8 && data[7].includes('g')
-    emote.hasSound = data.length >= 8 && data[7].includes('s')
+    // data[7] can contain properties (g, s, gs) OR outcome type (so, mo, ro)
+    // If length is 9: data[7] = properties, data[8] = outcome
+    // If length is 8: data[7] = properties OR outcome (but not both)
+    let isOutcomeType = data.length >= 8 && OUTCOMES.includes(data[7])
+    emote.hasGeometry = data.length >= 8 && !isOutcomeType && data[7].includes('g')
+    emote.hasSound = data.length >= 8 && !isOutcomeType && data[7].includes('s')
+    emote.outcomeType = handleEmoteOutcomeType(data)
     emote.save()
 
     return emote
+  }
+
+  return null
+}
+
+const handleEmoteOutcomeType = (data: string[]): string | null => {
+  if (data.length >= 8 && OUTCOMES.includes(data[7])) {
+    return mapOutcomeToString(data[7])
+  }
+
+  if (data.length >= 9 && OUTCOMES.includes(data[8])) {
+    return mapOutcomeToString(data[8])
   }
 
   return null
