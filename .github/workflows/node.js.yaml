@@ -15,7 +15,7 @@ jobs:
       - name: Use Node.js 20.x
         uses: actions/setup-node@v3
         with:
-          node-version: 20.x
+          node-version: 24
       # Cache dependencies as `npm ci` takes like 6 minutes to run.
       # https://github.com/actions/cache/blob/main/examples.md#node---npm
       - id: npm-cache-dir
