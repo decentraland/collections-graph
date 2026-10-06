@@ -1,7 +1,7 @@
 import {
   MemberSet,
 } from '../entities/Committee/Committee'
-import { createOrLoadAccount } from '../modules/Account'
+import { createOrLoadAccount } from '../modules/account'
 
 // Handles MemberSet events from the current, authoritative Committee contract
 // (the one CollectionManager.committee() actually points to on-chain). This is
